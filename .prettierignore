@@ -1,0 +1,14 @@
+/node_modules
+/coverage
+/dist
+
+artifacts
+cache
+typechain
+build
+coverage
+out
+lib
+assets
+.next
+*.md
