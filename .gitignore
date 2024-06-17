@@ -4,7 +4,7 @@ coverage/
 .env
 
 .idea
-.vscode
+# .vscode
 *.history
 *.sublime-project
 *.sublime-workspace
