@@ -10,7 +10,7 @@ process.env.ASSET_PATH = "/";
 
 const WebpackDevServer = require("webpack-dev-server");
 const webpack = require("webpack");
-const config = require("../webpack.config");
+const config = require("../webpack.config.legacy");
 const env = require("./env");
 const path = require("path");
 
@@ -50,8 +50,6 @@ const server = new WebpackDevServer(
   },
   compiler
 );
-
-console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV === "development" && module.hot) {
   module.hot.accept();

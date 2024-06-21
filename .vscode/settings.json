@@ -1,11 +1,13 @@
 {
-  //  "files.eol": "\n",
+  "cSpell.words": ["faang", "fbjs", "stylexjs"],
+  // "files.eol": "\n",
   "editor.tabSize": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  }
+    "source.fixAll.eslint": "always"
+  },
+  "typescript.tsserver.log": "verbose"
 }

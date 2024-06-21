@@ -116,6 +116,8 @@ module.exports = {
   // We're stricter than the default config, mostly. We'll override a few rules
   // and then enable some React specific ones.
   rules: {
+    "@typescript-eslint/no-explicit-any": "off",
+
     // increase the severity of rules so they are auto-fixable
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
@@ -169,7 +171,5 @@ module.exports = {
     "no-void": OFF,
 
     "react/no-children-prop": OFF,
-
-    "@typescript-eslint/no-explicit-any": OFF,
   },
 };

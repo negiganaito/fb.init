@@ -26,6 +26,15 @@ Codebase
 -   `pnpm lint` - lint the codebase
 -   `pnpm format` - format the codebase using prettier
 
+### Tools and Technologies
+
+-   [ReactJS](https://reactjs.org/)
+-   [React Router](https://reactrouter.com/en/main/)
+-   [TypeScript](https://www.typescriptlang.org/)
+-   [Webpack](https://webpack.js.org/)
+-   [Styled Components](https://styled-components.com/)
+-   [i18next](https://react.i18next.com/)
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -37,3 +46,15 @@ Pull requests are welcome. For major changes, please open an issue first to disc
     codebase
 
 ---
+
+
+
+git rm -r --cached .
+git add .
+git commit -am 'git cache cleared'
+git push
+
+
+Also to revert back last commit use this :
+
+git reset HEAD^ --hard

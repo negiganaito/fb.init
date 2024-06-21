@@ -4,14 +4,14 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-process.env.BABEL_ENV = 'production';
-process.env.NODE_ENV = 'production';
-process.env.ASSET_PATH = '/';
+process.env.BABEL_ENV = "production";
+process.env.NODE_ENV = "production";
+process.env.ASSET_PATH = "/";
 
-const webpack = require('webpack');
-const config = require('../webpack.config');
+const webpack = require("webpack");
+const config = require("../webpack.config.legacy");
 
-config.mode = 'production';
+config.mode = "production";
 
 webpack(config, (err) => {
   if (err) throw err;

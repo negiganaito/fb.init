@@ -1,3 +1,9 @@
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
 const path = require("path");
 
 const webpack = require("webpack");
@@ -12,6 +18,8 @@ const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const rsdPlugin = require("react-strict-dom/babel");
 const StylexPlugin = require("@stylexjs/webpack-plugin");
+
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 const envv = require("./scripts/env");
 
@@ -30,6 +38,7 @@ const fileExtensions = [
 
 module.exports = (env, { mode }) => {
   const isProduction = mode === "production";
+  const isDevelopment = mode !== "production";
 
   return {
     mode,
@@ -44,6 +53,98 @@ module.exports = (env, { mode }) => {
       alias: {
         "@": path.resolve(__dirname, "src/"),
         "~": path.resolve(__dirname, "/public"),
+
+        //
+        "@fb-text": path.resolve(__dirname, "src/fb/text"),
+        "@fb-context": path.resolve(__dirname, "src/fb/contexts"),
+        "@fb-hook": path.resolve(__dirname, "src/fb/hooks"),
+        "@fb-util": path.resolve(__dirname, "src/fb/utils"),
+        "@placeholder": path.resolve(__dirname, "src/fb/placeholder"),
+        "@fb-layout": path.resolve(__dirname, "src/fb/layout"),
+        "@fb-unknown": path.resolve(__dirname, "src/fb/unknown"),
+        "@fb-user-agent": path.resolve(__dirname, "src/fb/user-agent"),
+        "@fb-event-interaction": path.resolve(
+          __dirname,
+          "src/fb/event-interaction"
+        ),
+        "@fb-keyboard": path.resolve(__dirname, "src/fb/keyboard"),
+        "@fb-constants": path.resolve(__dirname, "src/fb/constants"),
+        "@fb-focus": path.resolve(__dirname, "src/fb/focus"),
+        "@fb-contextual-layer": path.resolve(
+          __dirname,
+          "src/fb/contextual-layer"
+        ),
+        "@fb-image": path.resolve(__dirname, "src/fb/image"),
+        "@fb-glimmer": path.resolve(__dirname, "src/fb/glimmer"),
+        "@fb-process-ring": path.resolve(__dirname, "src/fb/process-ring"),
+        "@fb-tooltip": path.resolve(__dirname, "src/fb/tooltip"),
+        "@fb-card": path.resolve(__dirname, "src/fb/card"),
+
+        "@fb-pressable": path.resolve(__dirname, "src/fb/pressable"),
+        "@fb-link": path.resolve(__dirname, "src/fb/link"),
+        "@fb-button": path.resolve(__dirname, "src/fb/button"),
+        "@fb-form-input": path.resolve(__dirname, "src/fb/form-input"),
+        "@fb-icons": path.resolve(__dirname, "src/fb/icons"),
+        "@fb-comps": path.resolve(__dirname, "src/fb/_comp"),
+        "@fb-select": path.resolve(__dirname, "src/fb/select"),
+        "@fb-view": path.resolve(__dirname, "src/fb/view"),
+        "@fb-menu-popover": path.resolve(__dirname, "src/fb/menu-popover"),
+        "@fb-cell": path.resolve(__dirname, "src/fb/cell"),
+        "@fb-list": path.resolve(__dirname, "src/fb/list"),
+        "@fb-dialog": path.resolve(__dirname, "src/fb/dialog"),
+        "@fb-toast": path.resolve(__dirname, "src/fb/toast"),
+        "@fb-network": path.resolve(__dirname, "src/fb/network"),
+        "@fb-callout": path.resolve(__dirname, "src/fb/callout"),
+        "@fb-checkbox-radio": path.resolve(__dirname, "src/fb/checkbox-radio"),
+        "@fb-collapse": path.resolve(__dirname, "src/fb/collapse"),
+        "@fb-text-area": path.resolve(__dirname, "src/fb/text-area"),
+        "@fb-file-selector": path.resolve(__dirname, "src/fb/file-selector"),
+        "@fb-lazy-load-component": path.resolve(
+          __dirname,
+          "src/fb/lazy-load-component"
+        ),
+        "@fb-platform": path.resolve(__dirname, "src/fb/platform"),
+        "@fb-comet-root": path.resolve(__dirname, "src/fb/comet-root"),
+
+        "@fb-badge": path.resolve(__dirname, "src/fb/badge"),
+        "@fb-switch": path.resolve(__dirname, "src/fb/switch"),
+        // "@fb-text/*": ["src/fb/text/*"],
+        // "@fb-context/*": ["src/fb/contexts/*"],
+        // "@fb-hook/*": ["src/fb/hooks/*"],
+        // "@fb-util/*": ["src/fb/utils/*"],
+        // "@placeholder/*": ["src/fb/placeholder/*"],
+        // "@fb-layout/*": ["src/fb/layout/*"],
+        // "@fb-unknown/*": ["src/fb/unknown/*"],
+        // "@fb-user-agent/*": ["src/fb/user-agent/*"],
+        // "@fb-event-interaction/*": ["src/fb/event-interaction/*"],
+        // "@fb-keyboard/*": ["src/fb/keyboard/*"],
+        // "@fb-constants/*": ["src/fb/constants/*"],
+        // "@fb-focus/*": ["src/fb/focus/*"],
+        // "@fb-contextual-layer/*": ["src/fb/contextual-layer/*"],
+        // "@fb-image/*": ["src/fb/image/*"],
+        // "@fb-glimmer/*": ["src/fb/glimmer/*"],
+        // "@fb-process-ring/*": ["src/fb/process-ring/*"],
+        // "@fb-tooltip/*": ["src/fb/tooltip/*"],
+        // "@fb-card/*": ["src/fb/card/*"],
+        // "@fb-pressable/*": ["src/fb/pressable/*"],
+        // "@fb-link/*": ["src/fb/link/*"],
+        // "@fb-button/*": ["src/fb/button/*"],
+        // "@fb-form-input/*": ["src/fb/form-input/*"],
+        // "@fb-icons/*": ["src/fb/icons/*"],
+        // "@fb-comps/*": ["src/fb/_comp/*"],
+        // "@fb-select/*": ["src/fb/select/*"],
+        // "@fb-view/*": ["src/fb/view/*"],
+        // "@fb-menu-popover/*": ["src/fb/menu-popover/*"],
+        // "@fb-cell/*": ["src/fb/cell/*"],
+        // "@fb-list/*": ["src/fb/list/*"],
+        // "@fb-dialog/*": ["src/fb/dialog/*"],
+        // "@fb-toast/*": ["src/fb/toast/*"],
+        // "@fb-network/*": ["src/fb/network/*"],
+        // "@fb-callout/*": ["src/fb/callout/*"],
+        // "@fb-checkbox-radio/*": ["src/fb/checkbox-radio/*"],
+        // "@fb-collapse/*": ["src/fb/collapse/*"],
+        // "@fb-text-area/*": ["src/fb/text-area/*"],
+        // "@fb-file-selector/*": ["src/fb/file-selector/*"],
       },
 
       fallback: {
@@ -66,23 +167,28 @@ module.exports = (env, { mode }) => {
     module: {
       rules: [
         {
-          test: /\.(ts|tsx)?$/,
-          use: "ts-loader",
-          exclude: /node_modules/,
-        },
-        {
           test: /\.?(js|jsx)$/,
           exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
-            options: {
-              presets: [
-                "@babel/preset-env",
-                "@babel/preset-react",
-                "@babel/preset-typescript",
-              ],
+          use: [
+            {
+              loader: require.resolve("babel-loader"),
+              options: {
+                presets: [
+                  "@babel/preset-env",
+                  "@babel/preset-react",
+                  "@babel/preset-typescript",
+                ],
+                plugins: [
+                  isDevelopment && require.resolve("react-refresh/babel"),
+                ].filter(Boolean),
+              },
             },
-          },
+          ],
+        },
+        {
+          test: /\.(ts|tsx)?$/,
+          use: ["babel-loader"],
+          exclude: /node_modules/,
         },
         {
           test: /\.css$/i,
@@ -143,6 +249,8 @@ module.exports = (env, { mode }) => {
       ],
     },
 
+    cache: true,
+
     plugins: [
       new HtmlWebpackPlugin({
         template: path.join(__dirname, "public", "index.html"),
@@ -159,7 +267,11 @@ module.exports = (env, { mode }) => {
       new CleanWebpackPlugin({ verbose: false }),
 
       new webpack.ProgressPlugin(),
-      new webpack.EnvironmentPlugin(),
+      // new webpack.EnvironmentPlugin(["NODE_ENV"]),
+
+      new webpack.EnvironmentPlugin({
+        NODE_ENV: "development", // use 'development' unless process.env.NODE_ENV is defined
+      }),
 
       new MiniCssExtractPlugin(),
 
@@ -191,17 +303,21 @@ module.exports = (env, { mode }) => {
           rootDir: __dirname,
         },
       }),
-    ].concat(
-      !env.analyze
-        ? []
-        : [
-            new BundleAnalyzerPlugin({
-              analyzerHost: "localhost",
-              analyzerPort: 3006,
-              reportTitle: "Template - Analyze Bundle Sizes",
-            }),
-          ]
-    ),
+
+      isDevelopment && new ReactRefreshWebpackPlugin(),
+    ]
+      .concat(
+        !env.analyze
+          ? []
+          : [
+              new BundleAnalyzerPlugin({
+                analyzerHost: "localhost",
+                analyzerPort: 3006,
+                reportTitle: "Template - Analyze Bundle Sizes",
+              }),
+            ]
+      )
+      .filter(Boolean),
 
     optimization: {
       minimize: isProduction,
@@ -251,13 +367,17 @@ module.exports = (env, { mode }) => {
       },
       historyApiFallback: true,
       host: "localhost",
-      hot: false,
+      hot: true,
       https: false,
       open: true,
       port: envv.PORT,
       static: {
         directory: path.join(__dirname, "../build"),
       },
+    },
+
+    stats: {
+      errorDetails: true,
     },
   };
 };
