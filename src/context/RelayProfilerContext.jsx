@@ -4,10 +4,6 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import React from "react";
+import ProfilerContext from "react-relay/relay-hooks/ProfilerContext";
 
-const GeoPrivateToastContext = React.createContext({
-  onHideFactory: null,
-});
-
-export default GeoPrivateToastContext;
+export default ProfilerContext;

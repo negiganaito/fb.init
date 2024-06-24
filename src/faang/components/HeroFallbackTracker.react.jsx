@@ -58,58 +58,31 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import {
-  selectBorderRadius,
-  selectBorderWidth,
-  selectSize,
-} from "./GeoAppearanceSelectors";
-import {
-  selectBorderColor,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectStaticBackgroundColor,
-  selectStrokeColor,
-  selectTextColor,
-} from "./GeoColorSelectors";
-import { selectElevation } from "./GeoElevationSelectors";
-import { selectAnimation } from "./GeoPrivateAnimationSelectors";
-import { selectLayoutSpacing, selectSpacing } from "./GeoSpacingSelectors";
-import { inject as injectStyleXDefaultSheet } from "./GeoStyleXDefaultSheet";
-import { selectFont } from "./GeoTextSelectors";
-import { selectTransition } from "./GeoTransitionSelectors";
+import { useContext, useLayoutEffect } from "react";
 
-injectStyleXDefaultSheet();
+import HeroInteractionContext from "../../context/HeroInteractionContext";
+import HeroInteractionIDContext from "../../context/HeroInteractionIDContext";
 
-const GeoPrivateDefaultTheme = {
-  selectAnimation,
-  selectBorderWidth,
-  selectBorderColor,
-  selectBorderRadius,
-  selectFont,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectSize,
-  selectStaticBackgroundColor,
-  selectTextColor,
-  selectElevation,
-  selectLayoutSpacing,
-  selectSpacing,
-  selectStrokeColor,
-  selectTransition,
+const HeroFallbackTracker = ({ uuid }) => {
+  const interactionContext = useContext(HeroInteractionContext.Context);
+  const interactionID = useContext(HeroInteractionIDContext);
+
+  useLayoutEffect(() => {
+    if (interactionID !== null) {
+      interactionContext.registerPlaceholder(
+        interactionID,
+        uuid,
+        interactionContext.pageletStack
+      );
+      return () => {
+        interactionContext.removePlaceholder(interactionID, uuid);
+      };
+    }
+  }, [interactionContext, interactionID, uuid]);
+
+  return null;
 };
 
-export default GeoPrivateDefaultTheme;
+HeroFallbackTracker.displayName = "HeroFallbackTracker";
+
+export default HeroFallbackTracker;

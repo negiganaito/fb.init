@@ -58,58 +58,34 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import {
-  selectBorderRadius,
-  selectBorderWidth,
-  selectSize,
-} from "./GeoAppearanceSelectors";
-import {
-  selectBorderColor,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectStaticBackgroundColor,
-  selectStrokeColor,
-  selectTextColor,
-} from "./GeoColorSelectors";
-import { selectElevation } from "./GeoElevationSelectors";
-import { selectAnimation } from "./GeoPrivateAnimationSelectors";
-import { selectLayoutSpacing, selectSpacing } from "./GeoSpacingSelectors";
-import { inject as injectStyleXDefaultSheet } from "./GeoStyleXDefaultSheet";
-import { selectFont } from "./GeoTextSelectors";
-import { selectTransition } from "./GeoTransitionSelectors";
+import ExecutionEnvironment from "./ExecutionEnvironment";
+import suspendOrThrowIfUsedInSSR from "./suspendOrThrowIfUsedInSSR";
 
-injectStyleXDefaultSheet();
+const resourceMap = {};
 
-const GeoPrivateDefaultTheme = {
-  selectAnimation,
-  selectBorderWidth,
-  selectBorderColor,
-  selectBorderRadius,
-  selectFont,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectSize,
-  selectStaticBackgroundColor,
-  selectTextColor,
-  selectElevation,
-  selectLayoutSpacing,
-  selectSpacing,
-  selectStrokeColor,
-  selectTransition,
-};
+export function preload(resource) {
+  resource.load();
+}
 
-export default GeoPrivateDefaultTheme;
+export function read(resource) {
+  const module = resource.getModuleIfRequireable();
+  if (module === null) {
+    if (
+      !ExecutionEnvironment.isInBrowser &&
+      !resource.isAvailableInSSR_DO_NOT_USE()
+    ) {
+      suspendOrThrowIfUsedInSSR(
+        "Loading of bootloaded and T3 components is disabled during SSR"
+      );
+    }
+    const moduleId = resource.getModuleId();
+    if (!resourceMap[moduleId]) {
+      resourceMap[moduleId] = resource.load();
+      resourceMap[moduleId].finally(() => {
+        delete resourceMap[moduleId];
+      });
+    }
+    throw resourceMap[moduleId];
+  }
+  return module;
+}

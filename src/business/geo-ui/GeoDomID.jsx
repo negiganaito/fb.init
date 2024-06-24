@@ -59,8 +59,9 @@
  * See the LICENSE file in the root directory for details.
  */
 import { useContext, useMemo } from "react";
-import { GeoSSRSafeIdsContext } from "GeoSSRSafeIdsContext";
-import { useShallowEqualMemo } from "useShallowEqualMemo";
+
+import GeoSSRSafeIdsContext from "../contexts/GeoSSRSafeIdsContext";
+import useShallowEqualMemo from "../hooks/useShallowEqualMemo";
 
 const attributeMap = new Map([["htmlFor", "for"]]);
 

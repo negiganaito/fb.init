@@ -58,58 +58,45 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import {
-  selectBorderRadius,
-  selectBorderWidth,
-  selectSize,
-} from "./GeoAppearanceSelectors";
-import {
-  selectBorderColor,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectStaticBackgroundColor,
-  selectStrokeColor,
-  selectTextColor,
-} from "./GeoColorSelectors";
-import { selectElevation } from "./GeoElevationSelectors";
-import { selectAnimation } from "./GeoPrivateAnimationSelectors";
-import { selectLayoutSpacing, selectSpacing } from "./GeoSpacingSelectors";
-import { inject as injectStyleXDefaultSheet } from "./GeoStyleXDefaultSheet";
-import { selectFont } from "./GeoTextSelectors";
-import { selectTransition } from "./GeoTransitionSelectors";
+import React from "react";
 
-injectStyleXDefaultSheet();
+import useGeoTheme from "../hooks/useGeoTheme";
 
-const GeoPrivateDefaultTheme = {
-  selectAnimation,
-  selectBorderWidth,
-  selectBorderColor,
-  selectBorderRadius,
-  selectFont,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectSize,
-  selectStaticBackgroundColor,
-  selectTextColor,
-  selectElevation,
-  selectLayoutSpacing,
-  selectSpacing,
-  selectStrokeColor,
-  selectTransition,
+import GeoFlexbox from "./GeoFlexbox.react";
+import { makeGeoComponent } from "./GeoPrivateMakeComponent";
+
+const GeoBaseSpacingLayout = ({
+  align = "center",
+  containerRef,
+  context = "component",
+  direction = "horizontal",
+  grow = "fill",
+  relation = "unrelated",
+  wrap = false,
+  xstyle,
+  ...rest
+}) => {
+  const theme = useGeoTheme();
+  const layoutSpacing = theme.selectLayoutSpacing({
+    context,
+    relation,
+    direction,
+  });
+
+  return (
+    <GeoFlexbox
+      alignItems={align}
+      containerRef={containerRef}
+      direction={direction === "horizontal" ? "row" : "column"}
+      display={grow === "auto" ? "inline-flex" : "flex"}
+      grow={grow === "auto" ? 0 : 1}
+      wrap={wrap ? "wrap" : "nowrap"}
+      xstyle={[layoutSpacing, xstyle]}
+      {...rest}
+    />
+  );
 };
 
-export default GeoPrivateDefaultTheme;
+GeoBaseSpacingLayout.displayName = "GeoBaseSpacingLayout";
+
+export default makeGeoComponent("GeoBaseSpacingLayout", GeoBaseSpacingLayout);

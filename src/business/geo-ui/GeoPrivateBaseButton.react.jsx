@@ -12,9 +12,6 @@ import React, {
   useState,
 } from "react";
 import BUIPrivateButtonLayoutContext from "BUIPrivateButtonLayoutContext";
-import GeoBaseAccessibleElement from "GeoBaseAccessibleElement.react";
-import GeoBaseSpacingLayout from "GeoBaseSpacingLayout.react";
-import GeoBaseText from "GeoBaseText.react";
 import GeoIcon from "GeoIcon.react";
 import GeoPrivateButtonIconEndLayoutContext from "GeoPrivateButtonIconEndLayoutContext";
 import GeoPrivateButtonLayerActionContext from "GeoPrivateButtonLayerActionContext";
@@ -24,17 +21,22 @@ import GeoPrivateFbtOrTooltip from "GeoPrivateFbtOrTooltip.react";
 import GeoPrivateInvertThemeContext from "GeoPrivateInvertThemeContext";
 import GeoPrivateLoggingAction from "GeoPrivateLoggingAction";
 import GeoPrivateLoggingClassification from "GeoPrivateLoggingClassification";
-import GeoPrivateMakeComponent from "GeoPrivateMakeComponent";
 import GeoPrivatePressable from "GeoPrivatePressable.react";
 import GeoPrivateTooltipTriggerContext from "GeoPrivateTooltipTriggerContext";
 import GeoSpinner from "GeoSpinner.react";
 import stylex from "stylex";
 import useGeoPrivateAnimationPressableStyle from "useGeoPrivateAnimationPressableStyle";
 import useGeoPrivateIsDisabled from "useGeoPrivateIsDisabled";
-import useGeoPrivateIsNextTheme from "useGeoPrivateIsNextTheme";
 import useGeoPrivateWithLogging from "useGeoPrivateWithLogging";
-import useGeoTheme from "useGeoTheme";
-import useMergeRefs from "useMergeRefs";
+
+import useMergeRefs from "../../hooks/useMergeRefs";
+import useGeoPrivateIsNextTheme from "../hooks/useGeoPrivateIsNextTheme";
+import useGeoTheme from "../hooks/useGeoTheme";
+
+import GeoBaseAccessibleElement from "./GeoBaseAccessibleElement.react";
+import GeoBaseSpacingLayout from "./GeoBaseSpacingLayout.react";
+import GeoBaseText from "./GeoBaseText.react";
+import { makeGeoComponent } from "./GeoPrivateMakeComponent";
 
 const styles = {
   fullWidth: { width: "xh8yej3", $$css: true },
@@ -505,7 +507,4 @@ const styles2 = {
   },
 };
 
-export default GeoPrivateMakeComponent.makeGeoComponent(
-  "GeoPrivateBaseButton",
-  GeoPrivateBaseButton
-);
+export default makeGeoComponent("GeoPrivateBaseButton", GeoPrivateBaseButton);

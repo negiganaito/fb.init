@@ -58,58 +58,28 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import {
-  selectBorderRadius,
-  selectBorderWidth,
-  selectSize,
-} from "./GeoAppearanceSelectors";
-import {
-  selectBorderColor,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectStaticBackgroundColor,
-  selectStrokeColor,
-  selectTextColor,
-} from "./GeoColorSelectors";
-import { selectElevation } from "./GeoElevationSelectors";
-import { selectAnimation } from "./GeoPrivateAnimationSelectors";
-import { selectLayoutSpacing, selectSpacing } from "./GeoSpacingSelectors";
-import { inject as injectStyleXDefaultSheet } from "./GeoStyleXDefaultSheet";
-import { selectFont } from "./GeoTextSelectors";
-import { selectTransition } from "./GeoTransitionSelectors";
+import { memo, useContext, useLayoutEffect } from "react";
 
-injectStyleXDefaultSheet();
+import HeroInteractionContext from "../../business/contexts/CometHeroInteractionContext";
+import { HeroInteractionIDContext } from "../../business/helpers/hero-tracing-placeholder";
 
-const GeoPrivateDefaultTheme = {
-  selectAnimation,
-  selectBorderWidth,
-  selectBorderColor,
-  selectBorderRadius,
-  selectFont,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectSize,
-  selectStaticBackgroundColor,
-  selectTextColor,
-  selectElevation,
-  selectLayoutSpacing,
-  selectSpacing,
-  selectStrokeColor,
-  selectTransition,
-};
+const HeroComponent = memo(({ description }) => {
+  const interactionContext = useContext(HeroInteractionContext);
+  const interactionId = useContext(HeroInteractionIDContext);
 
-export default GeoPrivateDefaultTheme;
+  useLayoutEffect(() => {
+    if (interactionId !== null) {
+      interactionContext.logHeroRender(
+        interactionId,
+        description,
+        interactionContext.pageletStack
+      );
+    }
+  }, [description, interactionContext, interactionId]);
+
+  return null;
+});
+
+HeroComponent.displayName = "HeroComponent";
+
+export default HeroComponent;

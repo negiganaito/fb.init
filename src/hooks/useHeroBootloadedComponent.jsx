@@ -58,58 +58,16 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import {
-  selectBorderRadius,
-  selectBorderWidth,
-  selectSize,
-} from "./GeoAppearanceSelectors";
-import {
-  selectBorderColor,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectStaticBackgroundColor,
-  selectStrokeColor,
-  selectTextColor,
-} from "./GeoColorSelectors";
-import { selectElevation } from "./GeoElevationSelectors";
-import { selectAnimation } from "./GeoPrivateAnimationSelectors";
-import { selectLayoutSpacing, selectSpacing } from "./GeoSpacingSelectors";
-import { inject as injectStyleXDefaultSheet } from "./GeoStyleXDefaultSheet";
-import { selectFont } from "./GeoTextSelectors";
-import { selectTransition } from "./GeoTransitionSelectors";
+import { useContext, useEffect } from "react";
 
-injectStyleXDefaultSheet();
+import CometHeroInteractionContext from "../context/CometHeroInteractionContext";
 
-const GeoPrivateDefaultTheme = {
-  selectAnimation,
-  selectBorderWidth,
-  selectBorderColor,
-  selectBorderRadius,
-  selectFont,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectSize,
-  selectStaticBackgroundColor,
-  selectTextColor,
-  selectElevation,
-  selectLayoutSpacing,
-  selectSpacing,
-  selectStrokeColor,
-  selectTransition,
-};
+export default function useHeroBootloadedComponent(component) {
+  const heroInteractionContext = useContext(
+    CometHeroInteractionContext.HeroInteractionContext.Context
+  );
 
-export default GeoPrivateDefaultTheme;
+  useEffect(() => {
+    heroInteractionContext.consumeBootload(component.getModuleId());
+  }, [heroInteractionContext, component]);
+}

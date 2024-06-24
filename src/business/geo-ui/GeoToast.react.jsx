@@ -59,18 +59,19 @@
  * See the LICENSE file in the root directory for details.
  */
 import React, { useContext } from "react";
-import GeoBaseToast from "GeoBaseToast.react";
 import GeoCloseButton from "GeoCloseButton.react";
-import GeoFlexbox from "GeoFlexbox.react";
 import { cardEndAction } from "geoOffset";
-import { GeoPrivateToastContext } from "GeoPrivateToastContext";
 import GeoSpinner from "GeoSpinner.react";
 import GeoStatusIcon from "GeoStatusIcon.react";
-import GeoTextPairing from "GeoTextPairing.react";
 import stylex from "stylex";
-import { useGeoIconStyle } from "useGeoIconStyle";
 
+import GeoPrivateToastContext from "../contexts/GeoPrivateToastContext";
+import { useGeoIconStyle } from "../hooks/useGeoIconStyle";
+
+import GeoBaseToast from "./GeoBaseToast.react";
+import GeoFlexbox from "./GeoFlexbox.react";
 import { makeGeoComponent } from "./GeoPrivateMakeComponent";
+import GeoTextPairing from "./GeoTextPairing.react";
 
 const GeoToast = ({
   action,

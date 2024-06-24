@@ -8,9 +8,11 @@ import React from "react";
 import fbicon from "fbicon";
 import fbt from "fbt";
 import GeoPrivateBaseButton from "GeoPrivateBaseButton.react";
-import { makeGeoComponent } from "GeoPrivateMakeComponent";
 import { ix } from "ix";
-import useGeoPrivateIsNextTheme from "useGeoPrivateIsNextTheme";
+
+import useGeoPrivateIsNextTheme from "../hooks/useGeoPrivateIsNextTheme";
+
+import { makeGeoComponent } from "./GeoPrivateMakeComponent";
 
 const GeoCloseButton = ({
   label = fbt._("Close"),

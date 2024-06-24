@@ -58,58 +58,90 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import {
-  selectBorderRadius,
-  selectBorderWidth,
-  selectSize,
-} from "./GeoAppearanceSelectors";
-import {
-  selectBorderColor,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectStaticBackgroundColor,
-  selectStrokeColor,
-  selectTextColor,
-} from "./GeoColorSelectors";
-import { selectElevation } from "./GeoElevationSelectors";
-import { selectAnimation } from "./GeoPrivateAnimationSelectors";
-import { selectLayoutSpacing, selectSpacing } from "./GeoSpacingSelectors";
-import { inject as injectStyleXDefaultSheet } from "./GeoStyleXDefaultSheet";
-import { selectFont } from "./GeoTextSelectors";
-import { selectTransition } from "./GeoTransitionSelectors";
-
-injectStyleXDefaultSheet();
-
-const GeoPrivateDefaultTheme = {
-  selectAnimation,
-  selectBorderWidth,
-  selectBorderColor,
-  selectBorderRadius,
-  selectFont,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectSize,
-  selectStaticBackgroundColor,
-  selectTextColor,
-  selectElevation,
-  selectLayoutSpacing,
-  selectSpacing,
-  selectStrokeColor,
-  selectTransition,
+const styles = {
+  truncate: {
+    whiteSpace: "xuxw1ft",
+    overflowX: "x6ikm8r",
+    overflowY: "x10wlt62",
+    textOverflow: "xlyipyv",
+    $$css: true,
+  },
 };
 
-export default GeoPrivateDefaultTheme;
+export function getTextTruncateStyle() {
+  return styles.truncate;
+}
+
+export function getAriaLevelForSize(size) {
+  switch (size) {
+    case "header1":
+      return 1;
+    case "header2":
+      return 2;
+    case "header3":
+      return 3;
+    case "header4":
+      return 4;
+    default:
+      return undefined;
+  }
+}
+
+export function getPairingTextSize(size) {
+  switch (size) {
+    case "value":
+    case "header4":
+      return "valueDescription";
+    case "data":
+      return "header2";
+    default:
+      return "value";
+  }
+}
+
+export function getPairingTextProps({ size, display = "block" }) {
+  const props = { color: "heading", display, size: "value", weight: "normal" };
+  props.size = getPairingTextSize(size);
+  if (size === "data") {
+    props.weight = "bold";
+  }
+  return props;
+}
+
+export function isHeader(size) {
+  switch (size) {
+    case "header1":
+    case "header2":
+    case "header3":
+    case "header4":
+      return true;
+    default:
+      return false;
+  }
+}
+
+export function mapHeadingSizeToLevel(size) {
+  switch (size) {
+    case "header2":
+      return 2;
+    case "header3":
+      return 3;
+    case "header4":
+      return 4;
+    default:
+      return 1;
+  }
+}
+
+export function mapHeadingLevelToSize(level) {
+  switch (level) {
+    case 2:
+      return "header2";
+    case 3:
+      return "header3";
+    case 4:
+      return "header4";
+    default:
+      return "header1";
+  }
+}

@@ -5,10 +5,12 @@
  * See the LICENSE file in the root directory for details.
  */
 import React from "react";
-import { useApplyGeoDomIDsDirectly } from "GeoDomID";
-import { makeGeoComponent } from "GeoPrivateMakeComponent";
 import stylex from "stylex";
-import { useMergeRefs } from "useMergeRefs";
+
+import useMergeRefs from "../../hooks/useMergeRefs";
+
+import { useApplyGeoDomIDsDirectly } from "./GeoDomID";
+import { makeGeoComponent } from "./GeoPrivateMakeComponent";
 
 const styles = {
   hidden: {

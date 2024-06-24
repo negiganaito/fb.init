@@ -59,7 +59,8 @@
  * See the LICENSE file in the root directory for details.
  */
 import { createContext } from "react";
-import GeoPrivateDefaultTheme from "GeoPrivateDefaultTheme";
+
+import GeoPrivateDefaultTheme from "../geo-ui/GeoPrivateDefaultTheme";
 
 const GeoPrivateThemeContext = createContext(GeoPrivateDefaultTheme);
 

@@ -58,58 +58,41 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import {
-  selectBorderRadius,
-  selectBorderWidth,
-  selectSize,
-} from "./GeoAppearanceSelectors";
-import {
-  selectBorderColor,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectStaticBackgroundColor,
-  selectStrokeColor,
-  selectTextColor,
-} from "./GeoColorSelectors";
-import { selectElevation } from "./GeoElevationSelectors";
-import { selectAnimation } from "./GeoPrivateAnimationSelectors";
-import { selectLayoutSpacing, selectSpacing } from "./GeoSpacingSelectors";
-import { inject as injectStyleXDefaultSheet } from "./GeoStyleXDefaultSheet";
-import { selectFont } from "./GeoTextSelectors";
-import { selectTransition } from "./GeoTransitionSelectors";
+import React, { forwardRef } from "react";
 
-injectStyleXDefaultSheet();
+import GeoBaseText from "./GeoBaseText.react";
+import { makeGeoComponent } from "./GeoPrivateMakeComponent";
+import { mapHeadingLevelToSize } from "./GeoTextUtils";
 
-const GeoPrivateDefaultTheme = {
-  selectAnimation,
-  selectBorderWidth,
-  selectBorderColor,
-  selectBorderRadius,
-  selectFont,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectSize,
-  selectStaticBackgroundColor,
-  selectTextColor,
-  selectElevation,
-  selectLayoutSpacing,
-  selectSpacing,
-  selectStrokeColor,
-  selectTransition,
-};
+const GeoHeading = forwardRef(
+  (
+    {
+      children,
+      display = "block",
+      level,
+      textAlign = "start",
+      whiteSpace = "inherit",
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <GeoBaseText
+        color="heading"
+        display={display}
+        ref={ref}
+        size={mapHeadingLevelToSize(level)}
+        textAlign={textAlign}
+        whiteSpace={whiteSpace}
+        {...props}
+      >
+        {children}
+      </GeoBaseText>
+    );
+  }
+);
 
-export default GeoPrivateDefaultTheme;
+GeoHeading.displayName = `GeoHeading [from ${__filename}]`;
+
+const GeoHeadingComponent = makeGeoComponent("GeoHeading", GeoHeading);
+export default GeoHeadingComponent;

@@ -5,7 +5,7 @@
  * See the LICENSE file in the root directory for details.
  */
 
-import { useGeoTheme } from "useGeoTheme";
+import useGeoTheme from "./useGeoTheme";
 
 const inheritStyle = { inherit: { color: "x1heor9g", $$css: true } };
 

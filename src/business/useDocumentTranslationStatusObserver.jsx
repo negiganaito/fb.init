@@ -58,58 +58,38 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import {
-  selectBorderRadius,
-  selectBorderWidth,
-  selectSize,
-} from "./GeoAppearanceSelectors";
-import {
-  selectBorderColor,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectStaticBackgroundColor,
-  selectStrokeColor,
-  selectTextColor,
-} from "./GeoColorSelectors";
-import { selectElevation } from "./GeoElevationSelectors";
-import { selectAnimation } from "./GeoPrivateAnimationSelectors";
-import { selectLayoutSpacing, selectSpacing } from "./GeoSpacingSelectors";
-import { inject as injectStyleXDefaultSheet } from "./GeoStyleXDefaultSheet";
-import { selectFont } from "./GeoTextSelectors";
-import { selectTransition } from "./GeoTransitionSelectors";
+import { useEffect, useState } from "react";
 
-injectStyleXDefaultSheet();
+function useDocumentTranslationStatusObserver() {
+  const [isTranslated, setIsTranslated] = useState(false);
 
-const GeoPrivateDefaultTheme = {
-  selectAnimation,
-  selectBorderWidth,
-  selectBorderColor,
-  selectBorderRadius,
-  selectFont,
-  selectGlimmer,
-  selectIconColor,
-  selectInteractiveBorder,
-  selectInteractiveColorPalette,
-  selectInteractiveOverlay,
-  selectCategoricalBackgroundColor,
-  selectCategoricalForegroundColor,
-  selectOnboardingPulseAnimation,
-  selectOutline,
-  selectSize,
-  selectStaticBackgroundColor,
-  selectTextColor,
-  selectElevation,
-  selectLayoutSpacing,
-  selectSpacing,
-  selectStrokeColor,
-  selectTransition,
-};
+  useEffect(() => {
+    const htmlElement = document.documentElement;
+    if (!htmlElement) return;
 
-export default GeoPrivateDefaultTheme;
+    const observer = new MutationObserver(() => {
+      if (htmlElement.className.match("translated")) {
+        setIsTranslated(true);
+      } else {
+        setIsTranslated(false);
+      }
+    });
+
+    observer.observe(htmlElement, {
+      attributeFilter: ["class"],
+      attributes: true,
+      characterData: false,
+      childList: false,
+    });
+
+    if (htmlElement.className.match("translated")) {
+      setIsTranslated(true);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return isTranslated;
+}
+
+export default useDocumentTranslationStatusObserver;
