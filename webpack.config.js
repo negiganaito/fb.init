@@ -108,43 +108,6 @@ module.exports = (env, { mode }) => {
 
         "@fb-badge": path.resolve(__dirname, "src/fb/badge"),
         "@fb-switch": path.resolve(__dirname, "src/fb/switch"),
-        // "@fb-text/*": ["src/fb/text/*"],
-        // "@fb-context/*": ["src/fb/contexts/*"],
-        // "@fb-hook/*": ["src/fb/hooks/*"],
-        // "@fb-util/*": ["src/fb/utils/*"],
-        // "@placeholder/*": ["src/fb/placeholder/*"],
-        // "@fb-layout/*": ["src/fb/layout/*"],
-        // "@fb-unknown/*": ["src/fb/unknown/*"],
-        // "@fb-user-agent/*": ["src/fb/user-agent/*"],
-        // "@fb-event-interaction/*": ["src/fb/event-interaction/*"],
-        // "@fb-keyboard/*": ["src/fb/keyboard/*"],
-        // "@fb-constants/*": ["src/fb/constants/*"],
-        // "@fb-focus/*": ["src/fb/focus/*"],
-        // "@fb-contextual-layer/*": ["src/fb/contextual-layer/*"],
-        // "@fb-image/*": ["src/fb/image/*"],
-        // "@fb-glimmer/*": ["src/fb/glimmer/*"],
-        // "@fb-process-ring/*": ["src/fb/process-ring/*"],
-        // "@fb-tooltip/*": ["src/fb/tooltip/*"],
-        // "@fb-card/*": ["src/fb/card/*"],
-        // "@fb-pressable/*": ["src/fb/pressable/*"],
-        // "@fb-link/*": ["src/fb/link/*"],
-        // "@fb-button/*": ["src/fb/button/*"],
-        // "@fb-form-input/*": ["src/fb/form-input/*"],
-        // "@fb-icons/*": ["src/fb/icons/*"],
-        // "@fb-comps/*": ["src/fb/_comp/*"],
-        // "@fb-select/*": ["src/fb/select/*"],
-        // "@fb-view/*": ["src/fb/view/*"],
-        // "@fb-menu-popover/*": ["src/fb/menu-popover/*"],
-        // "@fb-cell/*": ["src/fb/cell/*"],
-        // "@fb-list/*": ["src/fb/list/*"],
-        // "@fb-dialog/*": ["src/fb/dialog/*"],
-        // "@fb-toast/*": ["src/fb/toast/*"],
-        // "@fb-network/*": ["src/fb/network/*"],
-        // "@fb-callout/*": ["src/fb/callout/*"],
-        // "@fb-checkbox-radio/*": ["src/fb/checkbox-radio/*"],
-        // "@fb-collapse/*": ["src/fb/collapse/*"],
-        // "@fb-text-area/*": ["src/fb/text-area/*"],
-        // "@fb-file-selector/*": ["src/fb/file-selector/*"],
       },
 
       fallback: {
@@ -276,7 +239,7 @@ module.exports = (env, { mode }) => {
       new MiniCssExtractPlugin(),
 
       new CopyPlugin({
-        patterns: [{ from: "./src/faang/assets", to: "faang/assets" }],
+        patterns: [{ from: "./src/fb/assets", to: "fb/assets" }],
       }),
 
       rsdPlugin,
@@ -357,7 +320,6 @@ module.exports = (env, { mode }) => {
 
     devServer: {
       allowedHosts: "all",
-      client: false,
       devMiddleware: {
         publicPath: `http://localhost:${envv.PORT}/`,
         writeToDisk: true,
@@ -372,7 +334,7 @@ module.exports = (env, { mode }) => {
       open: true,
       port: envv.PORT,
       static: {
-        directory: path.join(__dirname, "../build"),
+        directory: path.join(__dirname, "build"),
       },
     },
 

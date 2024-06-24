@@ -28,8 +28,7 @@
     "translate-fbts": "fbt-translate --jenkins --source-strings ./i18n/fbt/source_strings.json --translations i18n/fbt/translationScriptInput/*.json > ./i18n/fbt/translatedFbts.json",
     "upgrade": "npx npm-check-updates &&  npx npm-check-updates -u",
     "i18n:build:win": "pnpm clean-fbts:win && pnpm manifest && pnpm collect-fbts && pnpm translate-fbts:win && pnpm generate-fbt",
-    "i18n:build": "pnpm manifest && pnpm collect-fbts && pnpm translate-fbts && pnpm generate-fbt",
-    "dev2": "node scripts/dev.js"
+    "i18n:build": "pnpm manifest && pnpm collect-fbts && pnpm translate-fbts && pnpm generate-fbt"
   },
   "dependencies": {
     "react": "git://github.com/tienlx97/react-experimental.git#www",
