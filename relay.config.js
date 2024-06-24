@@ -7,12 +7,15 @@
 module.exports = {
   // ...
   // Configuration options accepted by the `relay-compiler` command-line tool and `babel-plugin-relay`.
-  src: "src",
-  language: "javascript", // "javascript" | "typescript" | "flow"
+  src: "./src",
+  language: "javascript",
   schema: "./data/schema.graphql",
   excludes: ["**/node_modules/**", "**/__mocks__/**", "**/__generated__/**"],
-  artifactDirectory: "src/galahad/__generated__",
+  artifactDirectory: "src/fb/__generated__",
   persistConfig: {
-    file: "./queryMap.json"
-  }
+    // file: "./queryMap.json",
+
+    url: "http://localhost:2999",
+    // params: {},
+  },
 };
