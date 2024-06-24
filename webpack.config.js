@@ -53,61 +53,9 @@ module.exports = (env, { mode }) => {
       alias: {
         "@": path.resolve(__dirname, "src/"),
         "~": path.resolve(__dirname, "/public"),
-
         //
-        "@fb-text": path.resolve(__dirname, "src/fb/text"),
-        "@fb-context": path.resolve(__dirname, "src/fb/contexts"),
-        "@fb-hook": path.resolve(__dirname, "src/fb/hooks"),
+        "@fb-theme": path.resolve(__dirname, "src/fb/theme"),
         "@fb-util": path.resolve(__dirname, "src/fb/utils"),
-        "@placeholder": path.resolve(__dirname, "src/fb/placeholder"),
-        "@fb-layout": path.resolve(__dirname, "src/fb/layout"),
-        "@fb-unknown": path.resolve(__dirname, "src/fb/unknown"),
-        "@fb-user-agent": path.resolve(__dirname, "src/fb/user-agent"),
-        "@fb-event-interaction": path.resolve(
-          __dirname,
-          "src/fb/event-interaction"
-        ),
-        "@fb-keyboard": path.resolve(__dirname, "src/fb/keyboard"),
-        "@fb-constants": path.resolve(__dirname, "src/fb/constants"),
-        "@fb-focus": path.resolve(__dirname, "src/fb/focus"),
-        "@fb-contextual-layer": path.resolve(
-          __dirname,
-          "src/fb/contextual-layer"
-        ),
-        "@fb-image": path.resolve(__dirname, "src/fb/image"),
-        "@fb-glimmer": path.resolve(__dirname, "src/fb/glimmer"),
-        "@fb-process-ring": path.resolve(__dirname, "src/fb/process-ring"),
-        "@fb-tooltip": path.resolve(__dirname, "src/fb/tooltip"),
-        "@fb-card": path.resolve(__dirname, "src/fb/card"),
-
-        "@fb-pressable": path.resolve(__dirname, "src/fb/pressable"),
-        "@fb-link": path.resolve(__dirname, "src/fb/link"),
-        "@fb-button": path.resolve(__dirname, "src/fb/button"),
-        "@fb-form-input": path.resolve(__dirname, "src/fb/form-input"),
-        "@fb-icons": path.resolve(__dirname, "src/fb/icons"),
-        "@fb-comps": path.resolve(__dirname, "src/fb/_comp"),
-        "@fb-select": path.resolve(__dirname, "src/fb/select"),
-        "@fb-view": path.resolve(__dirname, "src/fb/view"),
-        "@fb-menu-popover": path.resolve(__dirname, "src/fb/menu-popover"),
-        "@fb-cell": path.resolve(__dirname, "src/fb/cell"),
-        "@fb-list": path.resolve(__dirname, "src/fb/list"),
-        "@fb-dialog": path.resolve(__dirname, "src/fb/dialog"),
-        "@fb-toast": path.resolve(__dirname, "src/fb/toast"),
-        "@fb-network": path.resolve(__dirname, "src/fb/network"),
-        "@fb-callout": path.resolve(__dirname, "src/fb/callout"),
-        "@fb-checkbox-radio": path.resolve(__dirname, "src/fb/checkbox-radio"),
-        "@fb-collapse": path.resolve(__dirname, "src/fb/collapse"),
-        "@fb-text-area": path.resolve(__dirname, "src/fb/text-area"),
-        "@fb-file-selector": path.resolve(__dirname, "src/fb/file-selector"),
-        "@fb-lazy-load-component": path.resolve(
-          __dirname,
-          "src/fb/lazy-load-component"
-        ),
-        "@fb-platform": path.resolve(__dirname, "src/fb/platform"),
-        "@fb-comet-root": path.resolve(__dirname, "src/fb/comet-root"),
-
-        "@fb-badge": path.resolve(__dirname, "src/fb/badge"),
-        "@fb-switch": path.resolve(__dirname, "src/fb/switch"),
       },
 
       fallback: {

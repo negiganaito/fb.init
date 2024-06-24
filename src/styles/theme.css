@@ -3,7 +3,7 @@ html {
   --nav-bar-background: #fff;
 }
 
-:root {
+/* :root {
   --fds-black: #000000;
   --fds-black-alpha-05: rgba(0, 0, 0, 0.05);
   --fds-black-alpha-10: rgba(0, 0, 0, 0.1);
@@ -480,7 +480,7 @@ html {
   --badge-background-color-light-blue: var(--highlight-bg);
   --badge-background-color-red: var(--notification-badge);
   --badge-background-color-yellow: var(--base-lemon);
-}
+} */
 
 /* @media (prefers-color-scheme: dark) {
   :root {
@@ -950,7 +950,7 @@ html {
   }
 } */
 
-.__fb-light-mode {
+/* .__fb-light-mode {
   --fds-black: #000000;
   --fds-black-alpha-05: rgba(0, 0, 0, 0.05);
   --fds-black-alpha-10: rgba(0, 0, 0, 0.1);
@@ -1426,9 +1426,9 @@ html {
   --badge-background-color-light-blue: var(--highlight-bg);
   --badge-background-color-red: var(--notification-badge);
   --badge-background-color-yellow: var(--base-lemon);
-}
+} */
 
-.__fb-dark-mode {
+/* .__fb-dark-mode {
   --fds-black: black;
   --fds-black-alpha-05: rgba(0, 0, 0, 0.05);
   --fds-black-alpha-10: rgba(0, 0, 0, 0.1);
@@ -1892,4 +1892,4 @@ html {
   --badge-background-color-light-blue: var(--highlight-bg);
   --badge-background-color-red: var(--notification-badge);
   --badge-background-color-yellow: var(--base-lemon);
-}
+} */
