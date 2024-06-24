@@ -6,6 +6,7 @@
  */
 
 import React, { useCallback, useLayoutEffect, useMemo, useState } from "react";
+import { DARK_MODE_KEY } from "@fb-theme/constant/comet-dark-mode-local-storage-key";
 
 import { BaseThemeConfigContext } from "../contexts/base-theme-config-context";
 import { BaseThemeDisplayModeContext } from "../contexts/base-theme-display-mode-context";
@@ -60,7 +61,7 @@ export const makeCometDarkModeStateProvider = ({
     }, [darkModeSetting, isDarkModeEnabledGlobally]);
 
     let updateDarkModeSetting = useCallback((newSetting) => {
-      localStorage.setItem("isDarkMode", newSetting);
+      localStorage.setItem(DARK_MODE_KEY, newSetting);
       setDarkModeSetting(newSetting);
       saveDarkModeSetting(newSetting, {
         onRevert: setDarkModeSetting,
