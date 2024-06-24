@@ -6,6 +6,8 @@
  */
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { CometDarkMode } from "@fb-theme/utils/comet-dark-mode";
+import { CometStyleXSheet } from "@fb-theme/utils/comet-stylex-sheet";
 
 // import inject from "@stylexjs/dev-runtime";
 import "../i18n/fbtInit";
@@ -23,6 +25,9 @@ import "./styles/app.css";
 const rootElement = document.getElementById("root");
 
 if (!rootElement.innerHTML) {
+  CometDarkMode.initDarkMode();
+  CometStyleXSheet.rootStyleSheet.injectTheme();
+
   const root = ReactDOM.createRoot(rootElement);
   root.render(<App />);
 }
