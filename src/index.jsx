@@ -5,29 +5,51 @@
  * See the LICENSE file in the root directory for details.
  */
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM, { hydrateRoot } from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import { CometDarkMode } from "@fb-theme/utils/comet-dark-mode";
 import { CometStyleXSheet } from "@fb-theme/utils/comet-stylex-sheet";
+import { loadableReady } from "@loadable/component";
 
-// import inject from "@stylexjs/dev-runtime";
 import "../i18n/fbtInit";
 
 import { App } from "./app";
 
 import "./styles/app.css";
 
-// inject({
-//   classNamePrefix: "x",
-//   dev: true,
-//   test: false,
-// });
-
 const rootElement = document.getElementById("root");
 
 if (!rootElement.innerHTML) {
-  CometDarkMode.initDarkMode();
-  CometStyleXSheet.rootStyleSheet.injectTheme();
-
   const root = ReactDOM.createRoot(rootElement);
   root.render(<App />);
 }
+
+const Main = () => {
+  return (
+    <HelmetProvider>
+      <App />
+    </HelmetProvider>
+  );
+};
+
+const bootstrapClientApp = () => {
+  if (
+    process.env.NODE_ENV === "development" ||
+    process.env.NODE_ENV === "production"
+  ) {
+    const domNode = document.querySelector("#root");
+    if (domNode) {
+      CometDarkMode.initDarkMode();
+      CometStyleXSheet.rootStyleSheet.injectTheme();
+
+      loadableReady(() => {
+        hydrateRoot(domNode, <Main />);
+      });
+    }
+  } else {
+    // We don't want Google Cache to use our bundles JS and make whatever he wants with it
+    console.error("Forbidden hostname");
+  }
+};
+
+bootstrapClientApp();

@@ -42,7 +42,11 @@ module.exports = (env, { mode }) => {
 
   return {
     mode,
-    entry: path.join(__dirname, "src", "index.jsx"),
+    entry: {
+      main: path.join(__dirname, "src", "index.jsx"),
+      initDarkMode: path.join(__dirname, "src", "initDarkMode.js"),
+      // path.join(__dirname, "src", "index.jsx"),
+    },
     target: "web",
     resolve: {
       // extensions: ['.ts', '.tsx', '.js', '.jsx'],
