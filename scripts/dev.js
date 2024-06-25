@@ -4,57 +4,117 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-process.env.BABEL_ENV = "development";
-process.env.NODE_ENV = "development";
-process.env.ASSET_PATH = "/";
 
-const WebpackDevServer = require("webpack-dev-server");
 const webpack = require("webpack");
-const config = require("../webpack.config.legacy");
-const env = require("./env");
-const path = require("path");
+const nodemon = require("nodemon");
+const rimraf = require("rimraf");
+const express = require("express");
+const webpackDevMiddleware = require("webpack-dev-middleware");
+const webpackHotMiddleware = require("webpack-hot-middleware");
+const webpackConfig = require("../webpack")("development");
+const cors = require("cors");
 
-config.entry = [
-  "webpack/hot/dev-server",
-  // eslint-disable-next-line max-len
-  `webpack-dev-server/client?hot=true&live-reload=true&hostname=localhost&port=${env.PORT}`,
-  config.entry,
-];
+const { compilerListener, paths, compilation } = require("./utils");
 
-config.plugins = [new webpack.HotModuleReplacementPlugin()].concat(
-  config.plugins || []
-);
+const PORT = 3001;
 
-const compiler = webpack(config);
+const withSsr = false;
 
-const server = new WebpackDevServer(
-  {
-    allowedHosts: "all",
-    client: false,
-    devMiddleware: {
-      publicPath: `http://localhost:${env.PORT}/`,
-      writeToDisk: true,
-    },
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-    },
-    historyApiFallback: true,
-    host: "localhost",
-    hot: false,
-    https: false,
-    open: true,
-    port: env.PORT,
-    static: {
-      directory: path.join(__dirname, "../build"),
-    },
-  },
-  compiler
-);
+const app = express();
 
-if (process.env.NODE_ENV === "development" && module.hot) {
-  module.hot.accept();
-}
+const start = async () => {
+  try {
+    rimraf.sync(paths.dist);
 
-(async () => {
-  await server.start();
-})();
+    const [clientConfig, serverConfig] = webpackConfig;
+
+    clientConfig.entry.bundle = [
+      `webpack-hot-middleware/client?path=http://localhost:${PORT}/__webpack_hmr&timeout=2000`,
+      ...clientConfig.entry.bundle,
+    ];
+    clientConfig.output.hotUpdateMainFilename =
+      "updates/[fullhash].hot-update.json";
+    clientConfig.output.hotUpdateChunkFilename =
+      "updates/[id].[fullhash].hot-update.js";
+
+    // const multiCompiler = webpack([clientConfig, withSsr && serverConfig]);
+
+    const multiCompiler = webpack([clientConfig, serverConfig]);
+    console.log({ 1: multiCompiler.compilers });
+
+    const clientCompiler = multiCompiler.compilers.find(
+      (compiler) => compiler.options.target === "web"
+    );
+    // const serverCompiler = multiCompiler.compilers.find(
+    //   (compiler) => compiler.options.target === "node"
+    // );
+
+    app.use(cors());
+
+    // app.use(
+    //   webpackDevMiddleware(clientCompiler, {
+    //     publicPath: clientConfig.output.publicPath,
+    //     stats: clientConfig.stats,
+    //     writeToDisk: true,
+    //   })
+    // );
+
+    // app.use(
+    //   webpackHotMiddleware(clientCompiler, {
+    //     log: false,
+    //     path: "/__webpack_hmr",
+    //     heartbeat: 2000,
+    //   })
+    // );
+
+    // serverCompiler.watch(
+    //   {
+    //     ignored: /node_modules/,
+    //     poll: 1000, // Check for changes every second
+    //     aggregateTimeout: 200,
+    //   },
+    //   (err, stats) => compilation(err, stats, serverConfig.stats)
+    // );
+
+    await Promise.all([
+      compilerListener("client", clientCompiler),
+      // compilerListener("server", serverCompiler),
+    ]);
+
+    app.listen(PORT, (err) => {
+      if (err) console.error(err);
+      else console.log(`Hot dev server middleware port : ${PORT} 🌎`);
+    });
+
+    // const script = nodemon({
+    //   script: `${paths.serverBuild}/index.js`,
+    //   ignore: [
+    //     "src",
+    //     "webpack",
+    //     "scripts",
+    //     `${paths.clientBuild}`,
+    //     "public",
+    //     "node_modules",
+    //   ], // We just want paths.serverBuild to be watched
+    //   delay: 100, // take into account serverCompiler changes
+    // });
+
+    // script.on("restart", () => {
+    //   console.log("Server side app has been restarted");
+    // });
+
+    // script.on("quit", () => {
+    //   console.log("Process ended");
+    //   process.exit();
+    // });
+
+    // script.on("error", () => {
+    //   console.log("An error occured. Exiting");
+    //   process.exit(1);
+    // });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+start();

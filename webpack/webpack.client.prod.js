@@ -17,7 +17,7 @@ const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const CompressionPlugin = require("compression-webpack-plugin");
 
 const webpack = require("webpack");
-const { paths } = require("../scripts2/utils");
+const { paths } = require("../scripts/utils");
 
 module.exports = {
   mode: "production",
@@ -93,10 +93,7 @@ module.exports = {
   ],
   stats: "minimal",
   cache: true,
-  module: require("./loaders.client")({
-    isDevelopment: false,
-    isProduction: true,
-  }),
+  module: require("./loaders.client.js"),
 
   optimization: {
     minimize: true,

@@ -10,7 +10,7 @@
     "clean-fbts": "rm i18n/fbt/.enum_manifest.json i18n/fbt/.src_manifest.json i18n/fbt/source_strings.json i18n/fbt/translatedFbts.json 2&> /dev/null || exit 0",
     "clean-fbts:win": "del i18n\\fbt\\.enum_manifest.json i18n\\fbt\\.src_manifest.json i18n\\fbt\\source_strings.json i18n\\fbt\\translatedFbts.json 2>nul || exit 0",
     "collect-fbts": "fbt-collect --fbt-common-path i18n/fbt/common_strings.json --hash-module fb-tiger-hash --react-native-mode --manifest < i18n/fbt/.src_manifest.json > i18n/fbt/source_strings.json",
-    "dev": "node scripts2/dev.js",
+    "dev": "node scripts/dev.js",
     "format": "pnpm lint --fix",
     "generate-fbt": "node i18n/scripts/generate-localizables-executor.js",
     "i18n:build": "pnpm manifest && pnpm collect-fbts && pnpm translate-fbts && pnpm generate-fbt",
@@ -22,14 +22,12 @@
     "prepare-icons": "node prepare-icons.js",
     "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss}'",
     "relay": "relay-compiler",
-    "start": "pnpm webpack serve --hot --progress --mode development --stats-children",
     "test": "jest",
     "test:coverage": "rm -rf coverage && jest --coverage && open coverage/lcov-report/index.html",
     "test:watch": "jest --watchAll=true",
     "translate-fbts": "fbt-translate --jenkins --source-strings ./i18n/fbt/source_strings.json --translations i18n/fbt/translationScriptInput/*.json > ./i18n/fbt/translatedFbts.json",
     "translate-fbts:win": "for %i in (i18n\\fbt\\translationScriptInput\\*.json) do fbt-translate --jenkins --source-strings i18n\\fbt\\source_strings.json --translations %i >> i18n\\fbt\\translatedFbts.json",
-    "upgrade": "npx npm-check-updates &&  npx npm-check-updates -u",
-    "watch": "pnpm webpack serve --progress --mode production"
+    "upgrade": "npx npm-check-updates &&  npx npm-check-updates -u"
   },
   "dependencies": {
     "react": "git://github.com/tienlx97/react-experimental.git#www",
@@ -147,15 +145,16 @@
     "ts-loader": "^9.4.2",
     "typescript": "5.4.5",
     "ua-parser-js": "1.0.37",
-    "webpack": "^5.76.0",
-    "webpack-bundle-analyzer": "^4.8.0",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-middleware": "7.2.1",
     "webpack-dev-server": "^4.11.1",
-    "webpack-hot-middleware": "2.26.1",
-    "webpack-node-externals": "3.0.0",
     "yargs": "17.7.2",
     "compression": "1.7.4",
-    "compression-webpack-plugin": "11.1.0"
+    "compression-webpack-plugin": "11.1.0",
+    "autoprefixer": "^9.8.8",
+    "webpack": "^5.76.0",
+    "webpack-bundle-analyzer": "^4.6.1",
+    "webpack-dev-middleware": "^5.3.3",
+    "webpack-hot-middleware": "^2.25.2",
+    "webpack-node-externals": "^3.0.0"
   }
 }

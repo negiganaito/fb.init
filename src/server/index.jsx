@@ -13,7 +13,7 @@ import cors from "cors";
 import express from "express";
 import path from "path";
 
-import { paths } from "../../scripts2/utils";
+import { paths } from "../../scripts/utils";
 import { App } from "../app";
 
 import renderFullPage from "./renderFullPage";

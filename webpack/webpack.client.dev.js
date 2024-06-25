@@ -15,8 +15,10 @@ const StylexPlugin = require("@stylexjs/webpack-plugin");
 const { ESBuildMinifyPlugin } = require("esbuild-loader");
 const LoadablePlugin = require("@loadable/webpack-plugin");
 
+const moduleLoaders = require("./loaders.client");
+
 const webpack = require("webpack");
-const { paths } = require("../scripts2/utils");
+const { paths } = require("../scripts/utils");
 
 module.exports = {
   mode: "development",
@@ -24,6 +26,11 @@ module.exports = {
   devtool: "source-map",
   entry: {
     bundle: [paths.srcClient],
+  },
+  output: {
+    path: path.join(paths.clientBuild, paths.publicPath),
+    filename: "bundle.js",
+    publicPath: paths.publicPath,
   },
 
   resolve: {
@@ -47,16 +54,18 @@ module.exports = {
       stream: require.resolve("stream-browserify"),
     },
   },
-  output: {
-    path: path.join(paths.clientBuild, paths.publicPath),
-    filename: "bundle.js",
-    publicPath: paths.publicPath,
-  },
+
+  module: moduleLoaders,
+
   plugins: [
     new LoadablePlugin(),
     new ReactRefreshWebpackPlugin(),
     new MiniCssExtractPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.ProgressPlugin(),
+    new CopyPlugin({
+      patterns: [{ from: "/src/fb/assets", to: "fb/assets" }],
+    }),
     new webpack.DefinePlugin({
       "process.env.BROWSER": "true",
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
@@ -65,10 +74,7 @@ module.exports = {
       ),
       "process.env.ASSETS_URL": JSON.stringify(process.env.ASSETS_URL),
     }),
-    new webpack.ProgressPlugin(),
-    new CopyPlugin({
-      patterns: [{ from: "./src/fb/assets", to: "fb/assets" }],
-    }),
+
     rsdPlugin,
     new StylexPlugin({
       filename: "styles.[contenthash].css",
@@ -87,9 +93,6 @@ module.exports = {
   ],
   stats: "minimal",
   cache: true,
-  module: require("./loaders.client")({
-    isDevelopment: true,
-  }),
 
   optimization: {
     minimize: false,

@@ -14,7 +14,7 @@ const StylexPlugin = require("@stylexjs/webpack-plugin");
 const path = require("path");
 
 const webpack = require("webpack");
-const { paths } = require("../scripts2/utils");
+const { paths } = require("../scripts/utils");
 
 module.exports = {
   mode: "development",
@@ -80,7 +80,5 @@ module.exports = {
   ],
   stats: "minimal",
   externals: [nodeExternals()],
-  module: require("./loaders.server")({
-    isProduction: false,
-  }),
+  module: require("./loaders.server.js"),
 };

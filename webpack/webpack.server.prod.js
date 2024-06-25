@@ -12,7 +12,7 @@ const rsdPlugin = require("react-strict-dom/babel");
 const StylexPlugin = require("@stylexjs/webpack-plugin");
 
 const webpack = require("webpack");
-const { paths } = require("../scripts2/utils");
+const { paths } = require("../scripts/utils");
 const path = require("path");
 
 module.exports = {
@@ -81,8 +81,6 @@ module.exports = {
     }),
   ],
   externals: [nodeExternals()],
-  module: require("./loaders.server")({
-    isProduction: false,
-  }),
+  module: require("./loaders.server.js"),
   stats: "normal",
 };
