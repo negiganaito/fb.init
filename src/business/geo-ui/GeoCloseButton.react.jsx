@@ -5,13 +5,13 @@
  * See the LICENSE file in the root directory for details.
  */
 import React from "react";
-import fbicon from "fbicon";
 import fbt from "fbt";
-import GeoPrivateBaseButton from "GeoPrivateBaseButton.react";
-import { ix } from "ix";
 
+import fbicon from "../helpers/fbicon";
+import ix from "../helpers/ix";
 import useGeoPrivateIsNextTheme from "../hooks/useGeoPrivateIsNextTheme";
 
+import GeoPrivateBaseButton from "./GeoPrivateBaseButton.react";
 import { makeGeoComponent } from "./GeoPrivateMakeComponent";
 
 const GeoCloseButton = ({

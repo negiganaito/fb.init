@@ -60,8 +60,8 @@
  */
 import { memo, useContext, useLayoutEffect } from "react";
 
-import HeroInteractionContext from "../../business/contexts/CometHeroInteractionContext";
 import { HeroInteractionIDContext } from "../../business/helpers/hero-tracing-placeholder";
+import HeroInteractionContext from "../../context/CometHeroInteractionContext";
 
 const HeroComponent = memo(({ description }) => {
   const interactionContext = useContext(HeroInteractionContext);

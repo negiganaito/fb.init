@@ -60,7 +60,7 @@
  */
 import { useContext, useLayoutEffect } from "react";
 
-import HeroInteractionContext from "../../business/contexts/CometHeroInteractionContext";
+import HeroInteractionContext from "../../context/CometHeroInteractionContext";
 import HeroInteractionIDContext from "../../context/HeroInteractionIDContext";
 
 const HeroHoldTrigger = ({ description, hold }) => {

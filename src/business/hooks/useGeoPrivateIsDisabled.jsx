@@ -59,10 +59,12 @@
  * See the LICENSE file in the root directory for details.
  */
 import { useContext } from "react";
-import { GeoPrivateThemeContext } from "GeoPrivateThemeContext";
 
-function useGeoTheme() {
-  return useContext(GeoPrivateThemeContext);
+import GeoPrivateDisabledContext from "../contexts/GeoPrivateDisabledContext";
+
+function useGeoPrivateIsDisabled(defaultValue = false) {
+  const contextValue = useContext(GeoPrivateDisabledContext);
+  return contextValue !== null ? contextValue : defaultValue;
 }
 
-export default useGeoTheme;
+export default useGeoPrivateIsDisabled;

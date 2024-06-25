@@ -59,7 +59,7 @@
  * See the LICENSE file in the root directory for details.
  */
 import React from "react";
-import stylex from "stylex";
+import stylex from "@stylexjs/stylex";
 
 import webFlexbox from "../helpers/webFlexbox";
 import webFlexItem from "../helpers/webFlexItem";

@@ -12,7 +12,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import stylex from "stylex";
+import stylex from "@stylexjs/stylex";
 
 import useMergeRefs from "../../hooks/useMergeRefs";
 import { DocumentTranslationStatusProvider } from "../components/DocumentTranslationStatusProvider.react";

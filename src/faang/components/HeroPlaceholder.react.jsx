@@ -66,14 +66,14 @@ import React, {
   useRef,
 } from "react";
 
-import HeroInteractionContext from "../../business/contexts/CometHeroInteractionContext";
 import { HeroInteractionIDContext } from "../../business/helpers/hero-tracing-placeholder";
 import {
   createThenableDescription,
   getSimpleUUID,
 } from "../../business/helpers/HeroPlaceholderUtils";
+import { HeroInteractionContext } from "../../context/CometHeroInteractionContext";
 import useStable from "../../hooks/useStable";
-import { HeroFallbackTracker } from "../components/HeroFallbackTracker.react";
+import HeroFallbackTracker from "../components/HeroFallbackTracker.react";
 
 function Placeholder({ cb }) {
   const isMounted = useRef(false);

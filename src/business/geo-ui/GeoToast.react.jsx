@@ -59,18 +59,18 @@
  * See the LICENSE file in the root directory for details.
  */
 import React, { useContext } from "react";
-import GeoCloseButton from "GeoCloseButton.react";
-import { cardEndAction } from "geoOffset";
-import GeoSpinner from "GeoSpinner.react";
-import GeoStatusIcon from "GeoStatusIcon.react";
-import stylex from "stylex";
+import stylex from "@stylexjs/stylex";
 
 import GeoPrivateToastContext from "../contexts/GeoPrivateToastContext";
-import { useGeoIconStyle } from "../hooks/useGeoIconStyle";
+import geoOffset from "../helpers/geoOffset";
+import useGeoIconStyle from "../hooks/useGeoIconStyle";
 
 import GeoBaseToast from "./GeoBaseToast.react";
+import GeoCloseButton from "./GeoCloseButton.react";
 import GeoFlexbox from "./GeoFlexbox.react";
 import { makeGeoComponent } from "./GeoPrivateMakeComponent";
+import GeoSpinner from "./GeoSpinner.react";
+import GeoStatusIcon from "./GeoStatusIcon.react";
 import GeoTextPairing from "./GeoTextPairing.react";
 
 const GeoToast = ({
@@ -110,7 +110,7 @@ const GeoToast = ({
         size="value"
         xstyle={styles.textPairing}
       />
-      <GeoFlexbox shrink={0} xstyle={cardEndAction}>
+      <GeoFlexbox shrink={0} xstyle={geoOffset.cardEndAction}>
         <div className="xs83m0k x1c4vz4f x1f0l55g">{action}</div>
         <GeoCloseButton onClick={() => handleHide?.("layerCancelButton")} />
       </GeoFlexbox>

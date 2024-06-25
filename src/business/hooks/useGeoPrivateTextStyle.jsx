@@ -4,7 +4,7 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import { getTextTruncateStyle } from "GeoTextUtils";
+import { getTextTruncateStyle } from "../geo-ui/GeoTextUtils";
 
 import useGeoTheme from "./useGeoTheme";
 

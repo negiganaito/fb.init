@@ -11,32 +11,32 @@ import React, {
   useRef,
   useState,
 } from "react";
-import BUIPrivateButtonLayoutContext from "BUIPrivateButtonLayoutContext";
-import GeoIcon from "GeoIcon.react";
-import GeoPrivateButtonIconEndLayoutContext from "GeoPrivateButtonIconEndLayoutContext";
-import GeoPrivateButtonLayerActionContext from "GeoPrivateButtonLayerActionContext";
-import GeoPrivateButtonThemeUtils from "GeoPrivateButtonThemeUtils";
-import GeoPrivateFBIconOrImageish from "GeoPrivateFBIconOrImageish.react";
-import GeoPrivateFbtOrTooltip from "GeoPrivateFbtOrTooltip.react";
-import GeoPrivateInvertThemeContext from "GeoPrivateInvertThemeContext";
-import GeoPrivateLoggingAction from "GeoPrivateLoggingAction";
-import GeoPrivateLoggingClassification from "GeoPrivateLoggingClassification";
-import GeoPrivatePressable from "GeoPrivatePressable.react";
-import GeoPrivateTooltipTriggerContext from "GeoPrivateTooltipTriggerContext";
-import GeoSpinner from "GeoSpinner.react";
-import stylex from "stylex";
-import useGeoPrivateAnimationPressableStyle from "useGeoPrivateAnimationPressableStyle";
-import useGeoPrivateIsDisabled from "useGeoPrivateIsDisabled";
-import useGeoPrivateWithLogging from "useGeoPrivateWithLogging";
+import stylex from "@stylexjs/stylex";
 
+import GeoPrivateInvertThemeContext from "../../business/contexts/GeoPrivateInvertThemeContext";
 import useMergeRefs from "../../hooks/useMergeRefs";
+import BUIPrivateButtonLayoutContext from "../contexts/BUIPrivateButtonLayoutContext";
+import GeoPrivateButtonIconEndLayoutContext from "../contexts/GeoPrivateButtonIconEndLayoutContext";
+import GeoPrivateButtonLayerActionContext from "../contexts/GeoPrivateButtonLayerActionContext";
+import GeoPrivateTooltipTriggerContext from "../contexts/GeoPrivateTooltipTriggerContext";
+import useGeoPrivateAnimationPressableStyle from "../hooks/useGeoPrivateAnimationPressableStyle";
+import useGeoPrivateIsDisabled from "../hooks/useGeoPrivateIsDisabled";
 import useGeoPrivateIsNextTheme from "../hooks/useGeoPrivateIsNextTheme";
+import useGeoPrivateWithLogging from "../hooks/useGeoPrivateWithLogging";
 import useGeoTheme from "../hooks/useGeoTheme";
 
 import GeoBaseAccessibleElement from "./GeoBaseAccessibleElement.react";
 import GeoBaseSpacingLayout from "./GeoBaseSpacingLayout.react";
 import GeoBaseText from "./GeoBaseText.react";
+import GeoIcon from "./GeoIcon.react";
+import { shouldUseUpdatedNextButtonColors } from "./GeoPrivateButtonThemeUtils";
+import GeoPrivateFBIconOrImageish from "./GeoPrivateFBIconOrImageish.react";
+import GeoPrivateFbtOrTooltip from "./GeoPrivateFbtOrTooltip.react";
+import GeoPrivateLoggingAction from "./GeoPrivateLoggingAction";
+import GeoPrivateLoggingClassification from "./GeoPrivateLoggingClassification";
 import { makeGeoComponent } from "./GeoPrivateMakeComponent";
+import GeoPrivatePressable from "./GeoPrivatePressable.react";
+import GeoSpinner from "./GeoSpinner.react";
 
 const styles = {
   fullWidth: { width: "xh8yej3", $$css: true },
@@ -430,12 +430,10 @@ const useOutlineStyles = (props) => {
 
 const getEffectiveVariant = (variant = "default") => {
   const invertThemeContext = useContext(GeoPrivateInvertThemeContext);
-  const shouldUseUpdatedNextButtonColors =
-    GeoPrivateButtonThemeUtils.shouldUseUpdatedNextButtonColors();
 
   if (invertThemeContext) return "flatInverted";
   return variant === "default"
-    ? shouldUseUpdatedNextButtonColors
+    ? shouldUseUpdatedNextButtonColors()
       ? "button"
       : "wash"
     : variant;

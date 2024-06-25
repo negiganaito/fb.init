@@ -5,7 +5,7 @@
  * See the LICENSE file in the root directory for details.
  */
 import React from "react";
-import stylex from "stylex";
+import stylex from "@stylexjs/stylex";
 
 import GeoPrivateInvertThemeContext from "../contexts/GeoPrivateInvertThemeContext";
 import useGeoTheme from "../hooks/useGeoTheme";

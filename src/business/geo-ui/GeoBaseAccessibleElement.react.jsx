@@ -5,7 +5,7 @@
  * See the LICENSE file in the root directory for details.
  */
 import React from "react";
-import stylex from "stylex";
+import stylex from "@stylexjs/stylex";
 
 import useMergeRefs from "../../hooks/useMergeRefs";
 

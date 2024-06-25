@@ -5,7 +5,8 @@
  * See the LICENSE file in the root directory for details.
  */
 import { useMemo } from "react";
-import mergeRefs from "mergeRefs";
+
+import mergeRefs from "../business/helpers/mergeRefs";
 
 const useMergeRefs = (...args) => {
   return useMemo(() => {

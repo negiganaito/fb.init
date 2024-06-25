@@ -61,7 +61,6 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { useFragment } from "react-relay";
 import { BizKitAccountSwitcherPrefetcherShared_viewer } from "BizKitAccountSwitcherPrefetcherShared_viewer";
-import fbt from "fbt";
 import { useBizWebCurrentRouteName } from "useBizWebCurrentRouteName";
 import { useGeoToaster } from "useGeoToaster";
 
@@ -114,13 +113,9 @@ const BizKitAccountSwitcherPrefetcherShared = ({ viewer }) => {
         // logAccountSwitcherImpression("TOAST", baseLoggingData);
         add(
           <GeoToastReact
-            description={fbt(
-              "You can view and manage business assets you access with this profile."
-            )}
+            description="You can view and manage business assets you access with this profile."
             hasIcon
-            heading={fbt("You’re now logged in with {profile name}", [
-              fbt.param("profile name", accountInfo.name),
-            ])}
+            heading={`You’re now logged in with ${accountInfo.name}`}
             status="success"
           />
         );

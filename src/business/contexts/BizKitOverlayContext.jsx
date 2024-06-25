@@ -6,8 +6,9 @@
  */
 
 import React from "react";
-import { FilterTabs } from "BizSuiteNotificationFilterTabs";
 import emptyFunction from "fbjs/lib/emptyFunction";
+
+import { FilterTabs } from "../helpers/BizSuiteNotificationFilterTabs";
 
 const defaultBizKitOverlayContext = {
   activeOverlay: null,

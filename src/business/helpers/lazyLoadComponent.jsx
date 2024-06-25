@@ -8,7 +8,7 @@ import React, { forwardRef } from "react";
 
 import useHeroBootloadedComponent from "../../hooks/useHeroBootloadedComponent"; // You may need to replace this import with the actual import path.
 
-import { BootloaderResource } from "./BootloaderResource"; // You may need to replace this import with the actual import path.
+import { read } from "./BootloaderResource"; // You may need to replace this import with the actual import path.
 
 const componentMap = new Map();
 
@@ -25,7 +25,7 @@ function lazyLoadComponent(name) {
   if (existingComponent) return existingComponent;
 
   function LazyLoadedComponent(props, ref) {
-    const resource = BootloaderResource.read(name);
+    const resource = read(name);
     useHeroBootloadedComponent(name);
     return React.createElement(resource, { ...props, ref });
   }
