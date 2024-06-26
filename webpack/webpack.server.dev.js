@@ -15,6 +15,7 @@ const path = require("path");
 
 const webpack = require("webpack");
 const { paths } = require("../scripts/utils");
+const { StyleXPlugin } = require("stylex-webpack");
 
 module.exports = {
   mode: "development",
@@ -63,18 +64,24 @@ module.exports = {
       "process.env.ASSETS_URL": JSON.stringify(process.env.ASSETS_URL),
     }),
     rsdPlugin,
-    new StylexPlugin({
-      filename: "styles.[contenthash].css",
-      dev: true,
-      importSources: [
-        "@stylexjs/stylex",
-        { from: "react-strict-dom", as: "css" },
-      ],
-      runtimeInjection: false,
-      classNamePrefix: "x",
-      unstable_moduleResolution: {
-        type: "commonJS",
-        rootDir: __dirname,
+    // new StylexPlugin({
+    //   filename: "styles.[contenthash].css",
+    //   dev: true,
+    //   importSources: [
+    //     "@stylexjs/stylex",
+    //     { from: "react-strict-dom", as: "css" },
+    //   ],
+    //   runtimeInjection: false,
+    //   classNamePrefix: "x",
+    //   unstable_moduleResolution: {
+    //     type: "commonJS",
+    //     rootDir: __dirname,
+    //   },
+    // }),
+
+    new StyleXPlugin({
+      stylexOption: {
+        dev: true,
       },
     }),
   ],

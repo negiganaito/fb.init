@@ -7,11 +7,11 @@
 export const isClient = () => typeof window !== "undefined";
 
 const canUseDOM =
-  // isClient() &&
+  isClient() &&
   !!(window !== undefined && window.document && window.document.createElement);
 
 const canUseDOM2 = () =>
-  // isClient() &&
+  isClient() &&
   !!(window !== undefined && window.document && window.document.createElement);
 
 // @ts-ignore

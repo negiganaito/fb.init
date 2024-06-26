@@ -6,12 +6,12 @@
  */
 
 import { useLayoutEffect, useState } from "react";
-import { executionEnvironment } from "@fb-util/executionEnvironment";
+import { executionEnvironment, isClient } from "@fb-util/executionEnvironment";
 
 const DARK_MODE_MEDIA_QUERY = "(prefers-color-scheme: dark)";
 const listeners = new Set();
 
-if (window.matchMedia) {
+if (isClient() && window.matchMedia) {
   const handleMediaChange = (event) => {
     listeners.forEach((listener) => {
       return listener(event);

@@ -31,7 +31,8 @@
   },
   "dependencies": {
     "react": "git://github.com/tienlx97/react-experimental.git#www",
-    "react-dom": "git://github.com/tienlx97/react-dom-experimental.git#www"
+    "react-dom": "git://github.com/tienlx97/react-dom-experimental.git#www",
+    "stylex-webpack": "^0.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.23.5",
@@ -69,6 +70,7 @@
     "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
+    "autoprefixer": "^9.8.8",
     "babel-loader": "^9.1.2",
     "babel-plugin-fbt": "1.0.0",
     "babel-plugin-fbt-runtime": "1.0.0",
@@ -78,6 +80,8 @@
     "babel-preset-react-app": "^10.0.1",
     "buffer": "6.0.3",
     "clean-webpack-plugin": "4.0.0",
+    "compression": "1.7.4",
+    "compression-webpack-plugin": "11.1.0",
     "confusing-browser-globals": "1.0.11",
     "copy-webpack-plugin": "12.0.2",
     "cors": "2.8.5",
@@ -145,16 +149,13 @@
     "ts-loader": "^9.4.2",
     "typescript": "5.4.5",
     "ua-parser-js": "1.0.37",
-    "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.11.1",
-    "yargs": "17.7.2",
-    "compression": "1.7.4",
-    "compression-webpack-plugin": "11.1.0",
-    "autoprefixer": "^9.8.8",
     "webpack": "^5.76.0",
     "webpack-bundle-analyzer": "^4.6.1",
+    "webpack-cli": "^5.0.1",
     "webpack-dev-middleware": "^5.3.3",
+    "webpack-dev-server": "^4.11.1",
     "webpack-hot-middleware": "^2.25.2",
-    "webpack-node-externals": "^3.0.0"
+    "webpack-node-externals": "^3.0.0",
+    "yargs": "17.7.2"
   }
 }

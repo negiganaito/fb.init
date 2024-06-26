@@ -6,11 +6,14 @@
  */
 
 import { DARK_MODE_KEY } from "@fb-theme/constant/comet-dark-mode-local-storage-key";
+import { isClient } from "@fb-util/executionEnvironment";
 
 export const CometDarkModeSetting = {
   initialGuessForDarkModeOnClient: true,
   initialClientStateGuess: true,
   // TODO
   initialSetting:
-    localStorage.getItem(DARK_MODE_KEY) === "ENABLED" ? "ENABLED" : "DISABLED",
+    isClient() && localStorage.getItem(DARK_MODE_KEY) === "ENABLED"
+      ? "ENABLED"
+      : "DISABLED",
 };

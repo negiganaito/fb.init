@@ -43,29 +43,29 @@ module.exports = (api) => {
     ["relay"],
     ["react-hot-loader/babel"],
     // rsdPlugin,
-    [
-      styleXPlugin,
-      {
-        dev: true,
-        // Set this to true for snapshot testing
-        // default: false
-        // importSources: [
-        //   "@stylexjs/stylex",
-        //   { from: "react-strict-dom", as: "css" },
-        // ],
-        test: false,
-        // Required for CSS variable support
-        unstable_moduleResolution: {
-          // The absolute path to the root directory of your project
-          // eslint-disable-next-line no-undef
-          rootDir: __dirname,
+    // [
+    //   styleXPlugin,
+    //   {
+    //     dev: true,
+    //     // Set this to true for snapshot testing
+    //     // default: false
+    //     // importSources: [
+    //     //   "@stylexjs/stylex",
+    //     //   { from: "react-strict-dom", as: "css" },
+    //     // ],
+    //     test: false,
+    //     // Required for CSS variable support
+    //     unstable_moduleResolution: {
+    //       // The absolute path to the root directory of your project
+    //       // eslint-disable-next-line no-undef
+    //       rootDir: __dirname,
 
-          // type: 'commonJS' | 'haste'
-          // default: 'commonJS'
-          type: "commonJS",
-        },
-      },
-    ],
+    //       // type: 'commonJS' | 'haste'
+    //       // default: 'commonJS'
+    //       type: "commonJS",
+    //     },
+    //   },
+    // ],
     [
       "babel-plugin-fbt",
       {

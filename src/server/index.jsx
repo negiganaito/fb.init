@@ -4,6 +4,7 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
+import React from "react";
 import { renderToString } from "react-dom/server";
 import { HelmetProvider } from "react-helmet-async";
 import { StaticRouter } from "react-router-dom/server";
@@ -83,6 +84,8 @@ app.use((req, res) => {
   const { helmet } = helmetContext;
 
   res.status(staticContext.statusCode).send(renderFullPage(html, helmet));
+
+  // renderToString(jsx());
 });
 
 app.listen(PORT, () => {

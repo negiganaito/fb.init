@@ -6,21 +6,25 @@
  */
 
 import React from "react";
-import { createBrowserRouter } from "react-router-dom";
+import loadable from "@loadable/component";
 
-import { DefaultLayout } from "./router/layout";
-import { HomePage } from "./router/page";
+const Home = loadable(
+  () => import(/* webpackChunkName: "HomePage" */ "./router/page"),
+  { fallback: <div>1</div> }
+);
 
-export const router = createBrowserRouter([
+const About = loadable(
+  () => import(/* webpackChunkName: "AboutPage" */ "./router/about/page"),
+  { fallback: <div>1</div> }
+);
+
+export const routes = [
   {
     path: "/",
-    element: <DefaultLayout />,
-
-    children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
-    ],
+    Component: Home,
   },
-]);
+  {
+    path: "/about",
+    Component: About,
+  },
+];

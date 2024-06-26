@@ -12,13 +12,14 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const rsdPlugin = require("react-strict-dom/babel");
 const StylexPlugin = require("@stylexjs/webpack-plugin");
-const { ESBuildMinifyPlugin } = require("esbuild-loader");
+// const { ESBuildMinifyPlugin } = require("esbuild-loader");
 const LoadablePlugin = require("@loadable/webpack-plugin");
 
 const moduleLoaders = require("./loaders.client");
 
 const webpack = require("webpack");
 const { paths } = require("../scripts/utils");
+const { StyleXPlugin } = require("stylex-webpack");
 
 module.exports = {
   mode: "development",
@@ -64,7 +65,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProgressPlugin(),
     new CopyPlugin({
-      patterns: [{ from: "/src/fb/assets", to: "fb/assets" }],
+      patterns: [{ from: "./src/fb/assets", to: "fb/assets" }],
     }),
     new webpack.DefinePlugin({
       "process.env.BROWSER": "true",
@@ -76,55 +77,60 @@ module.exports = {
     }),
 
     rsdPlugin,
-    new StylexPlugin({
-      filename: "styles.[contenthash].css",
-      dev: true,
-      importSources: [
-        "@stylexjs/stylex",
-        { from: "react-strict-dom", as: "css" },
-      ],
-      runtimeInjection: false,
-      classNamePrefix: "x",
-      unstable_moduleResolution: {
-        type: "commonJS",
-        rootDir: __dirname,
+    // new StylexPlugin({
+    //   filename: "styles.[contenthash].css",
+    //   dev: true,
+    //   importSources: [
+    //     "@stylexjs/stylex",
+    //     { from: "react-strict-dom", as: "css" },
+    //   ],
+    //   runtimeInjection: false,
+    //   classNamePrefix: "x",
+    //   unstable_moduleResolution: {
+    //     type: "commonJS",
+    //     rootDir: __dirname,
+    //   },
+    // }),
+    new StyleXPlugin({
+      stylexOption: {
+        dev: true,
       },
     }),
   ],
   stats: "minimal",
   cache: true,
 
-  optimization: {
-    minimize: false,
-    mergeDuplicateChunks: true,
-    removeEmptyChunks: true,
-    sideEffects: false,
-    minimizer: [
-      new ESBuildMinifyPlugin({
-        target: "es2015",
-      }),
-    ],
-    splitChunks: {
-      chunks: "all",
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          chunks: "all",
-          enforce: true,
-          name: (module) => {
-            const [, match] = module.context.match(
-              /[\\/]node_modules[\\/](.*?)([\\/]([^\\/]*)([\\/]([^\\/]*))?([\\/]([^\\/]*))?|$)/
-            );
+  // optimization: {
+  //   minimize: false,
+  //   mergeDuplicateChunks: true,
+  //   removeEmptyChunks: true,
+  //   sideEffects: false,
+  //   minimizer: [
+  //     new ESBuildMinifyPlugin({
+  //       target: "es2015",
+  //     }),
+  //   ],
+  //   splitChunks: {
+  //     chunks: "all",
+  //     cacheGroups: {
+  //       vendors: {
+  //         test: /[\\/]node_modules[\\/]/,
+  //         chunks: "all",
+  //         enforce: true,
+  //         name: (module) => {
+  //           const [, match] = module.context.match(
+  //             /[\\/]node_modules[\\/](.*?)([\\/]([^\\/]*)([\\/]([^\\/]*))?([\\/]([^\\/]*))?|$)/
+  //           );
 
-            return `vendors/${match.replace("@", "")}`;
-          },
-        },
-      },
-    },
-  },
+  //           return `vendors/${match.replace("@", "")}`;
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
 
-  performance: {
-    maxEntrypointSize: Infinity,
-    maxAssetSize: 1024 ** 2,
-  },
+  // performance: {
+  //   maxEntrypointSize: Infinity,
+  //   maxAssetSize: 1024 ** 2,
+  // },
 };

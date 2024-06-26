@@ -6,15 +6,19 @@
  */
 
 import React from "react";
-import { RouterProvider } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { CometDarkModeStateProvider } from "@fb-theme/components/comet-dark-mode-state-provider";
 
-import { router } from "./router";
+import { routes } from "./router";
 
 export const App = () => {
   return (
     <CometDarkModeStateProvider>
-      <RouterProvider router={router} />
+      <Routes>
+        {routes.map(({ Component, path }, i) => (
+          <Route path={path} key={i} element={<Component />} />
+        ))}
+      </Routes>
     </CometDarkModeStateProvider>
   );
 };
