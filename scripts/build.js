@@ -4,42 +4,15 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
+process.env.BABEL_ENV = "production";
+process.env.NODE_ENV = "production";
+process.env.ASSET_PATH = "/";
+
 const webpack = require("webpack");
-const rimraf = require("rimraf");
-const webpackConfig = require("../webpack")("production");
+const config = require("../webpack.config.legacy");
 
-const { compilerListener, paths, compilation } = require("./utils");
+config.mode = "production";
 
-const build = async () => {
-  try {
-    rimraf.sync(paths.dist);
-
-    const [clientConfig, serverConfig] = webpackConfig;
-    const multiCompiler = webpack([clientConfig, serverConfig]);
-
-    const clientCompiler = multiCompiler.compilers.find(
-      (compiler) => compiler.options.target === "web"
-    );
-    const serverCompiler = multiCompiler.compilers.find(
-      (compiler) => compiler.options.target === "node"
-    );
-
-    serverCompiler.run((err, stats) =>
-      compilation(err, stats, serverConfig.stats)
-    );
-    clientCompiler.run((err, stats) =>
-      compilation(err, stats, clientConfig.stats)
-    );
-
-    await Promise.all([
-      compilerListener("client", clientCompiler),
-      compilerListener("server", serverCompiler),
-    ]);
-
-    console.log("Webpack compilation client and server done !");
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-build();
+webpack(config, (err) => {
+  if (err) throw err;
+});

@@ -27,7 +27,8 @@
     "test:watch": "jest --watchAll=true",
     "translate-fbts": "fbt-translate --jenkins --source-strings ./i18n/fbt/source_strings.json --translations i18n/fbt/translationScriptInput/*.json > ./i18n/fbt/translatedFbts.json",
     "translate-fbts:win": "for %i in (i18n\\fbt\\translationScriptInput\\*.json) do fbt-translate --jenkins --source-strings i18n\\fbt\\source_strings.json --translations %i >> i18n\\fbt\\translatedFbts.json",
-    "upgrade": "npx npm-check-updates &&  npx npm-check-updates -u"
+    "upgrade": "npx npm-check-updates &&  npx npm-check-updates -u",
+    "start": "pnpm webpack serve --hot --progress --mode development --stats-children"
   },
   "dependencies": {
     "react": "git://github.com/tienlx97/react-experimental.git#www",
@@ -151,7 +152,7 @@
     "compression": "1.7.4",
     "compression-webpack-plugin": "11.1.0",
     "autoprefixer": "^9.8.8",
-    "webpack": "^5.76.0",
+    "webpack": "5.92.1",
     "webpack-bundle-analyzer": "^4.6.1",
     "webpack-dev-middleware": "^5.3.3",
     "webpack-hot-middleware": "^2.25.2",
