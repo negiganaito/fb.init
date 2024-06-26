@@ -1,7 +1,7 @@
 dist/
 coverage/
 
-# .env
+.env
 
 .idea
 *.history
