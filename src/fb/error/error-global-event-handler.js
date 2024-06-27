@@ -14,24 +14,21 @@ const onError =
 let errorPubSub = null;
 
 function listener(errEvent) {
-  const newError =
-    errEvent.error !== null
-      ? getErrorSafe(errEvent.error)
-      : err(errEvent.message || "");
+  const newError = errEvent.error
+    ? getErrorSafe(errEvent.error)
+    : err(errEvent.message || "");
 
-  if (newError.fileName === null && errEvent.filename !== null)
+  if (!newError.fileName && errEvent.filename)
     newError.fileName = errEvent.filename;
 
-  if (newError.line === null && errEvent.lineno !== null)
-    newError.line = errEvent.lineno;
+  if (!newError.line && errEvent.lineno) newError.line = errEvent.lineno;
 
-  if (newError.column === null && errEvent.colno !== null)
-    newError.column = errEvent.colno;
+  if (!newError.column && errEvent.colno) newError.column = errEvent.colno;
 
   newError.guardList = [onError];
   newError.loggingSource = "ONERROR";
 
-  errorPubSub === null || errorPubSub === undefined
+  errorPubSub || errorPubSub === undefined
     ? undefined
     : errorPubSub.reportError(newError);
 }
@@ -39,7 +36,7 @@ function listener(errEvent) {
 export const ErrorGlobalEventHandler = {
   setup: function (ePubSub) {
     if (typeof window.addEventListener !== "function") return;
-    if (errorPubSub !== null) return;
+    if (errorPubSub) return;
     errorPubSub = ePubSub;
     window.addEventListener("error", (e) => listener(e));
   },

@@ -13,7 +13,7 @@ const reExnId = "RE_EXN_ID";
 export const getErrorSafe = (obj) => {
   let newErr = null;
 
-  if (obj === null || typeof obj !== "object") {
+  if (!obj || typeof obj !== "object") {
     newErr = err("Non-object thrown: %s", String(obj));
   } else {
     if (Object.prototype.hasOwnProperty.call(obj, reExnId)) {
@@ -33,7 +33,7 @@ export const getErrorSafe = (obj) => {
     }
   }
 
-  if (newErr !== null) {
+  if (newErr) {
     newErr.taalOpcodes = newErr.taalOpcodes || [];
     newErr.taalOpcodes.push(TAALOpcode.PREVIOUS_FRAME);
     return newErr;

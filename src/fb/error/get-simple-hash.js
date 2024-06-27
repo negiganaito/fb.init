@@ -4,31 +4,23 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-let characters = "abcdefghijklmnopqrstuvwxyz012345";
+const g = "abcdefghijklmnopqrstuvwxyz012345";
 
-// Simple hash function for strings
-export function getSimpleHash(...args) {
-  // Initialize the hash variable.
-  let hash = 0;
-
-  // If the argument is not null, process it.
-  if (args) {
-    // Iterate over each character in the argument string.
-    for (let j = 0; j < args.length; j++) {
-      // Update the hash value using bitwise operations.
-      hash = (hash << 5) - hash + args.charCodeAt(j);
+function getSimpleHash(...args) {
+  let a = 0;
+  // eslint-disable-next-line no-var, no-inner-declarations
+  for (var b = args.length, c = new Array(b), d = 0; d < b; d++) c[d] = args[d];
+  for (let e = 0; e < c.length; e++) {
+    const f = c[e];
+    if (f) {
+      const h = f.length;
+      for (let i = 0; i < h; i++) a = (a << 5) - a + f.charCodeAt(i);
     }
   }
-
-  // Initialize an empty string for the final hash result.
-  let result = "";
-
-  // Convert the hash value to a string using the characters defined above.
-  for (let k = 0; k < 6; k++) {
-    result = characters.charAt(hash & 31) + result;
-    hash >>= 5;
-  }
-
-  // Return the final hash string.
-  return result;
+  let j = "";
+  // eslint-disable-next-line no-sequences
+  for (let k = 0; k < 6; k++) (j = g.charAt(a & 31) + j), (a >>= 5);
+  return j;
 }
+
+export { getSimpleHash };

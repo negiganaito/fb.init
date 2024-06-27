@@ -78,7 +78,8 @@ function splitStackLine(str) {
 }
 
 function componentStackUtils(componentStack) {
-  if (componentStack === null || componentStack === "") return null;
+  if (!componentStack || !componentStack || componentStack === "") return null;
+
   const items = componentStack.split("\n");
   items.splice(0, 1);
   return items.map((item) => item.trim());
@@ -145,7 +146,7 @@ function stackUtils(error) {
 }
 
 function errorTypeUtils(error) {
-  if (error.type !== null) return error.type;
+  if (error.type) return error.type;
   if (
     error.loggingSource === "GUARDED" ||
     error.loggingSource === "ERROR_BOUNDARY"
@@ -157,7 +158,7 @@ function errorTypeUtils(error) {
     error.message.indexOf("ResizeObserver loop") >= 0
   )
     return "warn";
-  return error.stack !== null && error.stack.indexOf("chrome-extension://") >= 0
+  return error.stack && error.stack.indexOf("chrome-extension://") >= 0
     ? "warn"
     : "error";
 }
@@ -191,8 +192,9 @@ function normalizeError(error) {
 
   const componentStackItem = componentStackUtils(error.componentStack);
 
-  const componentStackFrames =
-    componentStackItem === null ? null : componentStackItem.map(splitStackLine);
+  const componentStackFrames = !componentStackItem
+    ? null
+    : componentStackItem.map(splitStackLine);
 
   let format = error.metadata
     ? error.metadata.format()
@@ -238,13 +240,12 @@ function normalizeError(error) {
 
   const obj = {
     blameModule: error.blameModule,
-    column: columnNumber === null ? null : String(columnNumber),
+    column: !columnNumber ? null : String(columnNumber),
     clientTime: Math.floor(Date.now() / 1e3),
     componentStackFrames,
-    deferredSource:
-      error.deferredSource !== null
-        ? normalizeError(error.deferredSource)
-        : null,
+    deferredSource: error.deferredSource
+      ? normalizeError(error.deferredSource)
+      : null,
     extra: error.extra !== null && error.extra !== undefined ? error.extra : {},
     fbtrace_id: error.fbtrace_id,
     guardList:
@@ -254,7 +255,7 @@ function normalizeError(error) {
 
     hash: getSimpleHash(errorName, stack, type, project, loggingSource),
     isNormalizedError: true,
-    line: lineNumber === null ? null : String(lineNumber),
+    line: !lineNumber ? null : String(lineNumber),
     loggingSource,
     message: ErrorSerializer.toReadableMessage(error),
     messageFormat,
@@ -272,7 +273,7 @@ function normalizeError(error) {
     xFBDebug: ErrorXFBDebug.getAll(),
   };
 
-  if (error.forcedKey !== null) {
+  if (error.forcedKey) {
     obj.forcedKey = error.forcedKey;
   }
 
@@ -292,9 +293,7 @@ function normalizeError(error) {
 }
 
 function ifNormalizedError(obj) {
-  return obj !== null &&
-    typeof obj === "object" &&
-    obj.isNormalizedError === true
+  return obj && typeof obj === "object" && obj.isNormalizedError === true
     ? obj
     : null;
 }

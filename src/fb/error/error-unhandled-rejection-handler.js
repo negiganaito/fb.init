@@ -19,7 +19,7 @@ let isSetup = false;
 // eslint-disable-next-line complexity
 function handleUnhandledRejection(event) {
   // Exit if the error reporter is not set
-  if (errorReporter === null) return;
+  if (!errorReporter) return;
 
   let reporter = errorReporter;
   let errorReason = event.reason;
@@ -30,7 +30,7 @@ function handleUnhandledRejection(event) {
   if (
     errorReason !== normalizedError &&
     typeof errorReason === "object" &&
-    errorReason !== null
+    errorReason
   ) {
     // eslint-disable-next-line no-inner-declarations, no-var
     var keys = Object.keys(errorReason).sort().slice(0, 3);

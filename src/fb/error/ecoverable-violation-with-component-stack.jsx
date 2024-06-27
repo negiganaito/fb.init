@@ -5,8 +5,6 @@
  * See the LICENSE file in the root directory for details.
  */
 
-import React from "react";
-
 import { CometErrorBoundary } from "./comet-error-boundary";
 import { err } from "./err";
 

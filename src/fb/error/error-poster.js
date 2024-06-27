@@ -5,7 +5,7 @@
  * See the LICENSE file in the root directory for details.
  */
 import { ErrorDynamicData } from "./error-dynamic-data";
-import ErrorFilter from "./ErrorFilter";
+import { ErrorFilter } from "./error-filter";
 
 let U = 1024;
 let position = 0;
@@ -16,7 +16,7 @@ function toString(val) {
 }
 
 function toStringNotNull(val) {
-  return val === null ? undefined : String(val);
+  return !val ? undefined : String(val);
 }
 
 function eventsDiff(nErrorExtra, propsExtra) {
@@ -82,12 +82,11 @@ function createErrorPayload(nError, props) {
     project: nError.project, //
     push_phase: props.push_phase,
     script_path: props.script_path, //
-    taalOpcodes:
-      nError.taalOpcodes === null
-        ? undefined
-        : nError.taalOpcodes.map((a) => {
-            return a;
-          }),
+    taalOpcodes: !nError.taalOpcodes
+      ? undefined
+      : nError.taalOpcodes.map((a) => {
+          return a;
+        }),
     report_source: props.report_source,
     report_source_ref: props.report_source_ref,
     rollout_hash:
@@ -117,10 +116,10 @@ function createErrorPayload(nError, props) {
     });
   nError.metadata && (obj.metadata = nError.metadata);
   nError.loadingUrls && (obj.loadingUrls = nError.loadingUrls);
-  nError.serverHash !== null && (obj.serverHash = nError.serverHash);
-  nError.windowLocationURL !== null &&
+  nError.serverHash && (obj.serverHash = nError.serverHash);
+  nError.windowLocationURL &&
     (obj.windowLocationURL = nError.windowLocationURL);
-  nError.loggingSource !== null && (obj.loggingSource = nError.loggingSource);
+  nError.loggingSource && (obj.loggingSource = nError.loggingSource);
   return obj;
 }
 
@@ -133,7 +132,7 @@ function postError(nError, props, logFunc) {
   }
 
   const shouldLog = ErrorFilter.shouldLog(nError);
-  if (shouldLog === null) {
+  if (!shouldLog) {
     return false;
   }
 
