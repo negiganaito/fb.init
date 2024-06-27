@@ -60,7 +60,7 @@ module.exports = (env, { mode }) => {
         "@fb-context": path.resolve(__dirname, "src/fb/contexts"),
         "@fb-hook": path.resolve(__dirname, "src/fb/hooks"),
         "@fb-util": path.resolve(__dirname, "src/fb/utils"),
-        "@fb-placeholder": path.resolve(__dirname, "src/fb/placeholder"),
+        "@placeholder": path.resolve(__dirname, "src/fb/placeholder"),
         "@fb-layout": path.resolve(__dirname, "src/fb/layout"),
         "@fb-unknown": path.resolve(__dirname, "src/fb/unknown"),
         "@fb-user-agent": path.resolve(__dirname, "src/fb/user-agent"),
@@ -137,16 +137,29 @@ module.exports = (env, { mode }) => {
           exclude: /node_modules/,
           use: [
             {
-              loader: require.resolve("babel-loader"),
+              loader: "source-map-loader",
+            },
+            {
+              loader: "babel-loader",
               options: {
-                presets: [
-                  "@babel/preset-env",
-                  "@babel/preset-react",
-                  "@babel/preset-typescript",
-                ],
-                plugins: [
-                  isDevelopment && require.resolve("react-refresh/babel"),
-                ].filter(Boolean),
+                // presets: [
+                //   // "@babel/preset-env",
+                //   //   "@babel/preset-react",
+                //   //   "@babel/preset-typescript",
+                //   ["@babel/preset-env"],
+                //   [
+                //     "@babel/preset-react",
+                //     {
+                //       development: isDevelopment,
+                //       runtime: "automatic",
+                //     },
+                //   ],
+                //   "@babel/preset-typescript",
+                // ],
+                configFile: path.join(__dirname, "babel.config.js"),
+                // plugins: [isDevelopment && "react-refresh/babel"].filter(
+                //   Boolean
+                // ),
               },
             },
           ],
