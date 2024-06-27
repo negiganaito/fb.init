@@ -172,13 +172,13 @@ module.exports = (env, { mode }) => {
         {
           test: /\.css$/i,
           use: [
-            isProduction ? MiniCssExtractPlugin.loader : "style-loader",
-
+            { loader: MiniCssExtractPlugin.loader },
             {
               loader: "css-loader",
               options: {
                 importLoaders: 1,
-                modules: true,
+                // modules: true,
+                sourceMap: true,
               },
             },
             {
@@ -200,6 +200,20 @@ module.exports = (env, { mode }) => {
               },
             },
           ],
+          // use: [
+          //   {
+          //     loader: MiniCssExtractPlugin.loader,
+          //   },
+          //   {
+          //     loader: "css-loader",
+          //   },
+          //   {
+          //     loader: "postcss-loader",
+          //     options: {
+          //       plugins: [require("autoprefixer")],
+          //     },
+          //   },
+          // ],
         },
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/i,
@@ -231,6 +245,8 @@ module.exports = (env, { mode }) => {
     cache: true,
 
     plugins: [
+      new MiniCssExtractPlugin(),
+
       new HtmlWebpackPlugin({
         template: path.join(__dirname, "public", "index.html"),
         minify: isProduction,
@@ -252,10 +268,8 @@ module.exports = (env, { mode }) => {
         NODE_ENV: "development", // use 'development' unless process.env.NODE_ENV is defined
       }),
 
-      new MiniCssExtractPlugin(),
-
       new CopyPlugin({
-        patterns: [{ from: "./src/fb/assets", to: "fb/assets" }],
+        patterns: [{ from: "./src/faang/assets", to: "faang/assets" }],
       }),
 
       rsdPlugin,
