@@ -111,6 +111,8 @@ module.exports = (env, { mode }) => {
         "@fb-switch": path.resolve(__dirname, "src/fb/switch"),
         "@fb-error": path.resolve(__dirname, "src/fb/error"),
         "@fb-theme": path.resolve(__dirname, "src/fb/theme"),
+        "@fb-relay": path.resolve(__dirname, "src/fb/relay"),
+        "@fb-example": path.resolve(__dirname, "src/fb/_"),
       },
 
       fallback: {
@@ -269,7 +271,7 @@ module.exports = (env, { mode }) => {
       }),
 
       new CopyPlugin({
-        patterns: [{ from: "./src/faang/assets", to: "faang/assets" }],
+        patterns: [{ from: "./src/fb/assets", to: "fb/assets" }],
       }),
 
       rsdPlugin,

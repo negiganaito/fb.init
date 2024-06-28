@@ -6,6 +6,7 @@
  */
 
 import React, { useContext } from "react";
+import { UserInfo } from "@fb-example/user-info";
 import { CometDarkModeContext } from "@fb-theme/contexts/comet-dark-mode-context";
 
 export const HomePage = () => {
@@ -13,14 +14,18 @@ export const HomePage = () => {
     useContext(CometDarkModeContext);
 
   return (
-    <button
-      onClick={() => {
-        setDarkModeSetting(
-          currentSetting === "ENABLED" ? "DISABLED" : "ENABLED"
-        );
-      }}
-    >
-      Toggle theme
-    </button>
+    <>
+      <button
+        onClick={() => {
+          setDarkModeSetting(
+            currentSetting === "ENABLED" ? "DISABLED" : "ENABLED"
+          );
+        }}
+      >
+        Toggle theme
+      </button>
+
+      <UserInfo />
+    </>
   );
 };

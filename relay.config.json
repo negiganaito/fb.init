@@ -1,0 +1,10 @@
+{
+  "src": "./src/fb/relay",
+  "schema": "./data/schema.graphql",
+  "artifactDirectory": "./src/fb/relay/__generated__",
+  "excludes": ["**/.next/**", "**/node_modules/**", "**/schema/**"],
+  "language": "javascript",
+  "persistConfig": {
+    "file": "./queryMap.json"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "fe.init",
+  "name": "fe.inventory",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -122,11 +122,11 @@
     "react-hot-loader": "4.13.1",
     "react-loadable": "^5.5.0",
     "react-refresh": "^0.14.2",
-    "react-relay": "16.1.0",
+    "react-relay": "17.0.0",
     "react-router-dom": "6.23.1",
     "react-strict-dom": "0.0.11",
-    "relay-compiler": "16.1.0",
-    "relay-runtime": "16.1.0",
+    "relay-compiler": "17.0.0",
+    "relay-runtime": "17.0.0",
     "resize-observer-polyfill": "1.5.1",
     "sass-loader": "^13.2.0",
     "source-map-loader": "5.0.0",
@@ -142,6 +142,7 @@
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1",
     "webpack-node-externals": "3.0.0",
-    "yargs": "17.7.2"
+    "yargs": "17.7.2",
+    "@babel/plugin-transform-react-jsx": "7.24.7"
   }
 }

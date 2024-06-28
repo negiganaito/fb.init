@@ -7,14 +7,17 @@
 
 import React from "react";
 import { RouterProvider } from "react-router-dom";
+import { RelayEnvironment } from "@fb-relay/utils/environment";
 import { CometDarkModeStateProvider } from "@fb-theme/components/comet-dark-mode-state-provider";
 
 import { router } from "./router";
 
 export const App = () => {
   return (
-    <CometDarkModeStateProvider>
-      <RouterProvider router={router} />
-    </CometDarkModeStateProvider>
+    <RelayEnvironment>
+      <CometDarkModeStateProvider>
+        <RouterProvider router={router} />
+      </CometDarkModeStateProvider>
+    </RelayEnvironment>
   );
 };

@@ -27,6 +27,9 @@ importers:
       '@babel/plugin-transform-modules-commonjs':
         specifier: 7.24.1
         version: 7.24.1(@babel/core@7.24.7)
+      '@babel/plugin-transform-react-jsx':
+        specifier: 7.24.7
+        version: 7.24.7(@babel/core@7.24.7)
       '@babel/preset-env':
         specifier: ^7.20.2
         version: 7.24.7(@babel/core@7.24.7)
@@ -274,8 +277,8 @@ importers:
         specifier: ^0.14.2
         version: 0.14.2
       react-relay:
-        specifier: 16.1.0
-        version: 16.1.0(react@https://codeload.github.com/tienlx97/react-experimental/tar.gz/acfc5aa360d39a1c90fc78dd65951b503360d397)
+        specifier: 17.0.0
+        version: 17.0.0(react@https://codeload.github.com/tienlx97/react-experimental/tar.gz/acfc5aa360d39a1c90fc78dd65951b503360d397)
       react-router-dom:
         specifier: 6.23.1
         version: 6.23.1(react-dom@https://codeload.github.com/tienlx97/react-dom-experimental/tar.gz/6a8da0c57b0b60c1d5ba47a5a0358c65a3fdcd69(react@https://codeload.github.com/tienlx97/react-experimental/tar.gz/acfc5aa360d39a1c90fc78dd65951b503360d397))(react@https://codeload.github.com/tienlx97/react-experimental/tar.gz/acfc5aa360d39a1c90fc78dd65951b503360d397)
@@ -283,11 +286,11 @@ importers:
         specifier: 0.0.11
         version: 0.0.11(react-dom@https://codeload.github.com/tienlx97/react-dom-experimental/tar.gz/6a8da0c57b0b60c1d5ba47a5a0358c65a3fdcd69(react@https://codeload.github.com/tienlx97/react-experimental/tar.gz/acfc5aa360d39a1c90fc78dd65951b503360d397))(react-native@0.74.2(@babel/core@7.24.7)(@babel/preset-env@7.24.7(@babel/core@7.24.7))(@types/react@18.3.3)(react@https://codeload.github.com/tienlx97/react-experimental/tar.gz/acfc5aa360d39a1c90fc78dd65951b503360d397))(react@https://codeload.github.com/tienlx97/react-experimental/tar.gz/acfc5aa360d39a1c90fc78dd65951b503360d397)
       relay-compiler:
-        specifier: 16.1.0
-        version: 16.1.0
+        specifier: 17.0.0
+        version: 17.0.0
       relay-runtime:
-        specifier: 16.1.0
-        version: 16.1.0
+        specifier: 17.0.0
+        version: 17.0.0
       resize-observer-polyfill:
         specifier: 1.5.1
         version: 1.5.1
@@ -5937,9 +5940,9 @@ packages:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
     engines: {node: '>=0.10.0'}
 
-  react-relay@16.1.0:
-    resolution: {integrity: sha512-qwm5PC+Vwy+qzs+Ob/PKs3YAWZOK2jm87GaMa44pHGR62ENS6xpFGXsANKAvFas1CUJ75yaexuGRO6z7RPnk8w==}
-    version: 16.1.0
+  react-relay@17.0.0:
+    resolution: {integrity: sha512-Kn0CMiKZtWc+EisFPmzuZ53RtDeLlJO+EUVJwqxNkOs5g1jDjVi1v+k48kHeTyim2X43Rr0S2aeailllci5SgQ==}
+    version: 17.0.0
     peerDependencies:
       react: ^16.9.0 || ^17 || ^18
 
@@ -6052,12 +6055,12 @@ packages:
     resolution: {integrity: sha512-G08Dxvm4iDN3MLM0EsP62EDV9IuhXPR6blNz6Utcp7zyV3tr4HVNINt6MpaRWbxoOHT3Q7YN2P+jaHX8vUbgog==}
     engines: {node: '>= 0.10'}
 
-  relay-compiler@16.1.0:
-    resolution: {integrity: sha512-ZceB9u0Zx5/6VJwRViaGwZEUsEY/wqdbxPs7AD2/udZYabRae5az97MU9XZ3p4zIeZhR+y9y2+KLdXuoECeLvA==}
+  relay-compiler@17.0.0:
+    resolution: {integrity: sha512-U2e/R0o40HJOQ13pwkvToqWqk6J3ASMyHmcxixVMZKfcwcpsTTOiKob215ZRh+4bqPwkNy97+V9CuzJ5hJmGtw==}
     hasBin: true
 
-  relay-runtime@16.1.0:
-    resolution: {integrity: sha512-SM5MP4ETxTtYrXya5ceAEF3XuVzlku48+YyaxZkTnXG/FUvE2QfIxkZ5P2Q/j33Eo9tfrcl4UfZoSkx6IbQ37Q==}
+  relay-runtime@17.0.0:
+    resolution: {integrity: sha512-7b2R3G3DP7VHq7/1ltwQfYn3KkTHIB2NNt3KijIZoNQ73avwpOXBEL0MelSXwq8L+K8lcgAW5VAT7o0LUhnJPQ==}
 
   renderkid@3.0.0:
     resolution: {integrity: sha512-q/7VIQA8lmM1hF+jn+sFSPWGlMkSAeNYcPLmDQx2zzuiDfaLrOmumR8iaUKlenFgh0XRPIUeSPlH3A+AW3Z5pg==}
@@ -14044,14 +14047,14 @@ snapshots:
 
   react-refresh@0.14.2: {}
 
-  react-relay@16.1.0(react@https://codeload.github.com/tienlx97/react-experimental/tar.gz/acfc5aa360d39a1c90fc78dd65951b503360d397):
+  react-relay@17.0.0(react@https://codeload.github.com/tienlx97/react-experimental/tar.gz/acfc5aa360d39a1c90fc78dd65951b503360d397):
     dependencies:
       '@babel/runtime': 7.24.7
       fbjs: 3.0.5
       invariant: 2.2.4
       nullthrows: 1.1.1
       react: https://codeload.github.com/tienlx97/react-experimental/tar.gz/acfc5aa360d39a1c90fc78dd65951b503360d397
-      relay-runtime: 16.1.0
+      relay-runtime: 17.0.0
     transitivePeerDependencies:
       - encoding
 
@@ -14185,9 +14188,9 @@ snapshots:
 
   relateurl@0.2.7: {}
 
-  relay-compiler@16.1.0: {}
+  relay-compiler@17.0.0: {}
 
-  relay-runtime@16.1.0:
+  relay-runtime@17.0.0:
     dependencies:
       '@babel/runtime': 7.24.7
       fbjs: 3.0.5
