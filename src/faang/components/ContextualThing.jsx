@@ -58,8 +58,8 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import containsNode from "containsNode";
-import CSS from "CSS";
+import containsNode from "fbjs/lib/containsNode";
+import CSS from "fbjs/lib/CSSCore";
 
 import ge from "../../business/helpers/ge";
 import getOrCreateDOMID from "../../business/helpers/getOrCreateDOMID";

@@ -66,17 +66,17 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useDebounced } from "useDebounced";
-import { useGeoMouseListeners } from "useGeoMouseListeners";
 
+import useDebounced from "../../hooks/useDebounced";
 import GeoBaseHintSingletonContext from "../contexts/GeoBaseHintSingletonContext";
+import GeoPrivateBaseHintContext from "../contexts/GeoPrivateBaseHintContext";
 import GeoPrivateInvertThemeContext from "../contexts/GeoPrivateInvertThemeContext";
 import GeoPrivateLayerVisibilityContext from "../contexts/GeoPrivateLayerVisibilityContext";
 import GeoPrivateTooltipAnchorContext from "../contexts/GeoPrivateTooltipAnchorContext";
 import GeoPrivateTooltipTriggerContext from "../contexts/GeoPrivateTooltipTriggerContext";
+import useGeoMouseListeners from "../hooks/useGeoMouseListeners";
 import useGeoPrivateHintHoverBehavior from "../hooks/useGeoPrivateHintHoverBehavior";
 
-import GeoPrivateBaseHintContext from "./GeoPrivateBaseHintContext";
 import GeoPrivateHintCard from "./GeoPrivateHintCard.react";
 import { makeGeoComponent } from "./GeoPrivateMakeComponent";
 

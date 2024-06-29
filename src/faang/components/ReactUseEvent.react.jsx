@@ -53,7 +53,7 @@
  * See the LICENSE file in the root directory for details.
  */
 import { useRef } from "react";
-import ReactDOMComet from "react-dom";
+import { unstable_createEventHandle } from "react-dom";
 
 import useLayoutEffect_SAFE_FOR_SSR from "../../hooks/useLayoutEffect_SAFE_FOR_SSR";
 
@@ -64,10 +64,7 @@ const reactUseEvent_React = (event, options) => {
   options && (options.passive = undefined);
 
   if (useEventHandle === null) {
-    const setEventHandle = ReactDOMComet.unstable_createEventHandle(
-      event,
-      options
-    );
+    const setEventHandle = unstable_createEventHandle(event, options);
 
     const clears = new Map();
 

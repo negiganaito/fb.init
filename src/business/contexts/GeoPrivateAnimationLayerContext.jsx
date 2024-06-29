@@ -1,34 +1,72 @@
-__d(
-  "GeoPrivateAnimationLayerContext",
-  ["react"],
-  function (a, b, c, d, e, f, g) {
-    "use strict";
-    var h;
-    a = h || d("react");
-    b = { isAnimated: !1, isLeaving: !1, isEntered: !1 };
-    c = a.createContext(b);
-    g["default"] = c;
-  },
-  98
-);
-
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
 import React from "react";
 
-interface GeoPrivateAnimationLayerContextProps {
-  isAnimated: boolean;
-  isLeaving: boolean;
-  isEntered: boolean;
-}
-
-const defaultContextValue: GeoPrivateAnimationLayerContextProps = {
+const defaultContextValue = {
   isAnimated: false,
   isLeaving: false,
   isEntered: false,
 };
 
 const GeoPrivateAnimationLayerContext =
-  React.createContext<GeoPrivateAnimationLayerContextProps>(
-    defaultContextValue
-  );
+  React.createContext(defaultContextValue);
 
 export default GeoPrivateAnimationLayerContext;

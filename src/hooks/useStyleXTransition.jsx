@@ -1,221 +1,87 @@
-// __d(
-//   "useStyleXTransition",
-//   [
-//     "differenceSets",
-//     "mapMapToArray",
-//     "mapSet",
-//     "nullthrows",
-//     "react",
-//     "setImmediate",
-//     "sortBy",
-//     "useForceUpdate",
-//     "useIsMountedRef",
-//     "useStable",
-//   ],
-//   function (a, b, c, d, e, f, g) {
-//     "use strict";
-//     var h;
-//     b = h || d("react");
-//     var i = b.useCallback,
-//       j = b.useEffect,
-//       k = b.useLayoutEffect,
-//       l = b.useRef;
-//     e = window;
-//     var m = e.clearTimeout,
-//       n = e.requestAnimationFrame,
-//       o = e.setTimeout;
-//     function p() {
-//       var a = c("useStable")(function () {
-//         return new Map();
-//       });
-//       j(function () {
-//         return function () {
-//           return Array.from(a.values()).forEach(m);
-//         };
-//       }, []);
-//       return a;
-//     }
-//     function q() {
-//       var a = c("useForceUpdate")(),
-//         b = c("useIsMountedRef")();
-//       return c("useStable")(function () {
-//         return function () {
-//           b.current && a();
-//         };
-//       });
-//     }
-//     function a(a, b, d, e) {
-//       var f = q(),
-//         g = p(),
-//         h = c("useStable")(function () {
-//           return new Map();
-//         }),
-//         j = l(!0),
-//         r = d.enter,
-//         s = d.leave,
-//         t = d.base,
-//         u = d.duration,
-//         v = u === void 0 ? 100 : u,
-//         w = d.durationIn,
-//         x = d.durationOut,
-//         y = d.onEnter,
-//         z = d.onLeave,
-//         A = d.onEnterComplete,
-//         B = d.onLeaveComplete,
-//         C = i(
-//           function (a, b, c) {
-//             return {
-//               item: b,
-//               key: a,
-//               order: c,
-//               xstyle: [t, j.current && r],
-//               style: { transitionDuration: ((b = w) != null ? b : v) + "ms" },
-//             };
-//           },
-//           [t, r, w, v]
-//         ),
-//         D = new Map(
-//           a.map(function (a, c) {
-//             return [b(a), { item: a, order: c }];
-//           })
-//         ),
-//         E = c("differenceSets")(new Set(D.keys()), new Set(h.keys())),
-//         F = c("differenceSets")(new Set(h.keys()), new Set(D.keys())),
-//         G = new Map();
-//       u = Array.from(
-//         c("mapSet")(F, function (a) {
-//           a = c("nullthrows")(h.get(a));
-//           a = a.order;
-//           return a;
-//         })
-//       ).sort(function (a, b) {
-//         return a - b;
-//       });
-//       u.forEach(function (b, c) {
-//         b = b - c;
-//         while (b < a.length) {
-//           c = (c = G.get(b)) != null ? c : 0;
-//           G.set(b, c + 1);
-//           b += 1;
-//         }
-//       });
-//       d = c("sortBy")(
-//         [].concat(
-//           c("mapMapToArray")(h, function (a) {
-//             var b = a.key;
-//             b = D.get(b);
-//             if (b) {
-//               return babelHelpers["extends"]({}, a, {
-//                 item: b.item,
-//                 order: b.order + ((b = G.get(b.order)) != null ? b : 0),
-//               });
-//             }
-//             return a;
-//           }),
-//           Array.from(
-//             c("mapSet")(E, function (a) {
-//               var b = c("nullthrows")(D.get(a)),
-//                 d = b.item;
-//               b = b.order;
-//               return C(a, d, b);
-//             })
-//           )
-//         ),
-//         function (a) {
-//           return a.order;
-//         }
-//       );
-//       k(function () {
-//         if (e === !0) return;
-//         a.forEach(function (a, d) {
-//           var e,
-//             i = b(a),
-//             j = (e = h.get(i)) != null ? e : C(i, a, d);
-//           E.has(i) &&
-//             n(function () {
-//               var b;
-//               j.xstyle = [t, r];
-//               m(g.get(i));
-//               g.set(
-//                 i,
-//                 o(
-//                   function () {
-//                     A && A(a);
-//                   },
-//                   (b = w) != null ? b : v
-//                 )
-//               );
-//               c("setImmediate")(function () {
-//                 (j.xstyle = [t, r]), y && y(a), f();
-//               });
-//             });
-//           j.item = a;
-//           j.order = d + ((e = G.get(d)) != null ? e : 0);
-//           h.set(i, j);
-//         });
-//         Array.from(F.values()).forEach(function (a) {
-//           var b = h.get(a);
-//           if (b == null) return;
-//           var d = b.item;
-//           if (b.status !== "leaving") {
-//             var e;
-//             b.status = "leaving";
-//             b.style = { transitionDuration: ((e = x) != null ? e : v) + "ms" };
-//             n(function () {
-//               var e;
-//               b.xstyle = [t, s];
-//               m(g.get(a));
-//               g.set(
-//                 a,
-//                 o(
-//                   function () {
-//                     h["delete"](a), B && B(d), f();
-//                   },
-//                   (e = x) != null ? e : v
-//                 )
-//               );
-//               c("setImmediate")(function () {
-//                 z && z(d), f();
-//               });
-//             });
-//           }
-//         });
-//         j.current = !1;
-//       });
-//       return d;
-//     }
-//     g["default"] = a;
-//   },
-//   98
-// );
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import nullthrows from "fbjs/lib/nullthrows";
 
-import {
-  differenceSets,
-  mapMapToArray,
-  mapSet,
-  sortBy,
-  nullthrows,
-  useForceUpdate,
-  useIsMountedRef,
-  useStable,
-  setImmediate,
-} from "your-dependencies"; // Adjust the import path accordingly
-import React, { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import differenceSets from "../business/helpers/differenceSets";
+import mapMapToArray from "../business/helpers/mapMapToArray";
+import mapSet from "../business/helpers/mapSet";
+import sortBy from "../business/helpers/sortBy";
 
-const { clearTimeout, requestAnimationFrame, setTimeout } = window;
+import useForceUpdate from "./useForceUpdate";
+import useIsMountedRef from "./useIsMountedRef";
+import useStable from "./useStable";
 
-function useTimersMap(): Map<any, any> {
+function useTimersMap() {
   const timers = useStable(() => new Map());
   useEffect(() => {
     return () =>
-      Array.from(timers.values()).forEach((timeoutId: any) =>
+      Array.from(timers.values()).forEach((timeoutId) =>
         clearTimeout(timeoutId)
       );
   }, []);
   return timers;
 }
 
-function useUpdateIfMounted(): () => void {
+function useUpdateIfMounted() {
   const forceUpdate = useForceUpdate();
   const isMountedRef = useIsMountedRef();
   return useStable(() => {
@@ -227,41 +93,20 @@ function useUpdateIfMounted(): () => void {
   });
 }
 
-interface TransitionConfig<T> {
-  enter: string;
-  leave: string;
-  base: string;
-  duration?: number;
-  durationIn?: number;
-  durationOut?: number;
-  onEnter?: (item: T) => void;
-  onLeave?: (item: T) => void;
-  onEnterComplete?: (item: T) => void;
-  onLeaveComplete?: (item: T) => void;
-}
-
-interface TransitionElement<T> {
-  item: T;
-  key: string;
-  order: number;
-  xstyle: string[];
-  style: React.CSSProperties;
-  status?: string;
-}
-
-export default function useStyleXTransition<T>(
-  items: T[],
-  keyExtractor: (item: T) => string,
-  config: TransitionConfig<T>,
-  isFirstMount: boolean = true
+// eslint-disable-next-line max-params
+export default function useStyleXTransition(
+  items,
+  keyExtractor,
+  config,
+  isFirstMount = true
 ) {
   const updateIfMounted = useUpdateIfMounted();
   const timers = useTimersMap();
-  const elementsMap = useStable(() => new Map<string, TransitionElement<T>>());
+  const elementsMap = useStable(() => new Map());
   const isFirstMountRef = useRef(true);
 
   const createElement = useCallback(
-    (key: string, item: T, order: number): TransitionElement<T> => ({
+    (key, item, order) => ({
       item,
       key,
       order,
@@ -285,12 +130,12 @@ export default function useStyleXTransition<T>(
     new Set(newElementsMap.keys())
   );
 
-  const orderAdjustmentMap = new Map<number, number>();
+  const orderAdjustmentMap = new Map();
   const leavingOrders = Array.from(
     mapSet(leavingKeys, (key) => nullthrows(elementsMap.get(key)).order)
-  ).sort((a: any, b: any) => a - b);
+  ).sort((a, b) => a - b);
 
-  leavingOrders.forEach((order: any, index: number) => {
+  leavingOrders.forEach((order, index) => {
     order -= index;
     while (order < items.length) {
       const count = orderAdjustmentMap.get(order) ?? 0;
@@ -336,10 +181,12 @@ export default function useStyleXTransition<T>(
           clearTimeout(timers.get(key));
           timers.set(
             key,
+            // eslint-disable-next-line max-nested-callbacks
             setTimeout(() => {
               config.onEnterComplete && config.onEnterComplete(item);
             }, config.durationIn ?? config.duration ?? 100)
           );
+          // eslint-disable-next-line max-nested-callbacks
           setImmediate(() => {
             element.xstyle = [config.base, config.enter];
             config.onEnter && config.onEnter(item);
@@ -370,12 +217,14 @@ export default function useStyleXTransition<T>(
           clearTimeout(timers.get(key));
           timers.set(
             key,
+            // eslint-disable-next-line max-nested-callbacks
             setTimeout(() => {
               elementsMap.delete(key);
               config.onLeaveComplete && config.onLeaveComplete(item);
               updateIfMounted();
             }, config.durationOut ?? config.duration ?? 100)
           );
+          // eslint-disable-next-line max-nested-callbacks
           setImmediate(() => {
             config.onLeave && config.onLeave(item);
             updateIfMounted();

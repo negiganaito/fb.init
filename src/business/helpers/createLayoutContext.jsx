@@ -159,6 +159,7 @@ function createLayoutContext(defaultValue) {
   }
 
   Consumer.displayName = `${Consumer.name} [from some-module-id]`;
+  console.log("🚀 ~ createLayoutContext ~ LayoutContext:", LayoutContext);
 
   return {
     Provider,

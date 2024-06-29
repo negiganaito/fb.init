@@ -7,9 +7,9 @@
 import React from "react";
 
 import GeoPrivateDisabledContext from "../contexts/GeoPrivateDisabledContext";
+import geoMargin from "../helpers/geoMargin";
 
 import GeoHeading from "./GeoHeading.react";
-import geoMargin from "./geoMargin";
 import { makeGeoComponent } from "./GeoPrivateMakeComponent";
 import GeoText from "./GeoText.react";
 

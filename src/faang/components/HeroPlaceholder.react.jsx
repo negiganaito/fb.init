@@ -71,7 +71,7 @@ import {
   createThenableDescription,
   getSimpleUUID,
 } from "../../business/helpers/HeroPlaceholderUtils";
-import { HeroInteractionContext } from "../../context/CometHeroInteractionContext";
+import { Context } from "../../context/HeroInteractionContext";
 import useStable from "../../hooks/useStable";
 import HeroFallbackTracker from "../components/HeroFallbackTracker.react";
 
@@ -93,9 +93,11 @@ const HeroPlaceholder = ({
   unstable_avoidThisFallback,
   unstable_onSuspense,
 }) => {
-  const interactionContext = useContext(HeroInteractionContext.Context);
+  const interactionContext = useContext(Context);
   const interactionID = useContext(HeroInteractionIDContext);
   const generateUUID = useStable(getSimpleUUID);
+  console.log("🚀 ~ getSimpleUUID:", getSimpleUUID);
+  console.log("🚀 ~ generateUUID:", generateUUID);
   const generateThenableUUID = useStable(getSimpleUUID);
   const isHydrating = useRef(false);
 
@@ -105,7 +107,7 @@ const HeroPlaceholder = ({
         const description = name !== null ? name : "Unnamed Suspense";
         interactionContext.suspenseCallback(
           interactionID,
-          generateUUID(),
+          generateUUID,
           interactionContext.pageletStack,
           data,
           description
@@ -146,7 +148,7 @@ const HeroPlaceholder = ({
         <>
           {fallback}
           <Placeholder cb={handleComplete} />
-          <HeroFallbackTracker uuid={generateUUID()} />
+          <HeroFallbackTracker uuid={generateUUID} />
         </>
       }
       suspenseCallback={handleSuspenseCallback}

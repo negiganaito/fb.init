@@ -60,11 +60,11 @@
  */
 import { useContext, useLayoutEffect } from "react";
 
-import HeroInteractionContext from "../../context/HeroInteractionContext";
+import { Context } from "../../context/HeroInteractionContext";
 import HeroInteractionIDContext from "../../context/HeroInteractionIDContext";
 
 const HeroFallbackTracker = ({ uuid }) => {
-  const interactionContext = useContext(HeroInteractionContext.Context);
+  const interactionContext = useContext(Context);
   const interactionID = useContext(HeroInteractionIDContext);
 
   useLayoutEffect(() => {

@@ -7,19 +7,24 @@
 
 import React from "react";
 import stylex from "@stylexjs/stylex";
-import GeoBaseContextualLayer from "GeoBaseContextualLayer.react";
-import GeoBaseLayerBlurBehavior from "GeoBaseLayerBlurBehavior.react";
-import GeoBaseLayerEscapeBehavior from "GeoBaseLayerEscapeBehavior.react";
-import GeoBaseLayerExitBehavior from "GeoBaseLayerExitBehavior.react";
-import GeoBaseLayerFadeBehavior from "GeoBaseLayerFadeBehavior.react";
-import GeoDomID from "GeoDomID";
-import * as GeoLayerUtils from "GeoLayerUtils";
-import GeoPrivateAnimationLayerContainer from "GeoPrivateAnimationLayerContainer.react";
-import * as GeoPrivateHintLayerUtils from "GeoPrivateHintLayerUtils";
-import GeoPrivateResetAnimationLayer from "GeoPrivateResetAnimationLayer.react";
-import gkx from "gkx";
-import stopPropagation from "stopPropagation";
-import useGeoPrivateAnimationLayerStyles from "useGeoPrivateAnimationLayerStyles";
+
+import stopPropagation from "../helpers/stopPropagation";
+import useGeoPrivateAnimationLayerStyles from "../hooks/useGeoPrivateAnimationLayerStyles";
+
+import GeoBaseContextualLayer from "./GeoBaseContextualLayer.react";
+import GeoBaseLayerBlurBehavior from "./GeoBaseLayerBlurBehavior.react";
+import GeoBaseLayerEscapeBehavior from "./GeoBaseLayerEscapeBehavior.react";
+import GeoBaseLayerExitBehavior from "./GeoBaseLayerExitBehavior.react";
+import GeoBaseLayerFadeBehavior from "./GeoBaseLayerFadeBehavior.react";
+import { useApplyGeoDomIDsDirectly } from "./GeoDomID";
+import { mapPosition } from "./GeoLayerUtils";
+import GeoPrivateAnimationLayerContainer from "./GeoPrivateAnimationLayerContainer.react";
+import {
+  useLayerContentContainerStyle,
+  useLayerContentStyle,
+  useTooltipContainerStyle,
+} from "./GeoPrivateHintLayerUtils";
+import GeoPrivateResetAnimationLayer from "./GeoPrivateResetAnimationLayer.react";
 
 const GeoPrivateHintCard = ({
   align,
@@ -51,11 +56,11 @@ const GeoPrivateHintCard = ({
           align={align}
           containerRef={layerRef}
           context={context}
-          position={GeoLayerUtils.mapPosition(position)}
+          position={mapPosition(position)}
         >
           <div
             className={stylex(
-              GeoPrivateHintLayerUtils.useLayerContentContainerStyle({
+              useLayerContentContainerStyle({
                 isPositionVertical,
               })
             )}
@@ -85,7 +90,8 @@ const GeoPrivateHintCard = ({
 GeoPrivateHintCard.displayName = "GeoPrivateHintCard";
 
 const VisibilityLayerWrapper = ({ isShown, children }) => {
-  return gkx("24835") ? (
+  const GKX_24835 = true;
+  return GKX_24835 ? (
     <GeoPrivateAnimationLayerContainer isLayerShown={isShown}>
       {children}
     </GeoPrivateAnimationLayerContainer>
@@ -99,18 +105,20 @@ const VisibilityLayerWrapper = ({ isShown, children }) => {
 VisibilityLayerWrapper.displayName = "VisibilityLayerWrapper";
 
 const HintCardContent = ({ children, id, popoverType }) => {
-  const domIdProps = GeoDomID.useApplyGeoDomIDsDirectly({ id });
+  const GKX_24835 = true;
+
+  const domIdProps = useApplyGeoDomIDsDirectly({ id });
   const animationLayerStyles = useGeoPrivateAnimationLayerStyles({
     elevation: 2,
   });
   return (
     <div
       className={stylex(
-        GeoPrivateHintLayerUtils.useLayerContentStyle(),
-        GeoPrivateHintLayerUtils.useTooltipContainerStyle({
+        useLayerContentStyle(),
+        useTooltipContainerStyle({
           type: popoverType,
         }),
-        gkx("24835") && animationLayerStyles
+        GKX_24835 && animationLayerStyles
       )}
       onClick={stopPropagation}
       onMouseDown={stopPropagation}

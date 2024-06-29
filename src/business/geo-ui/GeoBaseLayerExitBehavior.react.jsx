@@ -1,67 +1,17 @@
-// __d(
-//   "GeoBaseLayerExitBehavior.react",
-//   ["react", "useGeoPrivateLayerBehavior"],
-//   function (a, b, c, d, e, f, g) {
-//     "use strict";
-//     var h;
-//     h || (h = d("react"));
-//     b = h;
-//     var i = b.useCallback,
-//       j = b.useRef;
-//     function a(a) {
-//       var b = a.children,
-//         d = a.delay,
-//         e = d === void 0 ? 0 : d,
-//         f = a.onExit,
-//         g = j(null),
-//         h = i(function () {
-//           window.clearTimeout(g.current);
-//         }, []),
-//         k = i(
-//           function () {
-//             g.current = window.setTimeout(f, e);
-//           },
-//           [e, f]
-//         ),
-//         l = j(null);
-//       d = i(
-//         function (a) {
-//           l.current == null ? void 0 : l.current(),
-//             (l.current = null),
-//             a != null &&
-//               (a.addEventListener("mouseenter", h),
-//               a.addEventListener("mouseleave", k),
-//               (l.current = function () {
-//                 a.removeEventListener("mouseenter", h),
-//                   a.removeEventListener("mouseleave", k);
-//               }));
-//         },
-//         [h, k]
-//       );
-//       return c("useGeoPrivateLayerBehavior")({ ref: d })(b);
-//     }
-//     a.displayName = a.name + " [from " + f.id + "]";
-//     g["default"] = a;
-//   },
-//   98
-// );
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
 
-import React, { useCallback, useRef } from "react";
-import useGeoPrivateLayerBehavior from "useGeoPrivateLayerBehavior";
+import { useCallback, useRef } from "react";
 
-interface GeoBaseLayerExitBehaviorProps {
-  children: React.ReactNode;
-  delay?: number;
-  onExit: () => void;
-}
+import useGeoPrivateLayerBehavior from "../hooks/useGeoPrivateLayerBehavior";
 
-const GeoBaseLayerExitBehavior: React.FC<GeoBaseLayerExitBehaviorProps> = ({
-  children,
-  delay = 0,
-  onExit,
-}) => {
-  const timeoutRef = useRef<number | null>(null);
-  const cleanupRef = useRef<(() => void) | null>(null);
+const GeoBaseLayerExitBehavior = ({ children, delay = 0, onExit }) => {
+  const timeoutRef = useRef(null);
+  const cleanupRef = useRef(null);
 
   const clearTimeoutCallback = useCallback(() => {
     if (timeoutRef.current !== null) {
@@ -74,7 +24,7 @@ const GeoBaseLayerExitBehavior: React.FC<GeoBaseLayerExitBehaviorProps> = ({
   }, [delay, onExit]);
 
   const handleRef = useCallback(
-    (node: HTMLElement | null) => {
+    (node) => {
       cleanupRef.current?.();
       cleanupRef.current = null;
 

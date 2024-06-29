@@ -60,7 +60,7 @@
  */
 import React from "react";
 
-import GeoPrivateIcon from "./GeoPrivateIcon.react";
+import GeoPrivateIcon from "./GeoPrivateIcon";
 import { makeGeoComponent } from "./GeoPrivateMakeComponent";
 
 const GeoIcon = (props) => {

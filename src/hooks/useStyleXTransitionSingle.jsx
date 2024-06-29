@@ -1,45 +1,68 @@
-__d(
-  "useStyleXTransitionSingle",
-  ["useStyleXTransition"],
-  function (a, b, c, d, e, f, g) {
-    "use strict";
-    function a(a, b) {
-      a = c("useStyleXTransition")(
-        a != null ? [a] : [],
-        function () {
-          return 0;
-        },
-        b
-      );
-      return a[0];
-    }
-    g["default"] = a;
-  },
-  98
-);
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+import useStyleXTransition from "./useStyleXTransition";
 
-import useStyleXTransition, {
-  UseStyleXTransitionProps,
-} from "useStyleXTransition";
-
-interface UseStyleXTransitionSingleProps extends UseStyleXTransitionProps {
-  base?: any[];
-  enter?: any[];
-  leave?: any[];
-  durationIn?: number;
-  durationOut?: number;
-  onEnter?: () => void;
-  onEnterComplete?: () => void;
-  onLeave?: () => void;
-  onLeaveComplete?: () => void;
-}
-
-function useStyleXTransitionSingle(
-  item: any | null,
-  options: UseStyleXTransitionSingleProps
-): any {
+function useStyleXTransitionSingle(item, options) {
   const transition = useStyleXTransition(
-    item != null ? [item] : [],
+    item !== null ? [item] : [],
     () => 0,
     options
   );

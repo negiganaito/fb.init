@@ -59,22 +59,24 @@
  * See the LICENSE file in the root directory for details.
  */
 import React, { useContext } from "react";
-import GeoBaseSpacingLayout from "GeoBaseSpacingLayout.react";
-import GeoCloseButton from "GeoCloseButton.react";
-import geoOffset from "geoOffset";
-import GeoPrivateBaseHintContext from "GeoPrivateBaseHintContext";
+import stylex from "@stylexjs/stylex";
+
+import Image from "../../faang/components/Image.react";
+import GeoPrivateBaseHintContext from "../contexts/GeoPrivateBaseHintContext";
+import geoOffset from "../helpers/geoOffset";
+import useGeoPrivateNoticeStyle from "../hooks/useGeoPrivateNoticeStyle";
+
+import GeoBaseSpacingLayout from "./GeoBaseSpacingLayout.react";
+import GeoCloseButton from "./GeoCloseButton.react";
 import {
   getStatus,
   getStatusIcon,
   useCloseButtonStyle,
   useHeaderWrapperStyle,
-} from "GeoPrivateHintLayerUtils";
-import { makeGeoComponent } from "GeoPrivateMakeComponent";
-import GeoTextPairing from "GeoTextPairing.react";
-import GeoVStack from "GeoVStack.react";
-import Image from "Image.react";
-import stylex from "stylex";
-import useGeoPrivateNoticeStyle from "useGeoPrivateNoticeStyle";
+} from "./GeoPrivateHintLayerUtils";
+import { makeGeoComponent } from "./GeoPrivateMakeComponent";
+import GeoTextPairing from "./GeoTextPairing.react";
+import GeoVStack from "./GeoVStack.react";
 
 const GeoPrivateHintContent = ({
   additionalContent,

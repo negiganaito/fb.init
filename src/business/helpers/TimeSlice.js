@@ -377,7 +377,7 @@ const ErrorPubSub = {
 };
 
 // eslint-disable-next-line max-params
-function applyWithGuard(fn, context, args, guardOptions) {
+export function applyWithGuard(fn, context, args, guardOptions) {
   guardOptions?.name &&
     (guardOptions.deferredSource = guardOptions.deferredSource ?? {});
   guardOptions.deferredSource = guardOptions.deferredSource ?? {};

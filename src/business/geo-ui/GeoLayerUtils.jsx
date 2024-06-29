@@ -1,39 +1,64 @@
-__d(
-  "GeoLayerUtils",
-  [],
-  function (a, b, c, d, e, f) {
-    "use strict";
-    function a(a) {
-      switch (a) {
-        case "left":
-          return "start";
-        case "center":
-          return "middle";
-        case "right":
-          return "end";
-      }
-      throw new Error("Unknown align");
-    }
-    function b(a) {
-      switch (a) {
-        case "below":
-          return "below";
-        case "above":
-          return "above";
-        case "left":
-          return "start";
-        case "right":
-          return "end";
-      }
-      throw new Error("Unknown position");
-    }
-    f.mapAlign = a;
-    f.mapPosition = b;
-  },
-  66
-);
-
-export function mapAlign(align: string): string {
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+export function mapAlign(align) {
   switch (align) {
     case "left":
       return "start";
@@ -46,7 +71,7 @@ export function mapAlign(align: string): string {
   }
 }
 
-export function mapPosition(position: string): string {
+export function mapPosition(position) {
   switch (position) {
     case "below":
       return "below";

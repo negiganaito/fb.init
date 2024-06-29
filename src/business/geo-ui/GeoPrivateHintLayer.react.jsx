@@ -60,10 +60,10 @@
  */
 import React, { useContext, useRef } from "react";
 import stylex from "@stylexjs/stylex";
-import fbicon from "fbicon";
 
 import useMergeRefs from "../../hooks/useMergeRefs";
 import GeoPrivateTooltipTriggerContext from "../contexts/GeoPrivateTooltipTriggerContext";
+import fbicon from "../helpers/fbicon";
 import ix from "../helpers/ix";
 
 import GeoBaseLineHeightAlign from "./GeoBaseLineHeightAlign.react";

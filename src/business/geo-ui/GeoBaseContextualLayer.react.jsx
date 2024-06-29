@@ -59,14 +59,15 @@
  * See the LICENSE file in the root directory for details.
  */
 import React, { useContext, useMemo } from "react";
-import { BaseContextualLayerAnchorRootContext } from "BaseContextualLayerAnchorRootContext";
-import GeoPrivateBaseContextualLayer from "GeoPrivateBaseContextualLayer.react";
-import { GeoPrivateLayerContext } from "GeoPrivateLayerContext";
-import { GeoPrivateLayerPositionContext } from "GeoPrivateLayerPositionContext";
-import { makeGeoComponent } from "GeoPrivateMakeComponent";
-import useGeoPrivateLegacyLayerCompatibility from "useGeoPrivateLegacyLayerCompatibility";
 
 import useMergeRefs from "../../hooks/useMergeRefs";
+import BaseContextualLayerAnchorRootContext from "../contexts/BaseContextualLayerAnchorRootContext";
+import GeoPrivateLayerContext from "../contexts/GeoPrivateLayerContext";
+import GeoPrivateLayerPositionContext from "../contexts/GeoPrivateLayerPositionContext";
+import GeoPrivateBaseContextualLayer from "../geo-ui/GeoPrivateBaseContextualLayer.react";
+import useGeoPrivateLegacyLayerCompatibility from "../hooks/useGeoPrivateLegacyLayerCompatibility";
+
+import { makeGeoComponent } from "./GeoPrivateMakeComponent";
 
 const styles = { root: { zIndex: "xbqvh2t", $$css: true } };
 

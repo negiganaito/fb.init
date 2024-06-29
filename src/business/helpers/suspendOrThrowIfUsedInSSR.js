@@ -5,9 +5,9 @@
  * See the LICENSE file in the root directory for details.
  */
 
-import { CometSSRClientRender } from "../../faang/components/CometSSRClientRender";
+import isInBrowser from "fbjs/lib/ExecutionEnvironment";
 
-import { isInBrowser } from "./ExecutionEnvironment";
+import { CometSSRClientRender } from "../../faang/components/CometSSRClientRender";
 
 function suspendOrThrowIfUsedInSSR(message) {
   if (!isInBrowser) {

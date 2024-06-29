@@ -1,42 +1,74 @@
-// __d(
-//   "GeoPrivateResetAnimationLayer.react",
-//   ["GeoPrivateAnimationLayerContext", "react"],
-//   function (a, b, c, d, e, f, g) {
-//     "use strict";
-//     var h,
-//       i = h || d("react"),
-//       j = { isAnimated: !1, isLeaving: !1, isEntered: !1 };
-//     function a(a) {
-//       a = a.children;
-//       return i.jsx(c("GeoPrivateAnimationLayerContext").Provider, {
-//         value: j,
-//         children: a,
-//       });
-//     }
-//     a.displayName = a.name + " [from " + f.id + "]";
-//     g["default"] = a;
-//   },
-//   98
-// );
-
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
 import React from "react";
-import GeoPrivateAnimationLayerContext, {
-  GeoPrivateAnimationLayerContextProps,
-} from "GeoPrivateAnimationLayerContext";
 
-const defaultContextValue: GeoPrivateAnimationLayerContextProps = {
+import GeoPrivateAnimationLayerContext from "../contexts/GeoPrivateAnimationLayerContext";
+
+const defaultContextValue = {
   isAnimated: false,
   isLeaving: false,
   isEntered: false,
 };
 
-interface GeoPrivateResetAnimationLayerProps {
-  children: React.ReactNode;
-}
-
-const GeoPrivateResetAnimationLayer: React.FC<
-  GeoPrivateResetAnimationLayerProps
-> = ({ children }) => {
+const GeoPrivateResetAnimationLayer = ({ children }) => {
   return (
     <GeoPrivateAnimationLayerContext.Provider value={defaultContextValue}>
       {children}

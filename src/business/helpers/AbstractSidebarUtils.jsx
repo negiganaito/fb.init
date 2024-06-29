@@ -1,27 +1,64 @@
-// __d(
-//   "AbstractSidebarUtils",
-//   [],
-//   function (a, b, c, d, e, f) {
-//     "use strict";
-//     function a(a) {
-//       var b,
-//         c = a.nativeEvent instanceof MouseEvent ? a.nativeEvent : null;
-//       a = a.nativeEvent instanceof KeyboardEvent ? a.nativeEvent : null;
-//       b = (b = c) != null ? b : a;
-//       a = (c == null ? void 0 : c.button) === 0;
-//       c =
-//         (b == null ? void 0 : b.altKey) ||
-//         (b == null ? void 0 : b.ctrlKey) ||
-//         (b == null ? void 0 : b.metaKey) ||
-//         (b == null ? void 0 : b.shiftKey);
-//       return a && !c;
-//     }
-//     f.isRegularActivationEvent = a;
-//   },
-//   66
-// );
-
-function isRegularActivationEvent(event: React.SyntheticEvent): boolean {
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+function isRegularActivationEvent(event) {
   const mouseEvent =
     event.nativeEvent instanceof MouseEvent ? event.nativeEvent : null;
   const keyboardEvent =

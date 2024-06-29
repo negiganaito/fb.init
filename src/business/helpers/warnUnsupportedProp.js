@@ -58,10 +58,9 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import warning from "warning";
 
 function warnUnsupportedProp(componentName, propName, additionalMessage) {
-  warning(
+  console.warning(
     false,
     "%s component does not support prop `%s`.%s",
     componentName,

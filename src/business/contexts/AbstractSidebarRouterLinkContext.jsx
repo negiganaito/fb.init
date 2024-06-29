@@ -59,7 +59,8 @@
  * See the LICENSE file in the root directory for details.
  */
 import { createContext } from "react";
-import AbstractSidebarDefaultRouterLink from "AbstractSidebarDefaultRouterLink.react";
+
+import AbstractSidebarDefaultRouterLink from "../components/AbstractSidebarDefaultRouterLink.react";
 
 const AbstractSidebarRouterLinkContext = createContext(
   AbstractSidebarDefaultRouterLink

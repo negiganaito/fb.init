@@ -8,8 +8,8 @@
 import React, { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import useDocumentTranslationStatusObserver from "../../hooks/useDocumentTranslationStatusObserver";
 import DocumentTranslationStatusContext from "../contexts/DocumentTranslationStatusContext";
-import useDocumentTranslationStatusObserver from "../hooks/useDocumentTranslationStatusObserver";
 
 function DocumentTranslationStatusProvider({ children }) {
   const statusObserver = useDocumentTranslationStatusObserver();

@@ -1,26 +1,71 @@
-// __d(
-//   "useCometRouteTracePolicy",
-//   ["CometRouterRouteTracePolicyContext", "react"],
-//   function (a, b, c, d, e, f, g) {
-//     "use strict";
-//     var h,
-//       i = (h || d("react")).useContext,
-//       j = "comet.app";
-//     function a() {
-//       var a;
-//       return (a = i(c("CometRouterRouteTracePolicyContext"))) != null ? a : j;
-//     }
-//     g["default"] = a;
-//   },
-//   98
-// );
-
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
 import { useContext } from "react";
-import CometRouterRouteTracePolicyContext from "CometRouterRouteTracePolicyContext";
 
-const DEFAULT_ROUTE_TRACE_POLICY = "comet.app";
+import CometRouterRouteTracePolicyContext from "../context/CometRouterRouteTracePolicyContext";
 
-function useCometRouteTracePolicy(): string {
+// const DEFAULT_ROUTE_TRACE_POLICY = "comet.app";
+const DEFAULT_ROUTE_TRACE_POLICY = "bizkit.home";
+
+function useCometRouteTracePolicy() {
   const contextValue = useContext(CometRouterRouteTracePolicyContext);
   return contextValue ?? DEFAULT_ROUTE_TRACE_POLICY;
 }

@@ -1,36 +1,68 @@
-// __d(
-//   "GeoBaseLayerEscapeBehavior.react",
-//   ["react", "useGeoPrivateLayerBehavior", "useGeoPrivateOnEscape"],
-//   function (a, b, c, d, e, f, g) {
-//     "use strict";
-//     var h;
-//     h || d("react");
-//     function a(a) {
-//       var b = a.children,
-//         d = a.contain;
-//       d = d === void 0 ? !1 : d;
-//       a = a.onEscape;
-//       a = c("useGeoPrivateOnEscape")(a, { contain: d });
-//       d = c("useGeoPrivateLayerBehavior")({ ref: a });
-//       return d(b);
-//     }
-//     a.displayName = a.name + " [from " + f.id + "]";
-//     g["default"] = a;
-//   },
-//   98
-// );
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
 
-import React from "react";
-import useGeoPrivateLayerBehavior from "useGeoPrivateLayerBehavior";
-import useGeoPrivateOnEscape from "useGeoPrivateOnEscape";
+import useGeoPrivateLayerBehavior from "../hooks/useGeoPrivateLayerBehavior";
+import useGeoPrivateOnEscape from "../hooks/useGeoPrivateOnEscape";
 
-interface GeoBaseLayerEscapeBehaviorProps {
-  children: React.ReactNode;
-  contain?: boolean;
-  onEscape: () => void;
-}
-
-const GeoBaseLayerEscapeBehavior: React.FC<GeoBaseLayerEscapeBehaviorProps> = ({
+const GeoBaseLayerEscapeBehavior = ({
   children,
   contain = false,
   onEscape,

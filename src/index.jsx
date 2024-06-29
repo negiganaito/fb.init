@@ -10,17 +10,16 @@ import ReactDOM from "react-dom/client";
 // import inject from "@stylexjs/dev-runtime";
 import "../i18n/fbtInit";
 
-import "./styles/app.css";
+import App from "./App";
 
+import "./styles/app.css";
 // inject({
 //   classNamePrefix: "x",
 //   dev: true,
 //   test: false,
 // });
-
 const rootElement = document.getElementById("root");
-
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
-  root.render(<div>Hello</div>);
+  root.render(<App />);
 }

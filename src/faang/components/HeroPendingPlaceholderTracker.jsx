@@ -6,14 +6,14 @@
  */
 const interactions = new Map();
 
-export function addInteraction(id) {
+function addInteraction(id) {
   if (!interactions.has(id)) {
     interactions.set(id, new Map());
   }
 }
 
 // eslint-disable-next-line max-params
-export function addPlaceholder(
+function addPlaceholder(
   interactionId,
   placeholderId,
   description,
@@ -26,22 +26,31 @@ export function addPlaceholder(
   }
 }
 
-export function dump(interactionId) {
+function dump(interactionId) {
   const interaction = interactions.get(interactionId);
   return interaction ? Array.from(interaction.values()) : [];
 }
 
-export function removeInteraction(interactionId) {
+function removeInteraction(interactionId) {
   interactions.delete(interactionId);
 }
 
-export function removePlaceholder(interactionId, placeholderId) {
+function removePlaceholder(interactionId, placeholderId) {
   const interaction = interactions.get(interactionId);
   if (interaction) {
     interaction.delete(placeholderId);
   }
 }
 
-export function isInteractionActive(interactionId) {
+function isInteractionActive(interactionId) {
   return interactions.has(interactionId);
 }
+
+export {
+  addInteraction,
+  addPlaceholder,
+  dump,
+  isInteractionActive,
+  removeInteraction,
+  removePlaceholder,
+};

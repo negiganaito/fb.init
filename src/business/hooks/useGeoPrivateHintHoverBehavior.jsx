@@ -58,10 +58,9 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import useCallbackListener from "useCallbackListener";
-import useDebouncedValue from "useDebouncedValue";
-
 import useBoolean from "../../hooks/useBoolean";
+import useCallbackListener from "../../hooks/useCallbackListener";
+import useDebouncedValue from "../../hooks/useDebouncedValue";
 import useGeoPrivateLazyHoverBehavior from "../hooks/useGeoPrivateLazyHoverBehavior";
 
 const useGeoPrivateHintHoverBehavior = ({ renderDelay, onToggle }) => {

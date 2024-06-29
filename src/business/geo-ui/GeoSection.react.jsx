@@ -1,116 +1,74 @@
-// __d(
-//   "GeoSection.react",
-//   [
-//     "GeoPrivateCardLayoutContext",
-//     "GeoPrivateCardSectionContext",
-//     "GeoPrivateLoggingRegion.react",
-//     "GeoPrivateMakeComponent",
-//     "GeoPrivateSectionStyleContext",
-//     "emptyFunction",
-//     "react",
-//     "stylex",
-//     "useGeoTheme",
-//     "useMergeRefs",
-//   ],
-//   function (a, b, c, d, e, f, g) {
-//     "use strict";
-//     var h,
-//       i,
-//       j = i || (i = d("react")),
-//       k = i.useContext,
-//       l = {
-//         root: {
-//           flexGrow: "x1iyjqo2",
-//           flexShrink: "xs83m0k",
-//           flexBasis: "xdl72j9",
-//           height: "x3igimt",
-//           maxHeight: "xedcshv",
-//           minHeight: "x1t2pt76",
-//           $$css: !0,
-//         },
-//         noBorder: {
-//           borderTopWidth: "x972fbf",
-//           borderEndWidth: "xcfux6l",
-//           borderBottomWidth: "x1qhh985",
-//           borderStartWidth: "xm0m39n",
-//           $$css: !0,
-//         },
-//       };
-//     function a(a) {
-//       var b = a.children,
-//         d = a.containerRef,
-//         e = a["data-testid"];
-//       e = a.variant;
-//       var f = a.xstyle;
-//       a = c("useGeoTheme")();
-//       var g = a.selectBorderRadius,
-//         i = a.selectSpacing;
-//       a = a.selectStaticBackgroundColor;
-//       var m = c("GeoPrivateCardLayoutContext").useLayoutContext(),
-//         n = m[0];
-//       m = m[1];
-//       m = c("useMergeRefs")(m, d);
-//       var o = k(c("GeoPrivateSectionStyleContext"));
-//       d = k(c("GeoPrivateCardSectionContext"));
-//       var p = e === "secondary",
-//         q = [
-//           i({
-//             context: "container",
-//             bounds: "internal",
-//             relation: "component",
-//           }),
-//           e === "secondary" && a({ isMuted: !0, surface: "wash" }),
-//           e === "secondary" && g({ context: "container" }),
-//         ];
-//       return j.jsx(c("GeoPrivateLoggingRegion.react"), {
-//         inputRef: m,
-//         isDependentRegion: d,
-//         name: "GeoSection",
-//         children: function (a) {
-//           return j.jsx("div", {
-//             className: (h || (h = c("stylex")))([
-//               l.root,
-//               f,
-//               q,
-//               n,
-//               p && l.noBorder,
-//               o,
-//             ]),
-//             "data-testid": void 0,
-//             ref: a,
-//             children: j.jsx(c("GeoPrivateCardLayoutContext").Provider, {
-//               value: c("emptyFunction"),
-//               children: b,
-//             }),
-//           });
-//         },
-//       });
-//     }
-//     a.displayName = a.name + " [from " + f.id + "]";
-//     b = d("GeoPrivateMakeComponent").makeGeoComponent("GeoSection", a);
-//     g["default"] = b;
-//   },
-//   98
-// );
-
-import React, { useContext, ReactNode, Ref } from "react";
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+import React, { useContext } from "react";
+import stylex from "@stylexjs/stylex";
+import emptyFunction from "emptyFunction";
 import GeoPrivateCardLayoutContext from "GeoPrivateCardLayoutContext";
 import GeoPrivateCardSectionContext from "GeoPrivateCardSectionContext";
 import GeoPrivateLoggingRegion from "GeoPrivateLoggingRegion.react";
-import { makeGeoComponent } from "GeoPrivateMakeComponent";
 import GeoPrivateSectionStyleContext from "GeoPrivateSectionStyleContext";
-import emptyFunction from "emptyFunction";
-import { stylex } from "stylex";
 import useGeoTheme from "useGeoTheme";
 import useMergeRefs from "useMergeRefs";
 
-interface GeoSectionProps {
-  children: ReactNode;
-  containerRef?: Ref<HTMLDivElement>;
-  "data-testid"?: string;
-  variant?: "primary" | "secondary";
-  xstyle?: any; // Adjust the type based on your styling solution
-}
+import { makeGeoComponent } from "./GeoPrivateMakeComponent";
 
 const styles = {
   root: {
@@ -129,7 +87,7 @@ const styles = {
   },
 };
 
-const GeoSection: React.FC<GeoSectionProps> = ({
+const GeoSection = ({
   children,
   containerRef,
   "data-testid": dataTestId,

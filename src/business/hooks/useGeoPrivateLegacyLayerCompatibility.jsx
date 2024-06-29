@@ -59,7 +59,8 @@
  * See the LICENSE file in the root directory for details.
  */
 import { useEffect, useRef } from "react";
-import { ContextualThing } from "some-module";
+
+import { register } from "../../faang/components/ContextualThing";
 
 function useGeoPrivateLegacyLayerCompatibility(element) {
   const ref = useRef(null);
@@ -71,7 +72,7 @@ function useGeoPrivateLegacyLayerCompatibility(element) {
 
     if (currentElement === null || targetElement === null) return;
 
-    ContextualThing.register(currentElement, targetElement);
+    register(currentElement, targetElement);
     currentElement.classList.add("uiContextualLayerParent");
   }, [element]);
 

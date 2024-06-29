@@ -1,435 +1,67 @@
-// __d(
-//   "GeoMediaItem.react",
-//   [
-//     "ix",
-//     "DangerouslyAccessReactElementInternals_DO_NOT_USE_IN_NEW_CODE",
-//     "GeoBaseText.react",
-//     "GeoGlimmer.react",
-//     "GeoPlatformIcon.react",
-//     "GeoPrivateIcon.react",
-//     "GeoPrivateMakeComponent",
-//     "GeoPrivateMediaItemAddOn.react",
-//     "GeoPrivateMediaItemContext",
-//     "GeoPrivateMediaItemGroupContext",
-//     "GeoPrivateMediaItemStatusAddOn.react",
-//     "GeoPrivateMediaItemSurfaceContext",
-//     "GeoPrivatePlatformIconUtils",
-//     "fbicon",
-//     "isFalsey",
-//     "react",
-//     "stylex",
-//     "useGeoPrivateMediaLoadingStatus",
-//     "useGeoTheme",
-//   ],
-//   function (a, b, c, d, e, f, g, h) {
-//     "use strict";
-//     var i,
-//       j,
-//       k = j || (j = d("react")),
-//       l = j.useContext,
-//       m = {
-//         root: {
-//           display: "x1lliihq",
-//           position: "x1n2onr6",
-//           flexShrink: "x2lah0s",
-//           $$css: !0,
-//         },
-//         glimmer: {
-//           start: "x17qophe",
-//           left: null,
-//           right: null,
-//           position: "x10l6tqk",
-//           top: "x13vifvy",
-//           zIndex: "x1vjfegm",
-//           $$css: !0,
-//         },
-//       };
-//     function n(a) {
-//       var b = a.ratio;
-//       a = a.size;
-//       var d = c("useGeoTheme")(),
-//         e = d.selectBorderRadius;
-//       d = d.selectSize;
-//       return [
-//         m.root,
-//         d({ size: a, ratio: b }),
-//         e({ context: b === "circle" ? "rounded" : "content" }),
-//       ];
-//     }
-//     function a(a) {
-//       var b = a.containerRef,
-//         d = a["data-testid"];
-//       d = a.description;
-//       var e = a.fit;
-//       e = e === void 0 ? "none" : e;
-//       var f = a.hasMediaBackground;
-//       f = f === void 0 ? !0 : f;
-//       var g = a.isDisabled;
-//       g = g === void 0 ? !1 : g;
-//       var h = a.isLoading;
-//       h = h === void 0 ? !1 : h;
-//       var j = a.media,
-//         o = a.platform,
-//         p = a.ratio;
-//       p = p === void 0 ? "square" : p;
-//       var r = a.size;
-//       r = r === void 0 ? 32 : r;
-//       var u = a.status;
-//       a = a.xstyle;
-//       var w = t(j),
-//         x = l(c("GeoPrivateMediaItemGroupContext")),
-//         y = x.ratio;
-//       x = x.size;
-//       var z = l(c("GeoPrivateMediaItemContext"));
-//       z = z.isOverflowItem;
-//       z = (z = z) != null ? z : !1;
-//       y = (y = y) != null ? y : p;
-//       x = (p = x) != null ? p : r;
-//       p = c("useGeoPrivateMediaLoadingStatus")(j);
-//       r = p.isLoading;
-//       var A = p.onLoad;
-//       p = p.ref;
-//       h = h || (w && r);
-//       r = n({ size: x, ratio: y });
-//       return !h && j == null
-//         ? null
-//         : k.jsxs("div", {
-//             className: (i || (i = c("stylex")))(r, a),
-//             "data-testid": void 0,
-//             ref: b,
-//             children: [
-//               k.jsxs(q, {
-//                 size: x,
-//                 children: [
-//                   h
-//                     ? k.jsx(c("GeoGlimmer.react"), {
-//                         shape: y === "circle" ? "rounded" : "rectangle",
-//                         xstyle: m.glimmer,
-//                       })
-//                     : null,
-//                   j != null
-//                     ? k.jsx(s, {
-//                         description: d,
-//                         fit: e,
-//                         hasMediaBackground: f,
-//                         isDisabled: g,
-//                         isImage: w,
-//                         isLoading: h,
-//                         media: j,
-//                         onLoad: A,
-//                         ref: p,
-//                         size: x,
-//                       })
-//                     : null,
-//                 ],
-//               }),
-//               !z &&
-//                 u != null &&
-//                 k.jsx(c("GeoPrivateMediaItemStatusAddOn.react"), {
-//                   ratio: y,
-//                   size: x,
-//                   status: u,
-//                 }),
-//               !z && o != null && k.jsx(v, { platform: o, ratio: y, size: x }),
-//             ],
-//           });
-//     }
-//     a.displayName = a.name + " [from " + f.id + "]";
-//     var o = {
-//         wrapper: {
-//           borderTopStartRadius: "x1o1ewxj",
-//           borderTopEndRadius: "x3x9cwd",
-//           borderBottomEndRadius: "x1e5q0jg",
-//           borderBottomStartRadius: "x13rtm0m",
-//           height: "x5yr21d",
-//           position: "x1n2onr6",
-//           width: "xh8yej3",
-//           $$css: !0,
-//         },
-//         denseStroke: {
-//           paddingTop: "x4p5aij",
-//           paddingEnd: "x19um543",
-//           paddingBottom: "x1j85h84",
-//           paddingStart: "x1m6msm",
-//           $$css: !0,
-//         },
-//         sparseStroke: {
-//           paddingTop: "x1nn3v0j",
-//           paddingEnd: "xg83lxy",
-//           paddingBottom: "x1120s5i",
-//           paddingStart: "x1h0ha7o",
-//           $$css: !0,
-//         },
-//       },
-//       p = function (a) {
-//         return a < 48 ? "dense" : "sparse";
-//       };
-//     function q(a) {
-//       var b = a.children;
-//       a = a.size;
-//       var d = l(c("GeoPrivateMediaItemGroupContext"));
-//       d = d.hasStroke;
-//       var e = c("useGeoTheme")();
-//       e = e.selectStaticBackgroundColor;
-//       a = p(a) === "dense";
-//       e = [
-//         o.wrapper,
-//         e({ surface: "content" }),
-//         a && o.denseStroke,
-//         !a && o.sparseStroke,
-//       ];
-//       return d
-//         ? k.jsx("div", {
-//             className: (i || (i = c("stylex")))(e),
-//             children: k.jsx("div", {
-//               className:
-//                 "x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x5yr21d x1n2onr6 xh8yej3",
-//               children: b,
-//             }),
-//           })
-//         : k.jsx(k.Fragment, { children: b });
-//     }
-//     q.displayName = q.name + " [from " + f.id + "]";
-//     var r = {
-//         root: {
-//           position: "x10l6tqk",
-//           overflowX: "x6ikm8r",
-//           overflowY: "x10wlt62",
-//           top: "x13vifvy",
-//           start: "x17qophe",
-//           left: null,
-//           right: null,
-//           width: "xh8yej3",
-//           height: "x5yr21d",
-//           borderTopStartRadius: "x1o1ewxj",
-//           borderTopEndRadius: "x3x9cwd",
-//           borderBottomEndRadius: "x1e5q0jg",
-//           borderBottomStartRadius: "x13rtm0m",
-//           $$css: !0,
-//         },
-//         loading: { opacity: "xg01cxk", $$css: !0 },
-//         backgroundTransparent: { backgroundColor: "xjbqb8w", $$css: !0 },
-//         fitNone: {
-//           ":not([stylex-hack]) > *_left": "xosibs0",
-//           ":not([stylex-hack]) > *_start": null,
-//           ":not([stylex-hack]) > *_end": null,
-//           ":not([stylex-hack]) > *_position": "xt24udd",
-//           ":not([stylex-hack]) > *_top": "xw53kvy",
-//           ":not([stylex-hack]) > *_transform": "x1dka6rp",
-//           $$css: !0,
-//         },
-//         fit: {
-//           ":not([stylex-hack]) img_height": "xtd80it",
-//           ":not([stylex-hack]) img_start": "x1jgp7su",
-//           ":not([stylex-hack]) img_left": null,
-//           ":not([stylex-hack]) img_right": null,
-//           ":not([stylex-hack]) img_position": "x1q1rkhy",
-//           ":not([stylex-hack]) img_top": "x18tuezv",
-//           ":not([stylex-hack]) img_width": "x1xuqjiz",
-//           $$css: !0,
-//         },
-//         fitCover: { ":not([stylex-hack]) img_objectFit": "xhl3afg", $$css: !0 },
-//         fitContain: {
-//           ":not([stylex-hack]) img_objectFit": "x1o3kp5p",
-//           $$css: !0,
-//         },
-//         presentational: { pointerEvents: "x47corl", $$css: !0 },
-//         disabled: { opacity: "xbyyjgo", $$css: !0 },
-//       },
-//       s = k.forwardRef(function (a, b) {
-//         var d = a.description,
-//           e = a.fit,
-//           f = a.hasMediaBackground,
-//           g = a.isDisabled,
-//           h = a.isImage,
-//           j = a.isLoading,
-//           m = a.media,
-//           n = a.onLoad;
-//         a = a.size;
-//         var o = l(c("GeoPrivateMediaItemContext")),
-//           p = o.isOverflowItem,
-//           q = o.variant;
-//         o = o.overflowCount;
-//         var s = l(c("GeoPrivateMediaItemSurfaceContext"));
-//         p = (p = p) != null ? p : !1;
-//         var t = c("useGeoTheme")();
-//         t = t.selectStaticBackgroundColor;
-//         var u =
-//           !h &&
-//           (m == null ? void 0 : m.type) !== "svg" &&
-//           (m == null ? void 0 : m.type) !== "img";
-//         g = [
-//           r.root,
-//           g && r.disabled,
-//           j && r.loading,
-//           (!h || e === "none") && r.fitNone,
-//           h && e !== "none" && r.fit,
-//           h && e === "cover" && r.fitCover,
-//           h && e === "contain" && r.fitContain,
-//           u && r.presentational,
-//           !j && s !== "none" && t({ surface: "wash" }),
-//           !h && f === !1 && r.backgroundTransparent,
-//         ];
-//         return k.jsxs("div", {
-//           "aria-label": d,
-//           className: (i || (i = c("stylex")))(g),
-//           onLoad: n,
-//           ref: b,
-//           role: c("isFalsey")(d) && u ? "presentation" : "img",
-//           children: [
-//             m,
-//             p && k.jsx(x, { overflowCount: o, size: a, variant: q }),
-//           ],
-//         });
-//       });
-//     function t(a) {
-//       if (!k.isValidElement(a)) return !1;
-//       a = c("DangerouslyAccessReactElementInternals_DO_NOT_USE_IN_NEW_CODE")(a);
-//       if (a == null || a.props == null) return !1;
-//       if (a.type === k.Fragment && a.props.children != null)
-//         return k.Children.toArray(a.props.children).some(t);
-//       else
-//         return (
-//           typeof a.props === "object" &&
-//           a.props.src != null &&
-//           (typeof a.props.src === "string" ||
-//             (typeof a.props.src === "object" &&
-//               a.props.src.valueOf != null &&
-//               typeof a.props.src.valueOf() === "string"))
-//         );
-//     }
-//     var u = { root: { position: "x10l6tqk", zIndex: "x1vjfegm", $$css: !0 } };
-//     function v(a) {
-//       var b = a.platform,
-//         e = a.ratio;
-//       a = a.size;
-//       var f = d("GeoPrivateMediaItemAddOn.react").getAddonSize(a);
-//       return k.jsx(
-//         d("GeoPrivateMediaItemAddOn.react").GeoPrivateMediaItemAddOn,
-//         {
-//           mediaRatio: e,
-//           mediaSize: a,
-//           position: "below",
-//           shape: d("GeoPrivatePlatformIconUtils").getIconShape(b),
-//           xstyle: u.root,
-//           children: k.jsx(c("GeoPlatformIcon.react"), { platform: b, size: f }),
-//         }
-//       );
-//     }
-//     v.displayName = v.name + " [from " + f.id + "]";
-//     var w = {
-//       overlay: {
-//         position: "x10l6tqk",
-//         height: "x5yr21d",
-//         width: "xh8yej3",
-//         top: "x13vifvy",
-//         start: "x17qophe",
-//         borderTopStartRadius: "x1o1ewxj",
-//         borderTopEndRadius: "x3x9cwd",
-//         borderBottomEndRadius: "x1e5q0jg",
-//         borderBottomStartRadius: "x13rtm0m",
-//         overflowX: "x6ikm8r",
-//         overflowY: "x10wlt62",
-//         display: "x78zum5",
-//         alignItems: "x6s0dn4",
-//         justifyContent: "xl56j7k",
-//         $$css: !0,
-//       },
-//     };
-//     function x(a) {
-//       var b = a.overflowCount,
-//         d = a.size;
-//       a = a.variant;
-//       a = a === void 0 ? "none" : a;
-//       var e = c("useGeoTheme")();
-//       e = e.selectStaticBackgroundColor;
-//       return k.jsx("div", {
-//         className: (i || (i = c("stylex")))([
-//           e({ surface: "overlay" }),
-//           w.overlay,
-//         ]),
-//         children: k.jsx(C, { overflowCount: b, size: d, variant: a }),
-//       });
-//     }
-//     x.displayName = x.name + " [from " + f.id + "]";
-//     function y(a) {
-//       switch (a) {
-//         case 16:
-//           return d("fbicon")._(h("1253039"), 8);
-//         case 24:
-//           return d("fbicon")._(h("484385"), 12);
-//         case 30:
-//         case 32:
-//         case 41:
-//           return d("fbicon")._(h("484386"), 16);
-//         default:
-//           return d("fbicon")._(h("484388"), 24);
-//       }
-//     }
-//     function z(a) {
-//       switch (a) {
-//         case 16:
-//         case 24:
-//         case 30:
-//         case 32:
-//           return "accent";
-//         case 41:
-//         case 48:
-//           return "value";
-//         default:
-//           return "header1";
-//       }
-//     }
-//     function A(a) {
-//       switch (a) {
-//         case 16:
-//         case 24:
-//           return 9;
-//         case 30:
-//         case 32:
-//         case 41:
-//         case 48:
-//           return 99;
-//         case 62:
-//         case 64:
-//           return 999;
-//         case 94:
-//         case 96:
-//           return 9999;
-//         default:
-//           return 99;
-//       }
-//     }
-//     function B(a, b) {
-//       a = A(a);
-//       return b != null && b > a ? a + "+" : "+" + String(b);
-//     }
-//     function C(a) {
-//       var b = a.overflowCount,
-//         d = a.size;
-//       a = a.variant;
-//       a = a === void 0 ? "ellipses" : a;
-//       var e = y(d),
-//         f = z(d);
-//       return a === "ellipses"
-//         ? k.jsx(c("GeoPrivateIcon.react"), { color: "inverted", icon: e })
-//         : k.jsx(c("GeoBaseText.react"), {
-//             color: "inverted",
-//             size: f,
-//             textAlign: "center",
-//             children: B(d, b),
-//           });
-//     }
-//     C.displayName = C.name + " [from " + f.id + "]";
-//     b = d("GeoPrivateMakeComponent").makeGeoComponent("GeoMediaItem", a);
-//     g["default"] = b;
-//   },
-//   98
-// );
-
-import React, { useContext, forwardRef } from "react";
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+import React, { forwardRef, useContext } from "react";
 import {
   DangerouslyAccessReactElementInternals_DO_NOT_USE_IN_NEW_CODE,
+  fbicon,
   GeoBaseText,
   GeoGlimmer,
   GeoPlatformIcon,
@@ -441,28 +73,11 @@ import {
   GeoPrivateMediaItemStatusAddOn,
   GeoPrivateMediaItemSurfaceContext,
   GeoPrivatePlatformIconUtils,
-  fbicon,
   isFalsey,
   stylex,
   useGeoPrivateMediaLoadingStatus,
   useGeoTheme,
 } from "path/to/your/modules";
-
-interface GeoMediaItemProps {
-  containerRef?: React.RefObject<HTMLDivElement>;
-  "data-testid"?: string;
-  description?: string;
-  fit?: string;
-  hasMediaBackground?: boolean;
-  isDisabled?: boolean;
-  isLoading?: boolean;
-  media?: React.ReactNode;
-  platform?: string;
-  ratio?: string;
-  size?: number;
-  status?: string;
-  xstyle?: any;
-}
 
 const styles = {
   root: {
@@ -482,7 +97,7 @@ const styles = {
   },
 };
 
-function getClassNames({ ratio, size }: { ratio: string; size: number }) {
+function getClassNames({ ratio, size }) {
   const theme = useGeoTheme();
   const selectBorderRadius = theme.selectBorderRadius;
   const selectSize = theme.selectSize;
@@ -493,7 +108,7 @@ function getClassNames({ ratio, size }: { ratio: string; size: number }) {
   ];
 }
 
-const GeoMediaItem: React.FC<GeoMediaItemProps> = (props) => {
+const GeoMediaItem = (props) => {
   const {
     containerRef,
     "data-testid": dataTestId,
@@ -602,16 +217,11 @@ const wrapperStyles = {
   },
 };
 
-function getWrapperStyle(size: number): string {
+function getWrapperStyle(size) {
   return size < 48 ? "dense" : "sparse";
 }
 
-interface WrapperProps {
-  size: number;
-  children: React.ReactNode;
-}
-
-const Wrapper: React.FC<WrapperProps> = ({ size, children }) => {
+const Wrapper = ({ size, children }) => {
   const groupContext = useContext(GeoPrivateMediaItemGroupContext);
   const theme = useGeoTheme();
   const selectStaticBackgroundColor = theme.selectStaticBackgroundColor;
@@ -629,7 +239,7 @@ const Wrapper: React.FC<WrapperProps> = ({ size, children }) => {
       </div>
     </div>
   ) : (
-    <>{children}</>
+    { children }
   );
 };
 
@@ -679,19 +289,8 @@ const mediaContentStyles = {
   disabled: { opacity: "xbyyjgo", $$css: true },
 };
 
-interface MediaContentProps {
-  description?: string;
-  fit?: string;
-  hasMediaBackground?: boolean;
-  isDisabled?: boolean;
-  isImage?: boolean;
-  isLoading?: boolean;
-  media?: React.ReactNode;
-  onLoad?: () => void;
-  size?: number;
-}
-
-const MediaContent = forwardRef<HTMLDivElement, MediaContentProps>(
+const MediaContent = forwardRef(
+  // eslint-disable-next-line complexity
   (
     {
       description,
@@ -733,6 +332,7 @@ const MediaContent = forwardRef<HTMLDivElement, MediaContentProps>(
       <div
         aria-label={description}
         className={stylex(classNames)}
+        // eslint-disable-next-line react/no-unknown-property
         onLoad={onLoad}
         ref={ref}
         role={
@@ -752,7 +352,7 @@ const MediaContent = forwardRef<HTMLDivElement, MediaContentProps>(
   }
 );
 
-function isElementImage(element: React.ReactNode): boolean {
+function isElementImage(element) {
   if (!React.isValidElement(element)) return false;
   const internalElement =
     DangerouslyAccessReactElementInternals_DO_NOT_USE_IN_NEW_CODE(element);
@@ -779,17 +379,7 @@ const addonStyles = {
   root: { position: "x10l6tqk", zIndex: "x1vjfegm", $$css: true },
 };
 
-interface PlatformIconProps {
-  platform: string;
-  ratio: string;
-  size: number;
-}
-
-const PlatformIcon: React.FC<PlatformIconProps> = ({
-  platform,
-  ratio,
-  size,
-}) => {
+const PlatformIcon = ({ platform, ratio, size }) => {
   const addonSize = GeoPrivateMediaItemAddOn.getAddonSize(size);
   return (
     <GeoPrivateMediaItemAddOn
@@ -826,17 +416,7 @@ const overflowStyles = {
   },
 };
 
-interface OverflowIconProps {
-  overflowCount?: number;
-  size: number;
-  variant?: string;
-}
-
-const OverflowIcon: React.FC<OverflowIconProps> = ({
-  overflowCount,
-  size,
-  variant = "ellipses",
-}) => {
+const OverflowIcon = ({ overflowCount, size, variant = "ellipses" }) => {
   const theme = useGeoTheme();
   const selectStaticBackgroundColor = theme.selectStaticBackgroundColor;
   const icon = getIconBySize(size);
@@ -862,7 +442,7 @@ const OverflowIcon: React.FC<OverflowIconProps> = ({
 
 OverflowIcon.displayName = `${OverflowIcon.name}`;
 
-function getIconBySize(size: number): string {
+function getIconBySize(size) {
   switch (size) {
     case 16:
       return fbicon("1253039", 8);
@@ -877,7 +457,7 @@ function getIconBySize(size: number): string {
   }
 }
 
-function getTextSizeBySize(size: number): string {
+function getTextSizeBySize(size) {
   switch (size) {
     case 16:
     case 24:
@@ -892,7 +472,7 @@ function getTextSizeBySize(size: number): string {
   }
 }
 
-function getMaxOverflowCount(size: number): number {
+function getMaxOverflowCount(size) {
   switch (size) {
     case 16:
     case 24:
@@ -913,9 +493,9 @@ function getMaxOverflowCount(size: number): number {
   }
 }
 
-function getOverflowText(size: number, overflowCount?: number): string {
+function getOverflowText(size, overflowCount) {
   const maxCount = getMaxOverflowCount(size);
-  return overflowCount != null && overflowCount > maxCount
+  return overflowCount !== null && overflowCount > maxCount
     ? `${maxCount}+`
     : `+${overflowCount ?? 0}`;
 }

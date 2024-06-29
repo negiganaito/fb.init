@@ -1,133 +1,16 @@
-// __d(
-//   "GeoBaseListLayout.react",
-//   [
-//     "BUIPrivateBoldItemLabelContext",
-//     "GeoBaseListLayoutContext",
-//     "GeoDomID",
-//     "GeoPrivateBaseListMediaBackgroundContext",
-//     "GeoPrivateMakeComponent",
-//     "react",
-//     "stylex",
-//     "useGeoPrivateListResponsiveDensity",
-//     "useMergeRefs",
-//     "useShallowEqualMemo",
-//   ],
-//   function (a, b, c, d, e, f, g) {
-//     "use strict";
-//     var h,
-//       i,
-//       j = i || d("react"),
-//       k = {
-//         root: {
-//           display: "x78zum5",
-//           listStyle: "xe8uvvx",
-//           marginTop: "xdj266r",
-//           marginEnd: "x11i5rnm",
-//           marginBottom: "xat24cr",
-//           marginStart: "x1mh8g0r",
-//           paddingTop: "xexx8yu",
-//           paddingEnd: "x4uap5",
-//           paddingBottom: "x18d9i69",
-//           paddingStart: "xkhd6sd",
-//           $$css: !0,
-//         },
-//         vertical: { flexDirection: "xdt5ytf", $$css: !0 },
-//         horizontal: { flexDirection: "x1q0g3np", $$css: !0 },
-//         verticalSpaced: {
-//           ":not([stylex-hack]) > * + *_marginTop": "xdm93yi",
-//           $$css: !0,
-//         },
-//         horizontalSpaced: {
-//           ":not([stylex-hack]) > * + *_marginStart": "xe9zolg",
-//           $$css: !0,
-//         },
-//       };
-//     function a(a) {
-//       var b = a.accessibilityRole;
-//       b = b === void 0 ? "list" : b;
-//       var e = a.children,
-//         f = a.containerRef,
-//         g = a["data-testid"];
-//       g = a.density;
-//       g = g === void 0 ? "dense" : g;
-//       var i = a.describedBy,
-//         l = a.direction;
-//       l = l === void 0 ? "vertical" : l;
-//       var m = a.hasBoldItemLabel;
-//       m = m === void 0 ? !1 : m;
-//       var n = a.id,
-//         o = a.labelledBy,
-//         p = a.shouldAlignRows;
-//       p = p === void 0 ? !1 : p;
-//       var q = a.shouldSpaceRows;
-//       q = q === void 0 ? !0 : q;
-//       var r = a.hasMediaBackground;
-//       r = r === void 0 ? !1 : r;
-//       a = a.xstyle;
-//       g = c("useGeoPrivateListResponsiveDensity")(g);
-//       var s = g[0];
-//       g = g[1];
-//       s = c("useShallowEqualMemo")({
-//         density: s,
-//         direction: l,
-//         isWithinList: !0,
-//         shouldAlignRows: p,
-//       });
-//       p = d("GeoDomID").useApplyGeoDomIDsDirectly({
-//         id: n,
-//         "aria-labelledby": o,
-//         "aria-describedby": i,
-//       });
-//       n = p.ref;
-//       o = babelHelpers.objectWithoutPropertiesLoose(p, ["ref"]);
-//       i = c("useMergeRefs")(f, n);
-//       return j.jsx(c("BUIPrivateBoldItemLabelContext").Provider, {
-//         value: m,
-//         children: j.jsx(
-//           c("GeoPrivateBaseListMediaBackgroundContext").Provider,
-//           {
-//             value: r,
-//             children: j.jsxs(c("GeoBaseListLayoutContext").Provider, {
-//               value: s,
-//               children: [
-//                 g,
-//                 j.jsx(
-//                   "div",
-//                   babelHelpers["extends"]({}, o, {
-//                     className: (h || (h = c("stylex")))(
-//                       k.root,
-//                       l === "vertical" && k.vertical,
-//                       l === "horizontal" && k.horizontal,
-//                       q && l === "vertical" && k.verticalSpaced,
-//                       q && l === "horizontal" && k.horizontalSpaced,
-//                       a
-//                     ),
-//                     "data-testid": void 0,
-//                     ref: i,
-//                     role: b,
-//                     children: e,
-//                   })
-//                 ),
-//               ],
-//             }),
-//           }
-//         ),
-//       });
-//     }
-//     a.displayName = a.name + " [from " + f.id + "]";
-//     b = d("GeoPrivateMakeComponent").makeGeoComponent("GeoBaseListLayout", a);
-//     g["default"] = b;
-//   },
-//   98
-// );
-
-import React, { ReactNode, RefObject } from "react";
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+import React from "react";
+import stylex from "@stylexjs/stylex";
 import { BUIPrivateBoldItemLabelContext } from "BUIPrivateBoldItemLabelContext";
 import { GeoBaseListLayoutContext } from "GeoBaseListLayoutContext";
 import { GeoDomID } from "GeoDomID";
 import { GeoPrivateBaseListMediaBackgroundContext } from "GeoPrivateBaseListMediaBackgroundContext";
 import { makeGeoComponent } from "GeoPrivateMakeComponent";
-import stylex from "stylex";
 import { useGeoPrivateListResponsiveDensity } from "useGeoPrivateListResponsiveDensity";
 import { useMergeRefs } from "useMergeRefs";
 import { useShallowEqualMemo } from "useShallowEqualMemo";
@@ -158,24 +41,7 @@ const styles = {
   },
 };
 
-interface GeoBaseListLayoutProps {
-  accessibilityRole?: string;
-  children: ReactNode;
-  containerRef?: RefObject<HTMLDivElement>;
-  "data-testid"?: string;
-  density?: string;
-  describedBy?: string;
-  direction?: "vertical" | "horizontal";
-  hasBoldItemLabel?: boolean;
-  id?: string;
-  labelledBy?: string;
-  shouldAlignRows?: boolean;
-  shouldSpaceRows?: boolean;
-  hasMediaBackground?: boolean;
-  xstyle?: any;
-}
-
-const GeoBaseListLayout: React.FC<GeoBaseListLayoutProps> = ({
+const GeoBaseListLayout = ({
   accessibilityRole = "list",
   children,
   containerRef,

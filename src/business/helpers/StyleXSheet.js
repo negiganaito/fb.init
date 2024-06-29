@@ -32,6 +32,7 @@ function createStyleTag() {
   const styleTag = document.createElement("style");
   styleTag.setAttribute("type", "text/css");
   styleTag.setAttribute("data-styled", "true");
+  console.log(document.getElementsByTagName("head")[0]);
   const head = document.head || document.getElementsByTagName("head")[0];
   console.log(head, "Head element not found.");
   head.appendChild(styleTag);

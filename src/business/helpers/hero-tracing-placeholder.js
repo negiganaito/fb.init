@@ -5,25 +5,35 @@
  * See the LICENSE file in the root directory for details.
  */
 
-import HeroCurrentInteractionForLoggingContext from "../../context/HeroCurrentInteractionForLoggingContext";
-import * as HeroInteractionContext from "../../context/HeroInteractionContext";
+// import HeroCurrentInteractionForLoggingContext from "../../context/HeroCurrentInteractionForLoggingContext";
+import * as HeroInteractionContextModule from "../../context/HeroInteractionContext";
 import HeroInteractionIDContext from "../../context/HeroInteractionIDContext";
-import HeroComponent from "../../faang/components/HeroComponent.react";
-import HeroHoldTrigger from "../../faang/components/HeroHoldTrigger.react";
-import HeroInteractionContextPassthrough from "../../faang/components/HeroInteractionContextPassthrough.react";
-import * as HeroPendingPlaceholderTracker from "../../faang/components/HeroPendingPlaceholderTracker";
-import HeroPlaceholder from "../../faang/components/HeroPlaceholder.react";
+// import HeroComponent from "../../faang/components/HeroComponent.react";
+// import HeroHoldTrigger from "../../faang/components/HeroHoldTrigger.react";
+// import HeroInteractionContextPassthrough from "../../faang/components/HeroInteractionContextPassthrough.react";
+// import * as HeroPendingPlaceholderTrackerModule from "../../faang/components/HeroPendingPlaceholderTracker";
+// import HeroPlaceholder from "../../faang/components/HeroPlaceholder.react";
 
-import * as HeroPlaceholderUtils from "./HeroPlaceholderUtils";
+// import * as HeroPlaceholderUtilsModule from "./HeroPlaceholderUtils";
+
+// const HeroPendingPlaceholderTracker = {
+//   ...HeroPendingPlaceholderTrackerModule,
+// };
+const HeroInteractionContext = {
+  ...HeroInteractionContextModule,
+};
+// const HeroPlaceholderUtils = {
+//   ...HeroPlaceholderUtilsModule,
+// };
 
 export {
-  HeroComponent,
-  HeroCurrentInteractionForLoggingContext,
-  HeroHoldTrigger,
+  // HeroComponent,
+  // HeroCurrentInteractionForLoggingContext,
+  // HeroHoldTrigger,
   HeroInteractionContext,
-  HeroInteractionContextPassthrough,
+  // HeroInteractionContextPassthrough,
   HeroInteractionIDContext,
-  HeroPendingPlaceholderTracker,
-  HeroPlaceholder,
-  HeroPlaceholderUtils,
+  // HeroPendingPlaceholderTracker,
+  // HeroPlaceholder,
+  // HeroPlaceholderUtils,
 };

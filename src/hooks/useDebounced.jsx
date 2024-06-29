@@ -60,7 +60,7 @@
  */
 import { useEffect, useMemo, useRef } from "react";
 
-import debounce from "./debounce";
+import debounce from "../business/helpers/debounce";
 
 function useDebounced(callback, delay = 100, immediate = false) {
   const callbackRef = useRef(callback);
