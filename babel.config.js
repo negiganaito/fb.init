@@ -38,13 +38,14 @@ module.exports = (api) => {
     ],
 
     plugins: [
+      ["macros"],
+      ["relay", { artifactDirectory: "./src/fb/__generated__" }],
       [
         "@babel/plugin-transform-react-jsx",
         {
           runtime: "automatic",
         },
       ],
-      ["relay"],
       [
         styleXPlugin,
         {
@@ -64,7 +65,6 @@ module.exports = (api) => {
         },
       ],
       "babel-plugin-fbt-runtime",
-      ["macros"],
       isDevelopment && "react-refresh/babel",
     ].filter(Boolean),
 

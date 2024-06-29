@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0e3e6313b614989ada3d6d530586fd16>>
+ * @generated SignedSource<<fe0e19622f4567f2f81bdfbe084d19f3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,30 +8,31 @@
 
 'use strict';
 
-
-
 var node = {
-  "kind": "SplitOperation",
-  "metadata": {},
-  "name": "userProfile_user$normalization",
+  "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "UserProfileRenderer_renderer",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "name",
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "age",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "name",
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "UserProfileRenderer",
+  "abstractKey": null
 };
 
-node.hash = "1909fb53ca7caf3cf5beec2f21cdaa9e";
+node.hash = "27500ff00560d08d5702e47b675198c7";
 
 module.exports = node;

@@ -1,6 +1,6 @@
 /**
- * @generated SignedSource<<c805043e31c39fa5825fd79d3d8fc499>>
- * @relayHash 5d5e0454cae8061960a1401d0dc6b25b
+ * @generated SignedSource<<80faaa0433d9c0f6187d6990270c196b>>
+ * @relayHash a531832d0f757832856343536a5a9ce8
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,8 +9,8 @@
 
 'use strict';
 
-// @relayRequestID 5d5e0454cae8061960a1401d0dc6b25b
-// @dataDrivenDependency userQuery.user.userProfile {"branches":{"UserProfile":{"component":"user-profile.jsx","fragment":"userProfile_user$normalization.graphql"}},"plural":false}
+// @relayRequestID a531832d0f757832856343536a5a9ce8
+// @dataDrivenDependency UserQuery.user.userProfile_renderer {"branches":{"UserProfileRenderer":{"component":"user-profile.jsx","fragment":"UserProfileRenderer_renderer$normalization.graphql"}},"plural":false}
 
 var node = (function(){
 var v0 = [
@@ -25,16 +25,16 @@ var v0 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "UserProfile",
+        "concreteType": "UserProfileRenderer",
         "kind": "LinkedField",
-        "name": "userProfile",
+        "name": "userProfile_renderer",
         "plural": false,
         "selections": [
           {
             "args": null,
-            "documentName": "userQuery",
-            "fragmentName": "userProfile_user",
-            "fragmentPropName": "user",
+            "documentName": "UserQuery",
+            "fragmentName": "UserProfileRenderer_renderer",
+            "fragmentPropName": "renderer",
             "kind": "ModuleImport"
           }
         ],
@@ -49,7 +49,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "userQuery",
+    "name": "UserQuery",
     "selections": (v0/*: any*/),
     "type": "Query",
     "abstractKey": null
@@ -58,19 +58,19 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "userQuery",
+    "name": "UserQuery",
     "selections": (v0/*: any*/)
   },
   "params": {
-    "id": "5d5e0454cae8061960a1401d0dc6b25b",
+    "id": "a531832d0f757832856343536a5a9ce8",
     "metadata": {},
-    "name": "userQuery",
+    "name": "UserQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
 
-node.hash = "1f3e3b8cc7ab1437752c16bbeb8fcf50";
+node.hash = "f7b773e4e044e666c61c91c4221fcf81";
 
 module.exports = node;

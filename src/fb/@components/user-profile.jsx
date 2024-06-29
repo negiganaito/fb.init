@@ -6,21 +6,16 @@
  */
 
 import React from "react";
-import { graphql, useFragment } from "react-relay";
+import { useFragment } from "react-relay";
+
+import { userProfileRendererFragment } from "@/fb/@graphql/UserProfileRenderer";
 
 let query;
 
-const UserProfile = ({ user }) => {
+const UserProfile = ({ renderer }) => {
   const data = useFragment(
-    query
-      ? query
-      : (query = graphql`
-          fragment userProfile_user on UserProfile {
-            name
-            age
-          }
-        `),
-    user
+    query ? query : (query = userProfileRendererFragment),
+    renderer
   );
 
   console.log({ data });

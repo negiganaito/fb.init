@@ -7,8 +7,9 @@
 
 import React from "react";
 import { useLazyLoadQuery } from "react-relay/lib/relay-hooks/useLazyLoadQuery.js";
-import { userQuery } from "@fb-relay/graphql/userQuery";
 import { RelayMatchContainer } from "@fb-relay/relay-match-container";
+
+import { userQuery } from "@/fb/@graphql/UserQuery";
 
 let query;
 

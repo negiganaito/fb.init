@@ -15,10 +15,10 @@ type XFBWorkNavigationClassicRenderer {
 scalar JSDependency
 
 type User {
-  userProfile: UserProfile
+  userProfile_renderer: UserProfileRenderer
 }
 
-type UserProfile {
+type UserProfileRenderer {
   age: Int
   name: String!
   js(module: String!, id: String): JSDependency!

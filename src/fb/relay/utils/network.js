@@ -78,17 +78,11 @@ export async function networkFetch(id, variables, text) {
 }
 
 function registerModuleLoaders(modules) {
-  console.log({ modules });
-
   modules.forEach((module) => {
     if (module.endsWith("$normalization.graphql")) {
-      registerLoader(module, () =>
-        import(/* webpackPrefetch: true */ `@fb-relay/__generated__/${module}`)
-      );
+      registerLoader(module, () => import(`../../__generated__/${module}`));
     } else {
-      registerLoader(module, () =>
-        import(/* webpackPrefetch: true */ `@fb-relay/component/${module}`)
-      );
+      registerLoader(module, () => import(`../../@components/${module}`));
     }
   });
 }

@@ -28,8 +28,8 @@ const CompanyType = new GraphQLObjectType({
 
 // ========================= for user
 
-const UserProfileType = new GraphQLObjectType({
-  name: "UserProfile",
+const UserProfileRendererType = new GraphQLObjectType({
+  name: "UserProfileRenderer",
   fields: () => ({
     age: { type: GraphQLInt },
     name: { type: new GraphQLNonNull(GraphQLString) },
@@ -40,8 +40,8 @@ const UserProfileType = new GraphQLObjectType({
 const UserType = new GraphQLObjectType({
   name: "User",
   fields: {
-    userProfile: {
-      type: UserProfileType,
+    userProfile_renderer: {
+      type: UserProfileRendererType,
     },
   },
 });
