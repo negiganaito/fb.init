@@ -44,20 +44,27 @@ const graphqlHandler = async (req, res) => {
   const requestParams = req.body;
 
   let response = { data: null };
-  if (req.method === "POST" && requestParams) {
-    const mappedQueries = queryMap;
+  if (
+    req.method === "POST"
+    // && requestParams
+  ) {
+    console.log({ 1: queryMap[requestParams.id] });
 
     dataDrivenDependencies.reset();
     response = await graphql({
       schema,
       rootValue,
       source:
-        requestParams && requestParams.id
-          ? mappedQueries[requestParams.id]
+        requestParams &&
+        requestParams.id !== null &&
+        requestParams.id !== undefined
+          ? queryMap[requestParams.id]
           : requestParams.query,
       variableValues: requestParams.variables,
     });
   }
+
+  console.log({ modules: dataDrivenDependencies.getModules() });
 
   if (response.errors) {
     console.error("GraphQL Server Errors", response.errors);
@@ -68,9 +75,11 @@ const graphqlHandler = async (req, res) => {
   };
 
   res.status(200).json(response);
+
+  // res.end(JSON.stringify(response));
 };
 
-app.post("/graphql", graphqlHandler);
+app.post("/api/graphql", graphqlHandler);
 
 const port = 5000;
 

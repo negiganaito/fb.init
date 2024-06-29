@@ -3,9 +3,39 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLNonNull,
+  GraphQLScalarType,
 } from "graphql";
 
-import { JSDependencyField } from "./js-dependency.mjs";
+// ====================================================
+const JSDependencyType = new GraphQLScalarType({
+  name: "JSDependency",
+  serialize: (value) => value,
+});
+
+const JSDependencyField = {
+  args: {
+    module: { type: new GraphQLNonNull(GraphQLString) },
+    id: { type: GraphQLString },
+  },
+  type: new GraphQLNonNull(JSDependencyType),
+  // eslint-disable-next-line require-await
+  resolve: async (_, { module }) => {
+    seenDataDrivenDependencies.add(module);
+    return module;
+  },
+};
+
+const seenDataDrivenDependencies = new Set();
+
+const dataDrivenDependencies = {
+  reset() {
+    seenDataDrivenDependencies.clear();
+  },
+  getModules() {
+    return Array.from(seenDataDrivenDependencies);
+  },
+};
+// ====================================================
 
 // Define the NavigationRenderer type
 const XFBWorkNavigationClassicRendererType = new GraphQLObjectType({
@@ -30,11 +60,11 @@ const CompanyType = new GraphQLObjectType({
 
 const UserProfileRendererType = new GraphQLObjectType({
   name: "UserProfileRenderer",
-  fields: () => ({
+  fields: {
     age: { type: GraphQLInt },
     name: { type: new GraphQLNonNull(GraphQLString) },
     js: JSDependencyField,
-  }),
+  },
 });
 
 const UserType = new GraphQLObjectType({
@@ -66,7 +96,7 @@ const rootValue = {
   },
   user: () => {
     return {
-      userProfile: {
+      userProfile_renderer: {
         name: "John Doe",
         age: 30,
       },
