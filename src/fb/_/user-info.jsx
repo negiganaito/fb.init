@@ -6,7 +6,7 @@
  */
 
 import React from "react";
-import { useLazyLoadQuery } from "react-relay/lib/relay-hooks/useLazyLoadQuery.js";
+import { useLazyLoadQuery } from "react-relay";
 import { RelayMatchContainer } from "@fb-relay/relay-match-container";
 
 import { userQuery } from "@/fb/@graphql/UserQuery";
@@ -14,7 +14,13 @@ import { userQuery } from "@/fb/@graphql/UserQuery";
 let query;
 
 export const UserInfo = () => {
-  const { user } = useLazyLoadQuery(query ? query : (query = userQuery), {});
+  const data = useLazyLoadQuery(query ? query : (query = userQuery), {});
 
-  return <RelayMatchContainer match={user.userProfile} />;
+  console.log({ data });
+
+  return (
+    <React.Suspense fallback="Loading">
+      <RelayMatchContainer match={data.user.userProfile_renderer} />
+    </React.Suspense>
+  );
 };

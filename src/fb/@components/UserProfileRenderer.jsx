@@ -12,7 +12,7 @@ import { userProfileRendererFragment } from "@/fb/@graphql/UserProfileRenderer";
 
 let query;
 
-const UserProfile = ({ renderer }) => {
+const UserProfileRenderer = ({ renderer }) => {
   const data = useFragment(
     query ? query : (query = userProfileRendererFragment),
     renderer
@@ -23,4 +23,4 @@ const UserProfile = ({ renderer }) => {
   return <div>demo</div>;
 };
 
-export default UserProfile;
+export default UserProfileRenderer;

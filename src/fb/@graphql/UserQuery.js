@@ -7,13 +7,11 @@
 
 import { graphql } from "react-relay";
 
-import * as add from "../__generated__/UserProfileRenderer_renderer.graphql";
-
 export const userQuery = graphql`
   query UserQuery {
     user {
       userProfile_renderer {
-        ...UserProfileRenderer_renderer @module(name: "user-profile.jsx")
+        ...UserProfileRenderer_renderer @module(name: "UserProfileRenderer.jsx")
       }
     }
   }
