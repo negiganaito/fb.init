@@ -20,6 +20,7 @@ const JSDependencyField = {
   type: new GraphQLNonNull(JSDependencyType),
   // eslint-disable-next-line require-await
   resolve: async (_, { module }) => {
+    // console.log({ "module-in-JSDependencyField": module });
     seenDataDrivenDependencies.add(module);
     return module;
   },
@@ -104,4 +105,4 @@ const rootValue = {
   },
 };
 
-export { QueryType, rootValue };
+export { QueryType, rootValue, dataDrivenDependencies };

@@ -11,7 +11,7 @@ export const userQuery = graphql`
   query UserQuery {
     user {
       userProfile_renderer {
-        ...UserProfileRenderer_renderer @module(name: "UserProfileRenderer.jsx")
+        ...UserProfileRenderer_renderer @module(name: "UserProfileRenderer")
       }
     }
   }

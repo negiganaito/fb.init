@@ -68,13 +68,11 @@ export async function networkFetch(id, variables) {
 }
 
 function registerModuleLoaders(modules) {
-  console.log({ modules });
-
   modules.forEach((module) => {
     if (module.endsWith("$normalization.graphql")) {
       registerLoader(module, () => import(`../../__generated__/${module}`));
     } else {
-      registerLoader(module, () => import(`../../@components/${module}`));
+      registerLoader(module, () => import(`../../@3D/${module}`));
     }
   });
 }

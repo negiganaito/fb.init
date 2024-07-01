@@ -6,19 +6,18 @@
  */
 
 import React from "react";
-import { MatchContainer } from "react-relay/lib/relay-hooks/MatchContainer.js";
+import MatchContainer from "react-relay/lib/relay-hooks/MatchContainer.js";
 
-import moduleLoader from "./utils/moduleLoader";
+import moduleLoader from "../utils/moduleLoader";
 
 export const RelayMatchContainer = ({ match, props, fallback }) => {
+  console.log({ match, props, fallback });
+
   return (
     <MatchContainer
       fallback={fallback}
       match={match}
-      props={props}
       loader={(name) => {
-        console.log({ name });
-
         const loader = moduleLoader(name);
         const error = loader.getError();
         if (error) {

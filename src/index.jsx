@@ -6,6 +6,12 @@
  */
 import React from "react";
 import ReactDOM from "react-dom/client";
+// inject({
+//   classNamePrefix: "x",
+//   dev: true,
+//   test: false,
+// });
+import { RelayEnvironment } from "@fb-relay/utils/environment";
 import { CometDarkMode } from "@fb-theme/utils/comet-dark-mode";
 import { CometStyleXSheet } from "@fb-theme/utils/comet-stylex-sheet";
 
@@ -16,12 +22,6 @@ import { App } from "./app";
 
 import "./styles/app.css";
 
-// inject({
-//   classNamePrefix: "x",
-//   dev: true,
-//   test: false,
-// });
-
 const rootElement = document.getElementById("root");
 
 if (!rootElement.innerHTML) {
@@ -29,5 +29,9 @@ if (!rootElement.innerHTML) {
   CometStyleXSheet.rootStyleSheet.injectTheme();
 
   const root = ReactDOM.createRoot(rootElement);
-  root.render(<App />);
+  root.render(
+    <RelayEnvironment>
+      <App />
+    </RelayEnvironment>
+  );
 }

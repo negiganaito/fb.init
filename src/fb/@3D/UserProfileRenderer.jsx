@@ -8,7 +8,7 @@
 import React from "react";
 import { useFragment } from "react-relay";
 
-import { userProfileRendererFragment } from "@/fb/@graphql/UserProfileRenderer";
+import { userProfileRendererFragment } from "../@graphql/UserProfileRenderer";
 
 let query;
 

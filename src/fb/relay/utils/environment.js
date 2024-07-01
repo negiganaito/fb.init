@@ -4,7 +4,7 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import React, { useMemo } from "react";
+import React from "react";
 import { ReactRelayContext } from "react-relay";
 import { Environment, RecordSource, Store } from "relay-runtime";
 
@@ -15,7 +15,7 @@ const IS_SERVER = typeof window === typeof undefined;
 const CLIENT_DEBUG = false;
 const SERVER_DEBUG = false;
 
-export function createEnvironment() {
+function createEnvironment() {
   // Operation loader is reponsible for loading JS modules/components
   // for data-processing and rendering
   const operationLoader = {
@@ -41,9 +41,9 @@ export function createEnvironment() {
   return environment;
 }
 
-export const RelayEnvironment = ({ children }) => {
-  const environment = useMemo(() => createEnvironment(), []);
+const environment = createEnvironment();
 
+export const RelayEnvironment = ({ children }) => {
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <ReactRelayContext.Provider value={{ environment }}>
