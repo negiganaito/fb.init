@@ -25,6 +25,7 @@ export class FBLogMessage {
     const { events, project, metadata, blameModule, forcedKey } = this;
     let error = this.error;
     let normalizeErrorObj;
+
     if (this.normalizedError) {
       const obj = {
         message:
@@ -53,7 +54,7 @@ export class FBLogMessage {
       // this.normalizedError.project = project;
       // this.normalizedError.type = type;
       // this.normalizedError.loggingSource = "FBLOGGER";
-    } else if (error) {
+    } else if (error !== null && error !== undefined) {
       this.taalOpcodes.length > 0 &&
         new FBLogMessage("fblogger")
           .blameToPreviousFrame()

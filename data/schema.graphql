@@ -1,0 +1,25 @@
+type Query {
+  company: Company
+  user: User
+}
+
+type Company {
+  navigation_renderer: XFBWorkNavigationClassicRenderer
+}
+
+type XFBWorkNavigationClassicRenderer {
+  js(module: String!, id: String): JSDependency!
+  years: String
+}
+
+scalar JSDependency
+
+type User {
+  userProfile_renderer: UserProfileRenderer
+}
+
+type UserProfileRenderer {
+  age: Int
+  name: String!
+  js(module: String!, id: String): JSDependency!
+}

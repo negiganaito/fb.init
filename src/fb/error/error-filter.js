@@ -95,7 +95,7 @@ function checkAndLogErrorFrequency(errorHash) {
   let currentTime = performanceNowSinceAppStart();
   let entry = errorLogMap.get(errorHash);
 
-  if (entry === null) {
+  if (!entry) {
     // If no entry exists, create a new one
     errorLogMap.set(errorHash, {
       dropped: 0,

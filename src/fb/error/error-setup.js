@@ -11,11 +11,11 @@ import { ErrorPubSub } from "./error-pub-sub";
 import { ErrorUnhandledRejectionHandler } from "./error-unhandled-rejection-handler";
 
 function preSetup(objSetup) {
-  if (objSetup === null || objSetup.ignoreOnError !== true) {
+  if (!objSetup || objSetup.ignoreOnError !== true) {
     ErrorGlobalEventHandler.setup(ErrorPubSub);
   }
 
-  if (objSetup === null || objSetup.ignoreOnUnahndledRejection !== true) {
+  if (!objSetup || objSetup.ignoreOnUnahndledRejection !== true) {
     ErrorUnhandledRejectionHandler.setup(ErrorPubSub);
   }
 }

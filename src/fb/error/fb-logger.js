@@ -10,7 +10,7 @@ import { FBLogMessage } from "./fb-log-message";
 
 export function FBLogger(projectName, occurAt) {
   const fbLogMessage = new FBLogMessage(projectName);
-  return occurAt !== undefined
+  return occurAt
     ? fbLogMessage.event(projectName + "." + occurAt)
     : fbLogMessage;
 }

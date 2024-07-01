@@ -1,0 +1,8 @@
+{
+  "extends": ["plugin:@shopify/esnext", "plugin:@shopify/prettier"],
+  "rules": {
+    "no-console": "off",
+    "no-undef": "off",
+    "import/extensions": "off"
+  }
+}

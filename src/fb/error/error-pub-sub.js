@@ -21,7 +21,7 @@ const normalizeErrorListSize = 50;
 export const ErrorPubSub = {
   history,
   addListener: (listener, check) => {
-    check === undefined && (check = false);
+    (check === undefined || check === null) && (check = false);
     listeners.push(listener);
 
     check ||
@@ -51,9 +51,10 @@ export const ErrorPubSub = {
     nError.componentStackFrames && guardList.unshift(gReact);
 
     guardList.length > 0 && (nError.guardList = guardList);
-    if (nError.deferredSource === null) {
+    if (!nError.deferredSource) {
       const dSourse = ErrorGuardState.findDeferredSource();
       dSourse !== null &&
+        dSourse !== undefined &&
         (nError.deferredSource = ErrorNormalizeUtils.normalizeError(dSourse));
     }
 

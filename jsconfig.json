@@ -1,6 +1,6 @@
 {
   "exclude": ["node_modules", "build"],
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "__generated__", "src/fb/@components"],
 
   "compilerOptions": {
     "module": "CommonJS",
@@ -52,7 +52,8 @@
       "@fb-switch/*": ["src/fb/switch/*"],
       "@fb-error/*": ["src/fb/error/*"],
       "@fb-theme/*": ["src/fb/theme/*"],
-
+      "@fb-relay/*": ["src/fb/relay/*"],
+      "@fb-example/*": ["src/fb/_/*"],
       //
       "@/*": ["./src/*"],
       "~/*": ["./public/*"]
