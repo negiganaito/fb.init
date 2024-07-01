@@ -8,6 +8,8 @@
     "build": "webpack --progress --mode production",
     "analyze": "webpack --progress --mode production --env analyze",
     "dev": "pnpm webpack serve --progress --mode none",
+    "dev:server": "cd ./js-loader-server && pnpm update-schema",
+    "server:install": "cd ./js-loader-server && pnpm install",
     "start": "pnpm webpack serve --hot --progress --mode development --stats-children",
     "watch": "pnpm webpack serve --progress --mode production",
     "lint": "eslint src --ext .js,.ts,.tsx,.jsx --ignore-pattern '!.*.js'",
@@ -28,8 +30,7 @@
     "translate-fbts": "fbt-translate --jenkins --source-strings ./i18n/fbt/source_strings.json --translations i18n/fbt/translationScriptInput/*.json > ./i18n/fbt/translatedFbts.json",
     "upgrade": "npx npm-check-updates &&  npx npm-check-updates -u",
     "i18n:build:win": "pnpm clean-fbts:win && pnpm manifest && pnpm collect-fbts && pnpm translate-fbts:win && pnpm generate-fbt",
-    "i18n:build": "pnpm manifest && pnpm collect-fbts && pnpm translate-fbts && pnpm generate-fbt",
-    "dev2": "node scripts/dev.js"
+    "i18n:build": "pnpm manifest && pnpm collect-fbts && pnpm translate-fbts && pnpm generate-fbt"
   },
   "dependencies": {
     "react": "git://github.com/tienlx97/react-experimental.git#www",

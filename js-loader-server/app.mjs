@@ -51,12 +51,12 @@ const graphqlHandler = async (req, res) => {
     req.method === "POST"
     // && requestParams
   ) {
-    console.log({ requestParams });
-    console.log({
-      id: requestParams.id,
-      queryMap: queryMap[requestParams.id],
-      query: requestParams.query,
-    });
+    // console.log({ requestParams });
+    // console.log({
+    //   id: requestParams.id,
+    //   queryMap: queryMap[requestParams.id],
+    //   query: requestParams.query,
+    // });
 
     dataDrivenDependencies.reset();
     response = await graphql({
