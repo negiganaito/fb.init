@@ -11,13 +11,7 @@ import { GraphQLSchema, graphql } from "graphql";
 import queryMap from "../queryMap.json" assert { type: "json" };
 
 import { QueryType, rootValue } from "./query.mjs";
-
-import { dataDrivenDependencies } from "./query.mjs";
-
-// const QUERY_MAP_FILE = path.resolve(
-//   getConfig().serverRuntimeConfig.projectRoot,
-//   "./queryMap.json"
-// );
+import { dataDrivenDependencies } from "./js-dependency.mjs";
 
 export const schema = new GraphQLSchema({
   query: QueryType,
@@ -44,20 +38,11 @@ app.use(handleCors);
 const graphqlHandler = async (req, res) => {
   const requestParams = req.body;
 
-  // console.log(requestParams);
-
   let response = { data: null };
   if (
     req.method === "POST"
     // && requestParams
   ) {
-    // console.log({ requestParams });
-    // console.log({
-    //   id: requestParams.id,
-    //   queryMap: queryMap[requestParams.id],
-    //   query: requestParams.query,
-    // });
-
     dataDrivenDependencies.reset();
     response = await graphql({
       schema,
@@ -73,21 +58,15 @@ const graphqlHandler = async (req, res) => {
     });
   }
 
-  // console.log({ response });
-
   if (response.errors) {
     console.error("GraphQL Server Errors", response.errors);
   }
-
-  // console.log({ modules: dataDrivenDependencies.getModules() });
 
   response.extensions = {
     modules: dataDrivenDependencies.getModules(),
   };
 
   res.status(200).json(response);
-
-  // res.end(JSON.stringify(response));
 };
 
 app.post("/api/graphql", graphqlHandler);
