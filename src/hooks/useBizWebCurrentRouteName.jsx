@@ -1,13 +1,10 @@
-__d(
-  "useBizWebCurrentRouteName",
-  ["cr:1990848"], //useBusinessCometCurrentRouteName
-  function (a, b, c, d, e, f, g) {
-    "use strict";
-    g["default"] = b("cr:1990848");
-  },
-  98
-);
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
 
-import useBusinessCometCurrentRouteName from "cr:1990848";
+import useBusinessCometCurrentRouteName from "./useBusinessCometCurrentRouteName";
 
 export default useBusinessCometCurrentRouteName;

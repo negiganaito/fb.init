@@ -1,0 +1,575 @@
+__d(
+  "BusinessCometLeftNavQuery.graphql",
+  ["BusinessCometLeftNavQuery_facebookRelayOperation", "relay-runtime"],
+  function (a, b, c, d, e, f) {
+    "use strict";
+    a = (function () {
+      var a = { defaultValue: null, kind: "LocalArgument", name: "businessID" },
+        c = {
+          defaultValue: null,
+          kind: "LocalArgument",
+          name: "globalNavRouteName",
+        },
+        d = {
+          defaultValue: null,
+          kind: "LocalArgument",
+          name: "isEligibleForNavV2",
+        },
+        e = {
+          defaultValue: null,
+          kind: "LocalArgument",
+          name: "isMultiAssetSelectionEnabled",
+        },
+        f = { defaultValue: null, kind: "LocalArgument", name: "isWaba" },
+        g = {
+          defaultValue: null,
+          kind: "LocalArgument",
+          name: "localNavRouteName",
+        },
+        h = { defaultValue: null, kind: "LocalArgument", name: "localScopeID" },
+        i = {
+          defaultValue: null,
+          kind: "LocalArgument",
+          name: "localScopeType",
+        },
+        j = { defaultValue: null, kind: "LocalArgument", name: "localScopes" },
+        k = {
+          kind: "Variable",
+          name: "business_id",
+          variableName: "businessID",
+        },
+        l = {
+          kind: "Variable",
+          name: "local_scope_id",
+          variableName: "localScopeID",
+        },
+        m = {
+          kind: "Variable",
+          name: "local_scope_type",
+          variableName: "localScopeType",
+        },
+        n = {
+          kind: "Variable",
+          name: "route_name",
+          variableName: "globalNavRouteName",
+        },
+        o = [k, l, m, n],
+        p = {
+          alias: null,
+          args: null,
+          kind: "ScalarField",
+          name: "supported_asset_types",
+          storageKey: null,
+        },
+        q = {
+          alias: null,
+          args: null,
+          kind: "ScalarField",
+          name: "id",
+          storageKey: null,
+        },
+        r = {
+          kind: "Variable",
+          name: "local_scopes",
+          variableName: "localScopes",
+        },
+        s = {
+          alias: null,
+          args: null,
+          kind: "ScalarField",
+          name: "__typename",
+          storageKey: null,
+        },
+        t = {
+          kind: "TypeDiscriminator",
+          abstractKey: "__isBizKitNavigationItem",
+        },
+        u = {
+          alias: null,
+          args: null,
+          kind: "ScalarField",
+          name: "name",
+          storageKey: null,
+        },
+        v = {
+          alias: null,
+          args: null,
+          kind: "ScalarField",
+          name: "route_name",
+          storageKey: null,
+        },
+        w = {
+          alias: null,
+          args: null,
+          kind: "ScalarField",
+          name: "label",
+          storageKey: null,
+        },
+        x = {
+          kind: "Variable",
+          name: "local_nav_name",
+          variableName: "localNavRouteName",
+        };
+      return {
+        fragment: {
+          argumentDefinitions: [a, c, d, e, f, g, h, i, j],
+          kind: "Fragment",
+          metadata: null,
+          name: "BusinessCometLeftNavQuery",
+          selections: [
+            {
+              alias: null,
+              args: null,
+              concreteType: "Viewer",
+              kind: "LinkedField",
+              name: "viewer",
+              plural: !1,
+              selections: [
+                {
+                  alias: null,
+                  args: null,
+                  concreteType: "BizKitScoping",
+                  kind: "LinkedField",
+                  name: "bizkit_scoping",
+                  plural: !1,
+                  selections: [
+                    {
+                      alias: null,
+                      args: o,
+                      concreteType: "BizKitNavigationRouteItem",
+                      kind: "LinkedField",
+                      name: "navigation_root_route_item",
+                      plural: !1,
+                      selections: [p],
+                      storageKey: null,
+                    },
+                    {
+                      args: null,
+                      kind: "FragmentSpread",
+                      name: "useSetBizKitTailoringContext_BizKitScoping",
+                    },
+                  ],
+                  storageKey: null,
+                },
+                {
+                  args: [
+                    {
+                      kind: "Variable",
+                      name: "businessID",
+                      variableName: "businessID",
+                    },
+                    {
+                      kind: "Variable",
+                      name: "localScopeID",
+                      variableName: "localScopeID",
+                    },
+                    {
+                      kind: "Variable",
+                      name: "localScopeType",
+                      variableName: "localScopeType",
+                    },
+                    {
+                      kind: "Variable",
+                      name: "localScopes",
+                      variableName: "localScopes",
+                    },
+                    {
+                      kind: "Variable",
+                      name: "routeName",
+                      variableName: "globalNavRouteName",
+                    },
+                  ],
+                  kind: "FragmentSpread",
+                  name: "BizWebLeftNavShared_viewer",
+                },
+              ],
+              storageKey: null,
+            },
+            {
+              args: null,
+              kind: "FragmentSpread",
+              name: "useMultiAssetLeftNavEffect_Query",
+            },
+          ],
+          type: "Query",
+          abstractKey: null,
+        },
+        kind: "Request",
+        operation: {
+          argumentDefinitions: [h, i, a, c, g, f, e, j, d],
+          kind: "Operation",
+          name: "BusinessCometLeftNavQuery",
+          selections: [
+            {
+              alias: null,
+              args: null,
+              concreteType: "Viewer",
+              kind: "LinkedField",
+              name: "viewer",
+              plural: !1,
+              selections: [
+                {
+                  alias: null,
+                  args: null,
+                  concreteType: "BizKitScoping",
+                  kind: "LinkedField",
+                  name: "bizkit_scoping",
+                  plural: !1,
+                  selections: [
+                    {
+                      alias: null,
+                      args: o,
+                      concreteType: "BizKitNavigationRouteItem",
+                      kind: "LinkedField",
+                      name: "navigation_root_route_item",
+                      plural: !1,
+                      selections: [p, q],
+                      storageKey: null,
+                    },
+                    {
+                      alias: null,
+                      args: null,
+                      concreteType: "BizKitTailoring",
+                      kind: "LinkedField",
+                      name: "tailoring",
+                      plural: !1,
+                      selections: [
+                        {
+                          alias: null,
+                          args: null,
+                          kind: "ScalarField",
+                          name: "tailoring_experience",
+                          storageKey: null,
+                        },
+                        {
+                          alias: null,
+                          args: null,
+                          kind: "ScalarField",
+                          name: "user_saved_tailoring_experience",
+                          storageKey: null,
+                        },
+                      ],
+                      storageKey: null,
+                    },
+                    {
+                      alias: null,
+                      args: [k, l, m, r, n],
+                      concreteType: null,
+                      kind: "LinkedField",
+                      name: "navigation_items",
+                      plural: !0,
+                      selections: [
+                        s,
+                        q,
+                        t,
+                        {
+                          alias: null,
+                          args: null,
+                          kind: "ScalarField",
+                          name: "position",
+                          storageKey: null,
+                        },
+                        u,
+                        {
+                          kind: "InlineFragment",
+                          selections: [
+                            {
+                              args: null,
+                              documentName: "BizKitLeftNavSidebarItem_item",
+                              fragmentName:
+                                "BizKitLeftNavExternalLinkItem_item",
+                              fragmentPropName: "item",
+                              kind: "ModuleImport",
+                            },
+                          ],
+                          type: "BizKitNavigationExternalLinkItem",
+                          abstractKey: null,
+                        },
+                        {
+                          kind: "InlineFragment",
+                          selections: [
+                            {
+                              args: null,
+                              documentName: "BizKitLeftNavSidebarItem_item",
+                              fragmentName: "BizKitLeftNavOverlayItem_item",
+                              fragmentPropName: "item",
+                              kind: "ModuleImport",
+                            },
+                          ],
+                          type: "BizKitNavigationOverlayItem",
+                          abstractKey: null,
+                        },
+                        {
+                          kind: "InlineFragment",
+                          selections: [
+                            {
+                              args: null,
+                              documentName: "BizKitLeftNavSidebarItem_item",
+                              fragmentName: "BizKitLeftNavReverseShimItem_item",
+                              fragmentPropName: "item",
+                              kind: "ModuleImport",
+                            },
+                            {
+                              alias: null,
+                              args: null,
+                              kind: "ScalarField",
+                              name: "reverse_shim_name",
+                              storageKey: null,
+                            },
+                          ],
+                          type: "BizKitNavigationReverseShimItem",
+                          abstractKey: null,
+                        },
+                        {
+                          kind: "InlineFragment",
+                          selections: [
+                            {
+                              args: null,
+                              documentName: "BizKitLeftNavSidebarItem_item",
+                              fragmentName: "BizKitLeftNavRouteItem_item",
+                              fragmentPropName: "item",
+                              kind: "ModuleImport",
+                            },
+                            v,
+                          ],
+                          type: "BizKitNavigationRouteItem",
+                          abstractKey: null,
+                        },
+                        {
+                          kind: "InlineFragment",
+                          selections: [
+                            w,
+                            {
+                              alias: null,
+                              args: null,
+                              concreteType: null,
+                              kind: "LinkedField",
+                              name: "child_navigation_items",
+                              plural: !0,
+                              selections: [
+                                s,
+                                q,
+                                t,
+                                w,
+                                {
+                                  alias: null,
+                                  args: null,
+                                  kind: "ScalarField",
+                                  name: "more_tools_icon",
+                                  storageKey: null,
+                                },
+                                {
+                                  kind: "InlineFragment",
+                                  selections: [v],
+                                  type: "BizKitNavigationRouteItem",
+                                  abstractKey: null,
+                                },
+                                {
+                                  kind: "InlineFragment",
+                                  selections: [
+                                    {
+                                      alias: null,
+                                      args: null,
+                                      kind: "ScalarField",
+                                      name: "external_link",
+                                      storageKey: null,
+                                    },
+                                  ],
+                                  type: "BizKitNavigationExternalLinkItem",
+                                  abstractKey: null,
+                                },
+                              ],
+                              storageKey: null,
+                            },
+                            {
+                              args: null,
+                              documentName: "BizKitLeftNavSidebarItem_item",
+                              fragmentName: "BizKitLeftNavToolGroupItem_item",
+                              fragmentPropName: "item",
+                              kind: "ModuleImport",
+                            },
+                          ],
+                          type: "BizKitNavigationToolGroupItem",
+                          abstractKey: null,
+                        },
+                      ],
+                      storageKey: null,
+                    },
+                    {
+                      alias: null,
+                      args: [l, m, r],
+                      kind: "ScalarField",
+                      name: "should_show_edit_navigation_item",
+                      storageKey: null,
+                    },
+                  ],
+                  storageKey: null,
+                },
+                {
+                  alias: null,
+                  args: null,
+                  kind: "ScalarField",
+                  name: "bizkit_is_ig_login",
+                  storageKey: null,
+                },
+              ],
+              storageKey: null,
+            },
+            {
+              condition: "isMultiAssetSelectionEnabled",
+              kind: "Condition",
+              passingValue: !0,
+              selections: [
+                {
+                  alias: null,
+                  args: null,
+                  concreteType: "Viewer",
+                  kind: "LinkedField",
+                  name: "viewer",
+                  plural: !1,
+                  selections: [
+                    {
+                      alias: null,
+                      args: null,
+                      concreteType: "BizKitUser",
+                      kind: "LinkedField",
+                      name: "bizkit_user",
+                      plural: !1,
+                      selections: [
+                        {
+                          alias: null,
+                          args: null,
+                          kind: "ScalarField",
+                          name: "is_downscoping_toast_dismissed",
+                          storageKey: null,
+                        },
+                        q,
+                      ],
+                      storageKey: null,
+                    },
+                    {
+                      alias: null,
+                      args: null,
+                      concreteType: "BizKitScoping",
+                      kind: "LinkedField",
+                      name: "bizkit_scoping",
+                      plural: !1,
+                      selections: [
+                        {
+                          alias: null,
+                          args: o,
+                          concreteType: "BizKitNavigationRouteItem",
+                          kind: "LinkedField",
+                          name: "navigation_root_route_item",
+                          plural: !1,
+                          selections: [
+                            w,
+                            {
+                              alias: null,
+                              args: null,
+                              concreteType: "BizKitNavigationRouteItemGroup",
+                              kind: "LinkedField",
+                              name: "local_nav_groups",
+                              plural: !0,
+                              selections: [
+                                {
+                                  alias: null,
+                                  args: [x],
+                                  concreteType: null,
+                                  kind: "LinkedField",
+                                  name: "child",
+                                  plural: !1,
+                                  selections: [s, w, q],
+                                  storageKey: null,
+                                },
+                                q,
+                              ],
+                              storageKey: null,
+                            },
+                          ],
+                          storageKey: null,
+                        },
+                        {
+                          alias: null,
+                          args: [
+                            {
+                              kind: "Variable",
+                              name: "global_nav_name",
+                              variableName: "globalNavRouteName",
+                            },
+                            x,
+                          ],
+                          kind: "ScalarField",
+                          name: "can_tool_use_multiple_assets",
+                          storageKey: null,
+                        },
+                      ],
+                      storageKey: null,
+                    },
+                  ],
+                  storageKey: null,
+                },
+              ],
+            },
+            {
+              condition: "isWaba",
+              kind: "Condition",
+              passingValue: !1,
+              selections: [
+                {
+                  alias: null,
+                  args: [
+                    {
+                      kind: "Variable",
+                      name: "id",
+                      variableName: "localScopeID",
+                    },
+                  ],
+                  concreteType: "Page",
+                  kind: "LinkedField",
+                  name: "page",
+                  plural: !1,
+                  selections: [u, q],
+                  storageKey: null,
+                },
+              ],
+            },
+            {
+              condition: "isWaba",
+              kind: "Condition",
+              passingValue: !0,
+              selections: [
+                {
+                  alias: null,
+                  args: [
+                    {
+                      kind: "Variable",
+                      name: "waba_id",
+                      variableName: "localScopeID",
+                    },
+                  ],
+                  concreteType: "WhatsAppBusinessAccountData",
+                  kind: "LinkedField",
+                  name: "whatsapp_business_account",
+                  plural: !1,
+                  selections: [u],
+                  storageKey: null,
+                },
+              ],
+            },
+          ],
+        },
+        params: {
+          id: b("BusinessCometLeftNavQuery_facebookRelayOperation"),
+          metadata: {},
+          name: "BusinessCometLeftNavQuery",
+          operationKind: "query",
+          text: null,
+        },
+      };
+    })();
+    b("relay-runtime").PreloadableQueryRegistry.set(a.params.id, a);
+    e.exports = a;
+  },
+  null
+);

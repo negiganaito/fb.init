@@ -52,7 +52,7 @@ const NonFBLinkReferrerProtector = {
       }
     };
 
-    Event.prototype.listen(document.body, "click", clickHandler);
+    Event.listen(document.body, "click", clickHandler);
   },
   getMaybeNonFBLinkReferrerJSMode(target) {
     const element = byAttribute(target, "data-lnfb-mode");

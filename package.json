@@ -32,8 +32,13 @@
     "dev2": "node scripts/dev.js"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
+    "prop-types": "^15.8.1",
     "react": "git://github.com/tienlx97/react-experimental.git#www",
-    "react-dom": "git://github.com/tienlx97/react-dom-experimental.git#www"
+    "react-dom": "git://github.com/tienlx97/react-dom-experimental.git#www",
+    "recoil": "^0.7.7",
+    "tweetnacl": "^1.0.3",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.5",
@@ -59,6 +64,7 @@
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
+    "@types/fbjs": "^3.0.10",
     "@types/jest": "^29.5.12",
     "@types/node": "^18.11.18",
     "@types/react": "18.3.3",

@@ -68,9 +68,9 @@ import { CometVisualCompletionAttributes } from "../../business/helpers/CometVis
 import getImageSourceURLFromImageish from "../../business/helpers/getImageSourceURLFromImageish";
 import warnUnsupportedProp from "../../business/helpers/warnUnsupportedProp";
 
-const defaultProps = {
-  alt: "",
-};
+// const defaultProps = {
+//   alt: "",
+// };
 
 function resolveSrc(src) {
   return src instanceof URI ? src.toString() : src;
@@ -154,7 +154,7 @@ function ImageComponent(props) {
 }
 
 ImageComponent.displayName = "ImageCore";
-ImageComponent.defaultProps = defaultProps;
+// ImageComponent.defaultProps = defaultProps;
 
 const ImageCore = forwardRef((props, ref) => {
   if (Object.prototype.hasOwnProperty.call(props, "source")) {

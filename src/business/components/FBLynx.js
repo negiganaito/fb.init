@@ -6,7 +6,7 @@
  */
 
 import Base64 from "../helpers/Base64";
-import Event1 from "../helpers/Event";
+import Event from "../helpers/Event";
 import { LinkshimHandlerConfig } from "../helpers/LinkshimHandlerConfig";
 import { byAttribute } from "../helpers/Parent";
 import URI from "../helpers/URI";
@@ -76,31 +76,31 @@ const FBLynx = {
       }
     };
 
-    Event1.prototype.listen(document.body, "click", clickHandler);
+    Event.listen(document.body, "click", clickHandler);
 
-    if (LinkshimHandlerConfig.middle_click_requires_event) {
-      Event1.prototype.listen(document.body, "mouseup", (event) => {
-        if (event.button === 1) clickHandler(event);
-      });
-    }
+    // if (LinkshimHandlerConfig.middle_click_requires_event) {
+    //   Event.listen(document.body, "mouseup", (event) => {
+    //     if (event.button === 1) clickHandler(event);
+    //   });
+    // }
 
-    Event1.prototype.listen(document.body, "mouseover", (event) => {
-      let [mode, element] = this.getMaybeLynxLink(event.target) || [];
-      if (!element) return;
+    // Event.listen(document.body, "mouseover", (event) => {
+    //   let [mode, element] = this.getMaybeLynxLink(event.target) || [];
+    //   if (!element) return;
 
-      if (["async", "asynclazy", "origin", "hover"].includes(mode)) {
-        this.mouseover(element);
-      }
-    });
+    //   if (["async", "asynclazy", "origin", "hover"].includes(mode)) {
+    //     this.mouseover(element);
+    //   }
+    // });
 
-    Event1.prototype.listen(document.body, "contextmenu", (event) => {
-      let [mode, element] = this.getMaybeLynxLink(event.target) || [];
-      if (!element) return;
+    // Event.listen(document.body, "contextmenu", (event) => {
+    //   let [mode, element] = this.getMaybeLynxLink(event.target) || [];
+    //   if (!element) return;
 
-      if (["async", "hover", "origin"].includes(mode)) {
-        this.contextmenu(element);
-      }
-    });
+    //   if (["async", "hover", "origin"].includes(mode)) {
+    //     this.contextmenu(element);
+    //   }
+    // });
   },
   getMaybeLynxLink: function (target) {
     let element = byAttribute(target, "data-lynx-mode");

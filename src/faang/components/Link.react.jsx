@@ -175,13 +175,13 @@ class Link extends React.Component {
       noreferrer,
       preparedTarget,
       preparedShimhash,
-      isSafeToSkipShim,
-      hasValidDomain,
+      // isSafeToSkipShim,
+      // hasValidDomain,
     ] = linkProperties;
-    const dataLnfbMode =
-      !LinkshimHandlerConfig.is_linkshim_supported && hasValidDomain
-        ? LinkshimHandlerConfig.non_linkshim_lnfb_mode
-        : null;
+    // const dataLnfbMode =
+    //   !LinkshimHandlerConfig.is_linkshim_supported && hasValidDomain
+    //     ? LinkshimHandlerConfig.non_linkshim_lnfb_mode
+    //     : null;
 
     return (
       <AbstractLink
@@ -192,9 +192,9 @@ class Link extends React.Component {
         noreferrer={noreferrer}
         shimhash={preparedShimhash}
         target={preparedTarget}
-        isSafeToSkipShim={isSafeToSkipShim}
-        dataLnfbMode={dataLnfbMode}
-        isLinkshimSupported={LinkshimHandlerConfig.is_linkshim_supported}
+        // isSafeToSkipShim={isSafeToSkipShim}
+        // dataLnfbMode={dataLnfbMode}
+        // isLinkshimSupported={LinkshimHandlerConfig.is_linkshim_supported}
       />
     );
   }

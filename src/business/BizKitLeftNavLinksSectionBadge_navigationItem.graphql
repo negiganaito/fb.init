@@ -1,0 +1,102 @@
+# __d(
+#   "BizKitLeftNavLinksSectionBadge_navigationItem.graphql",
+#   [],
+#   function (a, b, c, d, e, f) {
+#     "use strict";
+#     a = {
+#       argumentDefinitions: [],
+#       kind: "Fragment",
+#       metadata: null,
+#       name: "BizKitLeftNavLinksSectionBadge_navigationItem",
+#       selections: [
+#         {
+#           alias: null,
+#           args: null,
+#           kind: "ScalarField",
+#           name: "unread_count",
+#           storageKey: null,
+#         },
+#         {
+#           kind: "InlineFragment",
+#           selections: [
+#             {
+#               alias: null,
+#               args: null,
+#               kind: "ScalarField",
+#               name: "route_name",
+#               storageKey: null,
+#             },
+#             {
+#               alias: null,
+#               args: null,
+#               concreteType: null,
+#               kind: "LinkedField",
+#               name: "badge",
+#               plural: !1,
+#               selections: [
+#                 {
+#                   kind: "Defer",
+#                   selections: [
+#                     {
+#                       kind: "InlineFragment",
+#                       selections: [
+#                         {
+#                           args: null,
+#                           documentName:
+#                             "BizKitLeftNavLinksSectionBadge_navigationItem",
+#                           fragmentName:
+#                             "BizKitLeftNavLinksSectionSettingsBadge_badge",
+#                           fragmentPropName: "badge",
+#                           kind: "ModuleImport",
+#                         },
+#                       ],
+#                       type: "BizKitSettingsNavigationRouteItemBadge",
+#                       abstractKey: null,
+#                     },
+#                   ],
+#                 },
+#               ],
+#               storageKey: null,
+#             },
+#           ],
+#           type: "BizKitNavigationRouteItem",
+#           abstractKey: null,
+#         },
+#         {
+#           kind: "InlineFragment",
+#           selections: [
+#             {
+#               alias: null,
+#               args: null,
+#               kind: "ScalarField",
+#               name: "overlay_name",
+#               storageKey: null,
+#             },
+#           ],
+#           type: "BizKitNavigationOverlayItem",
+#           abstractKey: null,
+#         },
+#       ],
+#       type: "BizKitNavigationItem",
+#       abstractKey: "__isBizKitNavigationItem",
+#     };
+#     e.exports = a;
+#   },
+#   null
+# );
+
+fragment BizKitLeftNavLinksSectionBadge_navigationItem on BizKitNavigationItem {
+  unread_count
+  ... on BizKitNavigationRouteItem {
+    route_name
+    badge {
+      ... on BizKitSettingsNavigationRouteItemBadge @defer {
+        ...BizKitLeftNavLinksSectionSettingsBadge_badge
+          @module(name: "BizKitLeftNavLinksSectionSettingsBadge_badge")
+      }
+    }
+  }
+  ... on BizKitNavigationOverlayItem {
+    overlay_name
+  }
+}

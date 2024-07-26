@@ -1,0 +1,51 @@
+# __d(
+#   "useSetBizKitTailoringContext_BizKitScoping.graphql",
+#   [],
+#   function (a, b, c, d, e, f) {
+#     "use strict";
+#     a = {
+#       argumentDefinitions: [],
+#       kind: "Fragment",
+#       metadata: null,
+#       name: "useSetBizKitTailoringContext_BizKitScoping",
+#       selections: [
+#         {
+#           alias: null,
+#           args: null,
+#           concreteType: "BizKitTailoring",
+#           kind: "LinkedField",
+#           name: "tailoring",
+#           plural: !1,
+#           selections: [
+#             {
+#               alias: null,
+#               args: null,
+#               kind: "ScalarField",
+#               name: "tailoring_experience",
+#               storageKey: null,
+#             },
+#             {
+#               alias: null,
+#               args: null,
+#               kind: "ScalarField",
+#               name: "user_saved_tailoring_experience",
+#               storageKey: null,
+#             },
+#           ],
+#           storageKey: null,
+#         },
+#       ],
+#       type: "BizKitScoping",
+#       abstractKey: null,
+#     };
+#     e.exports = a;
+#   },
+#   null
+# );
+
+fragment useSetBizKitTailoringContext_BizKitScoping on BizKitScoping {
+  tailoring {
+    tailoring_experience
+    user_saved_tailoring_experience
+  }
+}

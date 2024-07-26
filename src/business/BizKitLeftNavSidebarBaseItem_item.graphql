@@ -1,0 +1,115 @@
+# __d(
+#   "BizKitLeftNavSidebarBaseItem_item.graphql",
+#   [],
+#   function (a, b, c, d, e, f) {
+#     "use strict";
+#     a = (function () {
+#       var a = [
+#         {
+#           kind: "Variable",
+#           name: "active_item",
+#           variableName: "globalNavRouteName",
+#         },
+#       ];
+#       return {
+#         argumentDefinitions: [
+#           { kind: "RootArgument", name: "globalNavRouteName" },
+#           { kind: "RootArgument", name: "isEligibleForNavV2" },
+#         ],
+#         kind: "Fragment",
+#         metadata: null,
+#         name: "BizKitLeftNavSidebarBaseItem_item",
+#         selections: [
+#           {
+#             kind: "Defer",
+#             selections: [
+#               {
+#                 args: null,
+#                 kind: "FragmentSpread",
+#                 name: "BizKitLeftNavLinksSectionBadge_navigationItem",
+#               },
+#             ],
+#           },
+#           {
+#             alias: null,
+#             args: a,
+#             kind: "ScalarField",
+#             name: "icon_prefetch_refine",
+#             storageKey: null,
+#           },
+#           {
+#             alias: null,
+#             args: a,
+#             kind: "ScalarField",
+#             name: "icon_active_prefetch_refine",
+#             storageKey: null,
+#           },
+#           {
+#             alias: null,
+#             args: [
+#               {
+#                 kind: "Variable",
+#                 name: "disabled_item",
+#                 variableName: "globalNavRouteName",
+#               },
+#             ],
+#             kind: "ScalarField",
+#             name: "icon_disabled_prefetch_refine",
+#             storageKey: null,
+#           },
+#           {
+#             alias: null,
+#             args: null,
+#             kind: "ScalarField",
+#             name: "label",
+#             storageKey: null,
+#           },
+#           {
+#             condition: "isEligibleForNavV2",
+#             kind: "Condition",
+#             passingValue: !0,
+#             selections: [
+#               {
+#                 alias: null,
+#                 args: null,
+#                 concreteType: "NavPermissionAccessibilityInfo",
+#                 kind: "LinkedField",
+#                 name: "nav_accessibility_info",
+#                 plural: !1,
+#                 selections: [
+#                   {
+#                     alias: null,
+#                     args: null,
+#                     kind: "ScalarField",
+#                     name: "state",
+#                     storageKey: null,
+#                   },
+#                 ],
+#                 storageKey: null,
+#               },
+#             ],
+#           },
+#         ],
+#         type: "BizKitNavigationItem",
+#         abstractKey: "__isBizKitNavigationItem",
+#       };
+#     })();
+#     e.exports = a;
+#   },
+#   null
+# );
+
+fragment BizKitLeftNavSidebarBaseItem_item on BizKitNavigationItem
+@argumentDefinitions(
+  globalNavRouteName: { type: "String" }
+  isEligibleForNavV2: { type: "Boolean" }
+) {
+  ...BizKitLeftNavLinksSectionBadge_navigationItem @defer
+  icon_prefetch_refine(active_item: $globalNavRouteName)
+  icon_active_prefetch_refine(active_item: $globalNavRouteName)
+  icon_disabled_prefetch_refine(disabled_item: $globalNavRouteName)
+  label
+  nav_accessibility_info @include(if: $isEligibleForNavV2) {
+    state
+  }
+}

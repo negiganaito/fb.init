@@ -1,0 +1,52 @@
+# __d(
+#   "BizKitLeftNavExternalLinkItem_item.graphql",
+#   [],
+#   function (a, b, c, d, e, f) {
+#     "use strict";
+#     a = {
+#       argumentDefinitions: [],
+#       kind: "Fragment",
+#       metadata: null,
+#       name: "BizKitLeftNavExternalLinkItem_item",
+#       selections: [
+#         {
+#           args: null,
+#           kind: "FragmentSpread",
+#           name: "BizKitLeftNavSidebarBaseItem_item",
+#         },
+#         {
+#           alias: null,
+#           args: null,
+#           kind: "ScalarField",
+#           name: "external_link",
+#           storageKey: null,
+#         },
+#         {
+#           alias: null,
+#           args: null,
+#           kind: "ScalarField",
+#           name: "name",
+#           storageKey: null,
+#         },
+#         {
+#           alias: null,
+#           args: null,
+#           kind: "ScalarField",
+#           name: "bm_tool_name",
+#           storageKey: null,
+#         },
+#       ],
+#       type: "BizKitNavigationExternalLinkItem",
+#       abstractKey: null,
+#     };
+#     e.exports = a;
+#   },
+#   null
+# );
+
+fragment BizKitLeftNavExternalLinkItem_item on BizKitNavigationExternalLinkItem {
+  ...BizKitLeftNavSidebarBaseItem_item
+  external_link
+  name
+  bm_tool_name
+}
