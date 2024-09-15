@@ -42,7 +42,7 @@ const GeoTooltip = lazyLoadComponent(
 
 const rootStyles = {
   minWidth: "xeuugli",
-  $$css: true,
+  ,
 };
 
 const singleLineNoWrapStyles = {
@@ -50,7 +50,7 @@ const singleLineNoWrapStyles = {
   overflowY: "x10wlt62",
   textOverflow: "xlyipyv",
   whiteSpace: "xuxw1ft",
-  $$css: true,
+  ,
 };
 
 const singleLinePreStyles = {
@@ -58,7 +58,7 @@ const singleLinePreStyles = {
   overflowY: "x10wlt62",
   textOverflow: "xlyipyv",
   whiteSpace: "x1sdyfia",
-  $$css: true,
+  ,
 };
 
 const multiLineStyles = {
@@ -66,7 +66,7 @@ const multiLineStyles = {
   overflowX: "x6ikm8r",
   overflowY: "x10wlt62",
   WebkitBoxOrient: "x1ua5tub",
-  $$css: true,
+  ,
 };
 
 const rootStyleMap = {

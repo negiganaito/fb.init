@@ -12,15 +12,15 @@ import { getMWXBubbleCornerStyles } from "./MWXMessageBubbleCornerStyles";
 import MWXText from "./MWXText.react";
 
 const styles = {
-  incoming: { color: "x18lvrbx", $$css: true },
+  incoming: { color: "x18lvrbx",  },
   message: {
     fontStyle: "x1k4tb9n",
     marginBottom: "x12nagc",
     marginTop: "x1gslohp",
     opacity: "x1ks1olk",
-    $$css: true,
+    ,
   },
-  outgoing: { color: "xyk4ms5", $$css: true },
+  outgoing: { color: "xyk4ms5",  },
   root: {
     borderTopColor: "x2z21go",
     borderEndColor: "x7glw7h",
@@ -40,7 +40,7 @@ const styles = {
     paddingBottom: "xwib8y2",
     paddingStart: "x1ye3gou",
     wordBreak: "x13faqbe",
-    $$css: true,
+    ,
   },
 };
 

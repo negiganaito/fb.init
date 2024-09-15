@@ -83,31 +83,31 @@ const styles = {
     position: "x10l6tqk",
     top: "x13vifvy",
     right: "x3m8u43",
-    $$css: true,
+    ,
   },
   borderActive: {
     borderTopColor: "xpkcf2w",
     borderEndColor: "xg3ouva",
     borderBottomColor: "xe5zar4",
     borderStartColor: "x1g7atq6",
-    $$css: true,
+    ,
   },
   borderDefault: {
     borderTopColor: "x1i42pi2",
     borderEndColor: "x15ygyjg",
     borderBottomColor: "x13ylt88",
     borderStartColor: "x1j8qwd4",
-    $$css: true,
+    ,
   },
   borderHovered: {
     borderTopColor: "xxau7dk",
     borderEndColor: "xfxr8ip",
     borderBottomColor: "x48f3vs",
     borderStartColor: "xb56o5k",
-    $$css: true,
+    ,
   },
-  badgeHidden: { opacity: "xg01cxk", $$css: true },
-  badgeVisible: { opacity: "x1hc1fzr", $$css: true },
+  badgeHidden: { opacity: "xg01cxk",  },
+  badgeVisible: { opacity: "x1hc1fzr",  },
 };
 
 const BizKitSidebarItemIconBadge = ({

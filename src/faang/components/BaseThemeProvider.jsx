@@ -25,7 +25,7 @@ const BaseThemeProvider = ({ children, config, displayMode }) => {
           ? themeConfigContext.darkClassName
           : themeConfigContext.lightClassName;
     }
-    return className ? { $$css: true, theme: className } : null;
+    return className ? { , theme: className } : null;
   }, [
     config,
     themeConfigContext.darkClassName,

@@ -59,21 +59,21 @@
  * See the LICENSE file in the root directory for details.
  */
 const transitionDurationStyles = {
-  extraExtraShort: { transitionDuration: "x1g2r6go", $$css: true },
-  fast: { transitionDuration: "x13dflua", $$css: true },
-  short: { transitionDuration: "x1mbqufl", $$css: true },
-  slow: { transitionDuration: "xofcydl", $$css: true },
-  sluggish: { transitionDuration: "x1fkkkjs", $$css: true },
+  extraExtraShort: { transitionDuration: "x1g2r6go",  },
+  fast: { transitionDuration: "x13dflua",  },
+  short: { transitionDuration: "x1mbqufl",  },
+  slow: { transitionDuration: "xofcydl",  },
+  sluggish: { transitionDuration: "x1fkkkjs",  },
 };
 
 const transitionTimingStyles = {
-  enter: { transitionTimingFunction: "x1mow4s6", $$css: true },
-  exit: { transitionTimingFunction: "x1ftol90", $$css: true },
-  fade: { transitionTimingFunction: "x16e9yqp", $$css: true },
-  move: { transitionTimingFunction: "x1fwqrf6", $$css: true },
-  quickMove: { transitionTimingFunction: "xw7d9y7", $$css: true },
-  soft: { transitionTimingFunction: "xxziih7", $$css: true },
-  strong: { transitionTimingFunction: "xnnyp6c", $$css: true },
+  enter: { transitionTimingFunction: "x1mow4s6",  },
+  exit: { transitionTimingFunction: "x1ftol90",  },
+  fade: { transitionTimingFunction: "x16e9yqp",  },
+  move: { transitionTimingFunction: "x1fwqrf6",  },
+  quickMove: { transitionTimingFunction: "xw7d9y7",  },
+  soft: { transitionTimingFunction: "xxziih7",  },
+  strong: { transitionTimingFunction: "xnnyp6c",  },
 };
 
 export { transitionDurationStyles, transitionTimingStyles };

@@ -30,14 +30,14 @@ const styles = {
   oneLine: {
     textOverflow: "xlyipyv",
     whiteSpace: "xuxw1ft",
-    $$css: true,
+    ,
   },
   root: {
     display: "x1lliihq",
     overflowX: "x6ikm8r",
     overflowY: "x10wlt62",
-    position: "x1n2onr6",
-    $$css: true,
+    position: "relative",
+    ,
   },
 };
 

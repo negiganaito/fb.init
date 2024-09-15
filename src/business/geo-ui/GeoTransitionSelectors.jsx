@@ -10,10 +10,10 @@ import {
   transitionTimingStyles,
 } from "./GeoPrivateDefaultTransitionGeneratedStyles";
 
-const properties = { transitionProperty: "x6o7n8i", $$css: true };
+const properties = { transitionProperty: "x6o7n8i",  };
 const root = {
   "@media (prefers-reduced-motion: reduce)_transitionDuration": "x12w9bfk",
-  $$css: true,
+  ,
 };
 
 function selectTransition({ duration, timing }) {

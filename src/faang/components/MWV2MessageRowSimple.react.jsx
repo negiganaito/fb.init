@@ -129,8 +129,8 @@ import MWEditMessageOverlay from "./MWEditMessageOverlay.react";
 import { FocusTable, scopeID } from "./MWMessageTableFocusTable.react";
 
 const styles = {
-  row: { position: "x1n2onr6", $$css: true },
-  rowFocusVisible: { zIndex: "x1vjfegm", $$css: true },
+  row: { position: "relative" },
+  rowFocusVisible: { zIndex: "x1vjfegm" },
 };
 
 function MWV2MessageRowSimple({

@@ -85,7 +85,7 @@ const GeoTextPairing = ({
 GeoTextPairing.displayName = `GeoTextPairing`;
 
 const styles = {
-  root: { minWidth: "xeuugli", $$css: true },
+  root: { minWidth: "xeuugli",  },
 };
 
 const GeoTextPairingComponent = makeGeoComponent(

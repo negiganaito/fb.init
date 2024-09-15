@@ -64,12 +64,12 @@ const glimmerLinearGradientStyle = {
   default: {
     backgroundImage: "x1k7hgvv",
     backgroundColor: "x1k74hu9",
-    $$css: true,
+    ,
   },
   input: {
     backgroundImage: "x598uhx",
     backgroundColor: "x1k74hu9",
-    $$css: true,
+    ,
   },
 };
 

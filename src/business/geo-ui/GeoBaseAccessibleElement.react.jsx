@@ -25,7 +25,7 @@ const styles = {
     position: "x10l6tqk",
     whiteSpace: "xuxw1ft",
     width: "x1i1rx1s",
-    $$css: true,
+    ,
   },
 };
 

@@ -6,4 +6,5 @@
  */
 import MDSSolidMessageBubble from "./MDSSolidMessageBubble";
 
-export default MDSSolidMessageBubble;
+const MWXMessageBubble = MDSSolidMessageBubble;
+export default MWXMessageBubble;

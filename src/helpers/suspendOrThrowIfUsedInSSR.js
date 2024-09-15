@@ -7,7 +7,7 @@
 
 import isInBrowser from "fbjs/lib/ExecutionEnvironment";
 
-import { CometSSRClientRender } from "../../faang/components/CometSSRClientRender";
+import { CometSSRClientRender } from "../faang/components/CometSSRClientRender";
 
 function suspendOrThrowIfUsedInSSR(message) {
   if (!isInBrowser) {

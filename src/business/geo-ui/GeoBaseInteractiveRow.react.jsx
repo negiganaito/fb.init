@@ -204,14 +204,14 @@ __d(
         borderBottomEndRadius: "x5pf9jr",
         $$css: !0,
       },
-      fit: { display: "x3nfvp2", $$css: !0 },
+      fit: { display: 0, $$css: !0 },
       fill: { flexGrow: "x1iyjqo2", $$css: !0 },
       noUnderline: {
         textDecoration: "x1hl2dhg",
         ":hover_textDecoration": "x1lku1pv",
         $$css: !0,
       },
-      row: { position: "x1n2onr6", $$css: !0 },
+      row: { position: "relative", $$css: !0 },
     };
     function o(a) {
       var b = a.accessibilityRole,
@@ -447,16 +447,16 @@ const styles = {
   expanded: {
     borderBottomStartRadius: "xo71vjh",
     borderBottomEndRadius: "x5pf9jr",
-    $$css: true,
+    ,
   },
-  fit: { display: "x3nfvp2", $$css: true },
-  fill: { flexGrow: "x1iyjqo2", $$css: true },
+  fit: { display: 0,  },
+  fill: { flexGrow: "x1iyjqo2",  },
   noUnderline: {
     textDecoration: "x1hl2dhg",
     ":hover_textDecoration": "x1lku1pv",
-    $$css: true,
+    ,
   },
-  row: { position: "x1n2onr6", $$css: true },
+  row: { position: "relative",  },
 };
 
 function getRowLayoutStyles({

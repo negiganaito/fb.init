@@ -64,7 +64,7 @@ const styles = {
     overflowX: "x6ikm8r",
     overflowY: "x10wlt62",
     textOverflow: "xlyipyv",
-    $$css: true,
+    ,
   },
 };
 

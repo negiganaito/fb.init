@@ -66,17 +66,17 @@ const styles = {
     boxSizing: "x9f619",
     maxWidth: "xxc7z9f",
     wordBreak: "x13faqbe",
-    $$css: true,
+    ,
   },
-  headerWrapper: { display: "x78zum5", $$css: true },
+  headerWrapper: { display: "x78zum5",  },
   icon: {
     display: "x78zum5",
     cursor: "x1ypdohk",
     verticalAlign: "x1uuroth",
     pointerEvents: "x67bb7w",
-    $$css: true,
+    ,
   },
-  infoTooltipContainer: { flexShrink: "x2lah0s", $$css: true },
+  infoTooltipContainer: { flexShrink: "x2lah0s",  },
   mediaIcon: {
     display: "x78zum5",
     borderTopStartRadius: "x14yjl9h",
@@ -88,7 +88,7 @@ const styles = {
     justifyContent: "xl56j7k",
     alignItems: "x6s0dn4",
     width: "xvy4d1p",
-    $$css: true,
+    ,
   },
 };
 

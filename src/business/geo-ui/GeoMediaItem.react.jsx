@@ -82,9 +82,9 @@ import {
 const styles = {
   root: {
     display: "x1lliihq",
-    position: "x1n2onr6",
+    position: "relative",
     flexShrink: "x2lah0s",
-    $$css: true,
+    ,
   },
   glimmer: {
     start: "x17qophe",
@@ -93,7 +93,7 @@ const styles = {
     position: "x10l6tqk",
     top: "x13vifvy",
     zIndex: "x1vjfegm",
-    $$css: true,
+    ,
   },
 };
 
@@ -197,23 +197,23 @@ const wrapperStyles = {
     borderBottomEndRadius: "x1e5q0jg",
     borderBottomStartRadius: "x13rtm0m",
     height: "x5yr21d",
-    position: "x1n2onr6",
+    position: "relative",
     width: "xh8yej3",
-    $$css: true,
+    ,
   },
   denseStroke: {
     paddingTop: "x4p5aij",
     paddingEnd: "x19um543",
     paddingBottom: "x1j85h84",
     paddingStart: "x1m6msm",
-    $$css: true,
+    ,
   },
   sparseStroke: {
     paddingTop: "x1nn3v0j",
     paddingEnd: "xg83lxy",
     paddingBottom: "x1120s5i",
     paddingStart: "x1h0ha7o",
-    $$css: true,
+    ,
   },
 };
 
@@ -234,7 +234,7 @@ const Wrapper = ({ size, children }) => {
 
   return groupContext.hasStroke ? (
     <div className={stylex(styles)}>
-      <div className="x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x5yr21d x1n2onr6 xh8yej3">
+      <div className="x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x5yr21d relative xh8yej3">
         {children}
       </div>
     </div>
@@ -260,10 +260,10 @@ const mediaContentStyles = {
     borderTopEndRadius: "x3x9cwd",
     borderBottomEndRadius: "x1e5q0jg",
     borderBottomStartRadius: "x13rtm0m",
-    $$css: true,
+    ,
   },
-  loading: { opacity: "xg01cxk", $$css: true },
-  backgroundTransparent: { backgroundColor: "xjbqb8w", $$css: true },
+  loading: { opacity: "xg01cxk",  },
+  backgroundTransparent: { backgroundColor: "xjbqb8w",  },
   fitNone: {
     ":not([stylex-hack]) > *_left": "xosibs0",
     ":not([stylex-hack]) > *_start": null,
@@ -271,7 +271,7 @@ const mediaContentStyles = {
     ":not([stylex-hack]) > *_position": "xt24udd",
     ":not([stylex-hack]) > *_top": "xw53kvy",
     ":not([stylex-hack]) > *_transform": "x1dka6rp",
-    $$css: true,
+    ,
   },
   fit: {
     ":not([stylex-hack]) img_height": "xtd80it",
@@ -281,12 +281,12 @@ const mediaContentStyles = {
     ":not([stylex-hack]) img_position": "x1q1rkhy",
     ":not([stylex-hack]) img_top": "x18tuezv",
     ":not([stylex-hack]) img_width": "x1xuqjiz",
-    $$css: true,
+    ,
   },
-  fitCover: { ":not([stylex-hack]) img_objectFit": "xhl3afg", $$css: true },
-  fitContain: { ":not([stylex-hack]) img_objectFit": "x1o3kp5p", $$css: true },
-  presentational: { pointerEvents: "x47corl", $$css: true },
-  disabled: { opacity: "xbyyjgo", $$css: true },
+  fitCover: { ":not([stylex-hack]) img_objectFit": "xhl3afg",  },
+  fitContain: { ":not([stylex-hack]) img_objectFit": "x1o3kp5p",  },
+  presentational: { pointerEvents: "x47corl",  },
+  disabled: { opacity: "xbyyjgo",  },
 };
 
 const MediaContent = forwardRef(
@@ -376,7 +376,7 @@ function isElementImage(element) {
 }
 
 const addonStyles = {
-  root: { position: "x10l6tqk", zIndex: "x1vjfegm", $$css: true },
+  root: { position: "x10l6tqk", zIndex: "x1vjfegm",  },
 };
 
 const PlatformIcon = ({ platform, ratio, size }) => {
@@ -412,7 +412,7 @@ const overflowStyles = {
     display: "x78zum5",
     alignItems: "x6s0dn4",
     justifyContent: "xl56j7k",
-    $$css: true,
+    ,
   },
 };
 

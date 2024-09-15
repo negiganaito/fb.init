@@ -23,6 +23,7 @@ const StylexPlugin = require("@stylexjs/webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 const envv = require("./scripts/env");
+const { flow } = require("lodash");
 
 const fileExtensions = [
   "jpg",

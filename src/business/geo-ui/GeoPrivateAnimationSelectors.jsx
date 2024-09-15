@@ -13,7 +13,7 @@ import {
 const root = {
   root: {
     "@media (prefers-reduced-motion: reduce)_animationDuration": "x1u6grsq",
-    $$css: true,
+    ,
   },
 };
 

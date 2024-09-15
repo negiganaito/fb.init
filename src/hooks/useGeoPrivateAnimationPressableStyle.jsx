@@ -9,7 +9,7 @@ import useGeoTheme from "./useGeoTheme";
 const styles = {
   animationStyles: {
     transitionProperty: "x15406qy",
-    $$css: true,
+    ,
   },
 };
 

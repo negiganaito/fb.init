@@ -85,7 +85,7 @@ const defaultStyles = {
     marginRight: "xm80bdy",
     position: "x10l6tqk",
     top: "x13vifvy",
-    $$css: true,
+    ,
   },
 };
 

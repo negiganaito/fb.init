@@ -97,17 +97,17 @@ GeoSpinner.displayName = `${GeoSpinner.name}`;
 
 const baseStyles = {
   root: {
-    display: "x3nfvp2",
+    display: 0,
     justifyContent: "xl56j7k",
     alignItems: "x6s0dn4",
     flexDirection: "xdt5ytf",
-    $$css: true,
+    ,
   },
   fullSize: {
     boxSizing: "x9f619",
     height: "x5yr21d",
     width: "xh8yej3",
-    $$css: true,
+    ,
   },
 };
 

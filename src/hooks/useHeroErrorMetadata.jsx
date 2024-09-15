@@ -5,29 +5,29 @@
  * See the LICENSE file in the root directory for details.
  */
 import { useCallback, useContext } from "react";
-import { ErrorMetadata } from "fb-error";
-import {
-  HeroCurrentInteractionForLoggingContext,
-  HeroInteractionContext,
-} from "hero-tracing-placeholder";
-import { InteractionTracingMetrics } from "InteractionTracingMetrics";
-import { getMarkerId } from "QPLEvent";
+
+import HeroCurrentInteractionForLoggingContext from "../context/HeroCurrentInteractionForLoggingContext";
+import { Context } from "../context/HeroInteractionContext";
+import InteractionTracingMetricsCore from "../faang/components/InteractionTracingMetricsCore";
+import { getMarkerId } from "../faang/components/QPLEvent";
+import FBError from "../helpers/fb-error";
 
 const useHeroErrorMetadata = () => {
   const heroCurrentInteraction = useContext(
     HeroCurrentInteractionForLoggingContext
   );
-  const heroInteractionContext = useContext(HeroInteractionContext.Context);
+  const heroInteractionContext = useContext(Context);
   const pageletStack = heroInteractionContext.pageletStack;
 
   return useCallback(
     (error) => {
-      let metadata = error.metadata ?? new ErrorMetadata();
+      let metadata = error.metadata ?? new FBError.ErrorMetadata();
       error.metadata = metadata;
 
       const interactionUUID = heroCurrentInteraction.current?.interactionUUID;
       if (interactionUUID !== null) {
-        const tracingMetrics = InteractionTracingMetrics.get(interactionUUID);
+        const tracingMetrics =
+          InteractionTracingMetricsCore.get(interactionUUID);
 
         if (pageletStack !== null) {
           metadata.addEntry(

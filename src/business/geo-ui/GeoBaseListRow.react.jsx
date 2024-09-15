@@ -69,7 +69,7 @@ import { joinDomIDs } from "joinDomIDs";
 import { useUniqueID } from "useUniqueID";
 
 const styles = {
-  default: { listStyle: "xe8uvvx", $$css: true },
+  default: { listStyle: "xe8uvvx" },
 };
 
 const GeoBaseListRow = ({

@@ -4,9 +4,7 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-
-/* eslint-disable complexity */
-/* eslint-disable max-params */
+/* eslint-disable no-restricted-globals */
 
 import __debug from "__debug";
 import BootloaderConfig from "BootloaderConfig";
@@ -18,13 +16,14 @@ import BootloaderPreloader from "BootloaderPreloader";
 import BootloaderRetryTracker from "BootloaderRetryTracker";
 import clearTimeout from "clearTimeout";
 import ClientConsistency from "ClientConsistency";
+import cr_696703 from "cr:696703";
 import CSRBitMap from "CSRBitMap";
 import CSRIndexUtil from "CSRIndexUtil";
 import CSSLoader from "CSSLoader";
 import err from "err";
 import ErrorPubSub from "ErrorPubSub";
 import ExecutionEnvironment from "ExecutionEnvironment";
-import fbError from "fb-error";
+import fb_error from "fb-error";
 import FBLogger from "FBLogger";
 import ifRequireable from "ifRequireable";
 import ifRequired from "ifRequired";
@@ -45,1443 +44,1357 @@ import TimeSlice from "TimeSlice";
 import TrustedTypesBootloaderDataURIScriptURLPolicy from "TrustedTypesBootloaderDataURIScriptURLPolicy";
 import TrustedTypesMetaURIScriptURLPolicy from "TrustedTypesMetaURIScriptURLPolicy";
 
-let isDeferBootloads = !!BootloaderConfig.deferBootloads;
+const Bootloader = (() => {
+  let perfNowFunc;
+  const noop = () => {};
+  const immediateComponents = new Set();
+  let deferBootloads = !!BootloaderConfig.deferBootloads;
 
-if (isDeferBootloads && !ExecutionEnvironment.isInWorker) {
-  setTimeoutAcrossTransitions(() => {
-    Bootloader.undeferBootloads(true);
-  }, 15000);
-}
-
-let pendingLoadModules = [];
-const bootloadStartTimes = new Map();
-const resourceLoadStartTimes = new Map();
-const resourceLoadEndTimes = new Map();
-const resourceLoadErrors = new Map();
-const componentDescriptors = new Map();
-const resourceDescriptors = new Map();
-const resourceIndexToHashMap = new Map();
-const resourceHashToRevisionMap = new Map();
-const bootloadedComponents = new Map();
-let isEventListenerSetup = false;
-
-const componentsToMarkAsImmediate = new Set();
-const loadedResourceIds = new Set();
-let isProcessingLoadModuleQueue = false;
-
-const bootloaderEvents = new BootloaderEventsManager();
-
-const bootloaderRetryTracker = new BootloaderRetryTracker({
-  retries: BootloaderConfig.jsRetries,
-  abortNum: BootloaderConfig.jsRetryAbortNum,
-  abortTime: BootloaderConfig.jsRetryAbortTime,
-  abortCallback: () => {
-    FBLogger("bootloader", "js_retry_abort").info("JS retry abort");
-  },
-});
-
-ErrorPubSub.unshiftListener((errorEvent) => {
-  const loadingUrls = [];
-
-  for (const [resourceId] of resourceLoadStartTimes) {
-    if (resourceLoadEndTimes.has(resourceId)) continue;
-
-    const resourceInfo = getResourceDescriptor(resourceId);
-    if (resourceInfo.type === "csr" || resourceInfo.type === "async") continue;
-
-    loadingUrls.push(resourceInfo.src);
+  if (deferBootloads && !window.__comet_ssr_is_server_env_DO_NOT_USE) {
+    setTimeoutAcrossTransitions(() => {
+      Bootloader.undeferBootloads(true);
+    }, 15000);
   }
 
-  errorEvent.loadingUrls = loadingUrls;
-});
-
-function areAllResourcesReady(resourceIds) {
-  if (isDeferBootloads || !isProcessingLoadModuleQueue) return false;
-  for (let i = 0; i < resourceIds.length; i++) {
-    const resource = componentDescriptors.get(resourceIds[i]);
-    if (!resource) return false;
-    const rMap = [resource.r, resource.rdfds?.r || [], resource.rds?.r || []];
-    for (let j = 0; j < rMap.length; j++) {
-      for (const hash of rMap[j]) {
-        if (!resourceLoadEndTimes.has(hash)) return false;
-      }
-    }
-  }
-  return true;
-}
-
-function getComponentDescriptor(componentName) {
-  const componentDescriptor = componentDescriptors.get(componentName);
-  if (!componentDescriptor) {
-    throw fbError.TAAL.blameToPreviousFile(
-      err(`Bootloader: ${componentName} is not in the component map`)
-    );
-  }
-  return componentDescriptor;
-}
-
-function markComponentAsImmediate(componentName) {
-  const componentDescriptor = getComponentDescriptor(componentName);
-  if (componentDescriptor.be) {
-    delete componentDescriptor.be;
-    Bootloader.done(ResourceHasher.getAsyncHash(componentName));
-  }
-}
-
-function getResourceDescriptor(hash) {
-  const resource = resourceDescriptors.get(hash);
-  if (!resource) {
-    throw fbError.TAAL.blameToPreviousFile(
-      err("No resource entry for hash: %s", hash)
-    );
-  }
-  return resource;
-}
-
-function registerAsyncResource(moduleName, isBlocking = false) {
-  const resourceHash = ResourceHasher.getAsyncHash(moduleName);
-  if (!resourceDescriptors.has(resourceHash)) {
-    resourceDescriptors.set(resourceHash, {
-      type: "async",
-      module: moduleName,
-      blocking: isBlocking,
-    });
-  } else {
-    const resourceDescriptor = getResourceDescriptor(resourceHash);
-    resourceDescriptor.type === "async"; // h(0,21557)
-    if (resourceDescriptor.blocking && !isBlocking) {
-      resourceDescriptor.blocking = false;
-    }
-  }
-  return resourceHash;
-}
-
-function isAsyncComponent(componentName) {
-  return !isRequireableComponent(componentName);
-}
-
-function hasAsyncBootloadData(componentName) {
-  if (!isAsyncComponent(componentName)) return false;
-  const componentDescriptor = getComponentDescriptor(componentName);
-  return !!componentDescriptor.be;
-}
-
-async function loadJSResource(resourceName, resource, onComplete) {
-  const startTime = performanceAbsoluteNow();
-  const { src } = resource;
-  const resourceUID = ResourceTimingsStore.getUID("js", src);
-
-  ResourceTimingsStore.annotate("js", resourceUID)
-    .addStringAnnotation("name", resourceName)
-    .addStringAnnotation("source", src);
-
-  ResourceTimingsStore.measureRequestSent("js", resourceUID);
-
-  try {
-    await nullthrows(self.bl_worker_import_wrapper)(src);
-    const retries = bootloaderRetryTracker.getNumRetriesForSource(src);
-    if (retries > 0) {
-      FBLogger("bootloader").info(
-        "JS retry success [%s] at %s | time: %s | retries: %s",
-        resourceName,
-        src,
-        performanceAbsoluteNow() - startTime,
-        retries
-      );
-    }
-
-    ResourceTimingsStore.measureResponseReceived("js", resourceUID);
-    onComplete();
-  } catch (error) {
-    ResourceTimingsStore.measureResponseReceived("js", resourceUID);
-
-    const errorTime = performanceAbsoluteNow();
-
-    bootloaderRetryTracker.maybeScheduleRetry(
-      src,
-      () => loadJSResource(resourceName, resource, onComplete),
-      () => {
-        resourceLoadErrors.set(resourceName, errorTime);
-        FBLogger("bootloader")
-          .catching(error)
-          .warn(
-            "JS loading error [%s] at %s | time: %s | retries: %s | concurrency: %s",
-            resourceName,
-            src,
-            errorTime - startTime,
-            bootloaderRetryTracker.getNumRetriesForSource(src),
-            resourceLoadStartTimes.size - resourceLoadEndTimes.size
-          );
-        NetworkStatus.reportError();
-        onComplete();
-      }
-    );
-  }
-}
-
-function loadJSResourceInBrowser(
-  resourceName,
-  resource,
-  onComplete,
-  parentNode
-) {
-  if (ExecutionEnvironment.isInWorker) {
-    loadJSResource(resourceName, resource, onComplete);
-    return;
-  }
-
-  const safeParentNode = nullthrows(parentNode);
-  const scriptElement = document.createElement("script");
-
-  if (resource.d) {
-    scriptElement.src =
-      TrustedTypesBootloaderDataURIScriptURLPolicy.createScriptURL(
-        resource.src
-      );
-  } else {
-    scriptElement.src = TrustedTypesMetaURIScriptURLPolicy.createScriptURL(
-      resource.src
-    );
-  }
-
-  scriptElement.async = true;
-
-  if (!resource.nc) {
-    scriptElement.crossOrigin = "anonymous";
-  }
-
-  if (resource.m !== null) {
-    scriptElement.dataset.btmanifest = resource.m;
-  }
-
-  if (resource.tsrc !== null) {
-    scriptElement.dataset.tsrc = resource.tsrc;
-  }
-
-  scriptElement.dataset.bootloaderHashClient = resourceName;
-
-  setupScriptLoadHandler(scriptElement, resourceName, resource, onComplete);
-  safeParentNode.appendChild(scriptElement);
-}
-
-function setupScriptLoadHandler(
-  scriptElement,
-  resourceName,
-  resource,
-  onComplete
-) {
-  const { src } = resource;
-  const startTime = performanceAbsoluteNow();
-  const guardedContinuation = TimeSlice.getGuardedContinuation(
-    "Bootloader script.onresponse"
-  );
-  const resourceUID = ResourceTimingsStore.getUID("js", src);
-
-  ResourceTimingsStore.annotate("js", resourceUID)
-    .addStringAnnotation("name", resourceName)
-    .addStringAnnotation("source", src);
-
-  ifRequireable("TimeSliceInteraction", (TimeSliceInteraction) => {
-    TimeSliceInteraction.informGlobally("bootloader._loadJS")
-      .addStringAnnotation("source", src)
-      .addStringAnnotation("name", resourceName);
-  });
-
-  ResourceTimingsStore.measureRequestSent("js", resourceUID);
-
-  scriptElement.onload = guardedContinuation.bind(undefined, () => {
-    const retries = bootloaderRetryTracker.getNumRetriesForSource(src);
-    if (retries > 0) {
-      FBLogger("bootloader").info(
-        "JS retry success [%s] at %s | time: %s | retries: %s",
-        resourceName,
-        src,
-        performanceAbsoluteNow() - startTime,
-        retries
-      );
-    }
-    ResourceTimingsStore.measureResponseReceived("js", resourceUID);
-    onComplete();
-  });
-
-  scriptElement.onerror = guardedContinuation.bind(undefined, () => {
-    ResourceTimingsStore.measureResponseReceived("js", resourceUID);
-    const errorTime = performanceAbsoluteNow();
-
-    bootloaderRetryTracker.maybeScheduleRetry(
-      src,
-      () => {
-        const parentNode = scriptElement.parentNode;
-        if (parentNode) {
-          parentNode.removeChild(scriptElement);
-          loadJSResourceInBrowser(
-            resourceName,
-            resource,
-            onComplete,
-            parentNode
-          );
-        }
-      },
-      () => {
-        resourceLoadErrors.set(resourceName, errorTime);
-        FBLogger("bootloader").warn(
-          "JS loading error [%s] at %s | time: %s | retries: %s | concurrency: %s",
-          resourceName,
-          src,
-          errorTime - startTime,
-          bootloaderRetryTracker.getNumRetriesForSource(src),
-          resourceLoadStartTimes.size - resourceLoadEndTimes.size
-        );
-        NetworkStatus.reportError();
-        onComplete();
-      }
-    );
-  });
-}
-
-function createCSSLoadTimeoutHandler(resourceName, resource, onComplete) {
-  return () => {
-    FBLogger("bootloader").warn(
-      "CSS timeout [%s] at %s | concurrency: %s",
-      resourceName,
-      resource.src,
-      resourceLoadStartTimes.size - resourceLoadEndTimes.size
-    );
-
-    resourceLoadErrors.set(resourceName, performanceAbsoluteNow());
-    NetworkStatus.reportError();
-    onComplete();
-  };
-}
-
-function getResourcesInBTManifest(indexes, src, excludedIndexes, cutoffIndex) {
-  if (!src.includes("/rsrc.php") || src.includes("/intern/rsrc.php")) return [];
-
-  const match = src.match(/(.*\/)([^.]+)(\.)/);
-  if (!match) return [];
-
-  const [, , resourcePart] = match;
-  if (!resourcePart) return [];
-
-  const chunks = resourcePart.match(/.{1,11}/g);
-  if (!chunks) return [];
-
-  return chunks.filter(
-    (chunk, index) =>
-      !excludedIndexes.has(index) && indexes[index] > cutoffIndex
-  );
-}
-
-function filterResourceSrc(src, excludedIndexes) {
-  const cleanedSrc = src.replace(/\/y[a-zA-Z0-9_-]\//, "/");
-
-  if (
-    cleanedSrc.includes("/intern/rsrc.php") ||
-    cleanedSrc.includes("/intern/rsrc-translations.php")
-  ) {
-    return cleanedSrc.replace(
-      /(!)(.+)(\.(?:css|js)(?:$|\?))/,
-      (_, prefix, resources, suffix) =>
-        prefix +
-        resources
-          .split(",")
-          .filter((_, index) => !excludedIndexes.has(index))
-          .join(",") +
-        suffix
-    );
-  } else if (
-    cleanedSrc.includes("/rsrc.php") ||
-    cleanedSrc.includes("/rsrc-translations.php")
-  ) {
-    return cleanedSrc.replace(
-      /(.*\/)([^.]+)(\.)/,
-      (_, prefix, resources, suffix) =>
-        prefix +
-        resources
-          .match(/.{1,11}/g)
-          .filter((_, index) => !excludedIndexes.has(index))
-          .join("") +
-        suffix
-    );
-  }
-
-  return src;
-}
-
-function loadResource(resourceName, resource, insertPoint, sourceName) {
-  if (resourceLoadStartTimes.has(resourceName)) return;
-  resourceLoadStartTimes.set(resourceName, performanceAbsoluteNow());
-
-  const longTailResources = [];
-
-  if (
-    (resource.type === "js" || resource.type === "css") &&
-    resource.p !== null &&
-    resource.d !== 1 &&
-    BootloaderConfig.hypStep4
-  ) {
-    const indexes = CSRIndexUtil.parseCSRIndexes(resource.p);
-    const excludedIndexes = new Set();
-    let maxIndex = 0;
-
-    indexes.forEach((index, position) => {
-      if (
-        index !== CSRIndexUtil.UNKNOWN_RESOURCE_INDEX &&
-        resourceIndexToHashMap.get(index) !== resourceName
-      ) {
-        excludedIndexes.add(position);
-      } else if (index > maxIndex) {
-        maxIndex = index;
-      }
-    });
-
-    if (maxIndex > BootloaderConfig.btCutoffIndex) {
-      const btResources = getResourcesInBTManifest(
-        indexes,
-        resource.src,
-        excludedIndexes,
-        BootloaderConfig.btCutoffIndex
-      );
-      if (BootloaderConfig.deferLongTailManifest) {
-        longTailResources.push(btResources);
-      } else {
-        BootloaderEvents.notifyResourceInLongTailBTManifest(
-          btResources,
-          sourceName
-        );
-      }
-    }
-
-    if (excludedIndexes.size === indexes.length) return;
-    if (excludedIndexes.size > 0) {
-      resource.src = filterResourceSrc(resource.src, excludedIndexes);
-      if (
-        resource.type === "js" &&
-        resource.tsrc !== null &&
-        resource.tsrc.trim() !== ""
-      ) {
-        resource.tsrc = filterResourceSrc(
-          nullthrows(resource.tsrc),
-          excludedIndexes
-        );
-      }
-    }
-  }
-
-  if (
-    resource.type === "js" &&
-    resource.tsrc !== null &&
-    resource.tsrc.trim() !== ""
-  ) {
-    promiseDone(
-      MakeHasteTranslations.genFetchAndProcessTranslations(
-        resourceName,
-        nullthrows(resource.tsrc)
-      )
-    );
-  }
-
-  BootloaderPreloader.preloadResource(resource, insertPoint);
-
-  switch (resource.type) {
-    case "js":
-      loadJSResourceInBrowser(
-        resourceName,
-        resource,
-        () => {
-          Bootloader.done(resourceName);
-          longTailResources.forEach((resources) =>
-            BootloaderEvents.notifyResourceInLongTailBTManifest(
-              resources,
-              sourceName
-            )
-          );
-        },
-        insertPoint
-      );
-      break;
-    case "css":
-      if (ExecutionEnvironment.isInWorker) {
-        Bootloader.done(resourceName);
-      } else {
-        CSSLoader.loadStyleSheet(
-          resourceName,
-          resource.src,
-          nullthrows(insertPoint),
-          !resource.nc,
-          () => Bootloader.done(resourceName),
-          createCSSLoadTimeoutHandler(resourceName, resource, () =>
-            Bootloader.done(resourceName)
-          )
-        );
-      }
-      break;
-    case "async":
-      BootloaderEndpoint.load(resource.module, resource.blocking, resourceName);
-      break;
-    default:
-      throw new Error(`Unexpected resource type: ${resource.type}`);
-  }
-}
-
-function getComponentResources(componentNames) {
+  let loadModuleQueue = [];
+  const startTimeMap = new Map();
+  const requestedResourcesMap = new Map();
+  const loadedResourcesMap = new Map();
+  const loadErrorMap = new Map();
+  const componentMap = new Map();
   const resourceMap = new Map();
-
-  for (const componentName of componentNames) {
-    const resource = this.resourceDescriptors.get(componentName);
-    if (!resource) {
-      FBLogger("bootloader").mustfix(
-        "Unable to resolve resource %s.",
-        componentName
-      );
-      continue;
-    }
-
-    let indexes;
-    if (resource.type === "csr") {
-      indexes = this.CSRIndexUtil.parseCSRIndexes(resource.src);
-    } else if (resource.p) {
-      indexes = this.CSRIndexUtil.parseCSRIndexes(resource.p);
-      if (indexes.includes(this.CSRIndexUtil.UNKNOWN_RESOURCE_INDEX)) {
-        resourceMap.set(componentName, resource);
-      }
-      indexes = indexes.filter(
-        (index) => index !== this.CSRIndexUtil.UNKNOWN_RESOURCE_INDEX
-      );
-    } else {
-      resourceMap.set(componentName, resource);
-      continue;
-    }
-
-    for (const index of indexes) {
-      const resourceHash = this.resourceIndexToHashMap.get(index);
-      if (resourceHash == null) {
-        const debugInfo = JSON.stringify(
-          componentNames.map((name) => {
-            const descriptor = this.getResourceDescriptor(name);
-            const src =
-              descriptor.type === "js" || descriptor.type === "css"
-                ? descriptor.d
-                  ? ""
-                  : descriptor.src.split("?")[0]
-                : descriptor.src;
-            return JSON.stringify({
-              hash: name,
-              rev: this.resourceHashToRevisionMap.get(name),
-              ...descriptor,
-              src,
-              tsrc: null,
-            });
-          })
-        );
-
-        throw FBLogger("bootloader", "missing-index-map").mustfixThrow(
-          `No hash for rsrcIndex ${index} (rev: ${this.SiteData.client_revision}, cohort: ${this.SiteData.pkg_cohort}). ${debugInfo}`
-        );
-      }
-
-      const indexedResource = this.getResourceDescriptor(resourceHash);
-      if (indexedResource.type === "csr") {
-        throw new Error(
-          `Unexpected CSR type for resource hash ${resourceHash}`
-        );
-      }
-      resourceMap.set(resourceHash, indexedResource);
-    }
-  }
-
-  return resourceMap.entries();
-}
-
-function processResources(
-  resourceList,
-  callbacks,
-  environment,
-  options,
-  resourceMap
-) {
-  let newResources = new Map();
-  let resourceEventMap =
-    resourceMap !== null ? resourceMap : BootloaderEvents.newResourceMapSet();
-  let blockingResources = [];
-  let nonBlockingResources = [];
-  let allResources = [];
-
-  const componentResources = getComponentResources(resourceList);
-
-  for (let [resourceName, resourceDetails] of componentResources) {
-    let resourceType;
-
-    switch (resourceDetails.type) {
-      case "css":
-        resourceType = resourceDetails.nonblocking ? "nonblocking" : "blocking";
-        break;
-      case "js":
-        resourceType = "default";
-        break;
-      case "async":
-        resourceType = resourceDetails.blocking ? "blocking" : "nonblocking";
-        break;
-      default:
-        throw new Error(`Unknown resource type: ${resourceDetails.type}`);
-    }
-
-    resourceEventMap[resourceType].set(resourceName, resourceDetails);
-    let resourceDone = BootloaderEventsManager.rsrcDone(resourceName);
-    allResources.push(resourceDone);
-    if (resourceType !== "nonblocking") {
-      blockingResources.push(resourceDone);
-      if (resourceType === "blocking") blockingResources.push(resourceDone);
-    }
-
-    if (!resourceLoadStartTimes.has(resourceName))
-      newResources.set(resourceName, resourceDetails);
-  }
-
-  let scheduleCallback = (cb) => {
-    cb();
-  };
-  let blockingCallback = callbacks.onBlocking;
-  let allCallback = callbacks.onAll;
-  let logCallback = callbacks.onLog;
-
-  if (blockingCallback) {
-    bootloaderEvents.registerCallback(
-      () => scheduleCallback(blockingCallback),
-      blockingResources
-    );
-  }
-  if (allCallback) {
-    bootloaderEvents.registerCallback(
-      () => scheduleCallback(allCallback),
-      nonBlockingResources
-    );
-  }
-  if (logCallback) {
-    bootloaderEvents.registerCallback(
-      () => scheduleCallback(() => logCallback(resourceEventMap)),
-      allResources
-    );
-  }
-
-  for (let [resourceName, resourceDetails] of newResources) {
-    loadResource(resourceName, resourceDetails, environment, options);
-  }
-}
-
-function registerResource(resourceName, resource, forceUpdate = false) {
-  resourceDescriptors.set(resourceName, resource);
-
-  if (resource.type === "async" || resource.type === "csr") return;
-
-  const indexes = resource.p ? CSRIndexUtil.parseCSRIndexes(resource.p) : [];
-
-  for (const index of indexes) {
-    if (index === CSRIndexUtil.UNKNOWN_RESOURCE_INDEX) continue;
-
-    if (!resourceIndexToHashMap.has(index) || forceUpdate) {
-      resourceIndexToHashMap.set(index, resourceName);
-    }
-
-    const shouldAddToBitMap = BootloaderConfig.phdOn
-      ? resource.c === 2
-      : resource.c;
-    if (shouldAddToBitMap) {
-      CSRBitMap.add(index);
-    }
-  }
-}
-
-function startBootload(referenceSource, componentNames) {
-  const bootloadEventId = bootloaderEvents.bootload(componentNames);
-
-  if (bootloadedEvents.has(bootloadEventId)) {
-    return [bootloadEventId, null];
-  }
-
-  bootloadedEvents.add(bootloadEventId);
-
-  const currentTime = performanceAbsoluteNow();
-  const startTime = bootloadStartTimes.get(bootloadEventId) ?? currentTime;
-
-  const bootloadMetadata = {
-    ref: referenceSource,
-    components: componentNames,
-    timesliceContext: TimeSlice.getContext(),
-    startTime,
-    fetchStartTime: currentTime,
-    callbackStart: 0,
-    callbackEnd: 0,
-    tierOne: BootloaderEvents.newResourceMapSet(),
-    tierTwo: BootloaderEvents.newResourceMapSet(),
-    tierThree: BootloaderEvents.newResourceMapSet(),
-    beRequests: new Map(),
-  };
-
-  BootloaderEvents.notifyBootloadStart(bootloadMetadata);
-
-  return [bootloadEventId, bootloadMetadata];
-}
-
-const isModuleRequired = (moduleName) =>
-  ifRequired(
-    null,
-    moduleName,
-    () => true,
-    () => false
-  );
-
-const isModuleRequireable = (moduleName) =>
-  ifRequireable(
-    null,
-    moduleName,
-    () => true,
-    () => false
-  );
-
-function loadComponent(componentName, bootloadEventId, insertPoint, metadata) {
-  if (!componentLoadData.has(componentName)) {
-    componentLoadData.set(componentName, {
-      firstBootloadStart: performanceAbsoluteNow(),
-      logData: new Set(),
-    });
-  }
-
-  if (metadata) {
-    nullthrows(componentLoadData.get(componentName)).logData.add(metadata);
-  }
-
-  const {
-    r: resources,
-    rdfds,
-    rds,
-    be,
-  } = getComponentDescriptor(componentName);
-
-  const asyncResource = isAsyncComponent(componentName)
-    ? registerAsyncResource(componentName, be)
-    : null;
-
-  if (asyncResource === null) {
-    bootloaderEvents.notify(bootloaderEvents.beDone(componentName));
-  }
-
-  const allResources = asyncResource
-    ? [asyncResource, ...resources]
-    : resources;
-
-  loadResourceBatch(
-    allResources,
-    {
-      onAll: () =>
-        bootloaderEvents.notify(bootloaderEvents.tierOne(componentName)),
-      onLog: () =>
-        bootloaderEvents.notify(bootloaderEvents.tierOneLog(componentName)),
+  const csrIndexMap = new Map();
+  const revisionMap = new Map();
+  const bootloadedComponentsMap = new Map();
+  const bootloadQueueSet = new Set();
+  let areResourcesMarkedImmediate = false;
+  const processedIdsSet = new Set();
+  let isDeferred = false;
+  const bootloaderEventsManager = new BootloaderEventsManager();
+  const bootloaderRetryTracker = new BootloaderRetryTracker({
+    retries: BootloaderConfig.jsRetries,
+    abortNum: BootloaderConfig.jsRetryAbortNum,
+    abortTime: BootloaderConfig.jsRetryAbortTime,
+    abortCallback: () => {
+      FBLogger("bootloader", "js_retry_abort").info("JS retry abort");
     },
-    insertPoint,
-    componentName,
-    metadata?.tierOne
-  );
+  });
 
-  const rdfdModules = rdfds?.m || [];
-
-  const loadRDFDS = (insertPoint) => {
-    loadResourceBatch(
-      rdfds?.r || [],
-      {
-        onBlocking: () => RequireDeferredReference.unblock(rdfdModules, "css"),
-        onAll: () =>
-          bootloaderEvents.registerCallback(() => {
-            bootloaderEvents.notify(
-              bootloaderEvents.tierTwoStart(componentName)
-            );
-            require(rdfdModules.map(
-              RequireDeferredReference.getRDModuleName_DO_NOT_USE
-            ), () =>
-              bootloaderEvents.notify(bootloaderEvents.tierTwo(componentName)));
-          }, [bootloaderEvents.tierOne(componentName), bootloadEventId]),
-        onLog: () =>
-          bootloaderEvents.notify(bootloaderEvents.tierTwoLog(componentName)),
-      },
-      insertPoint,
-      componentName,
-      metadata?.tierTwo
-    );
-  };
-
-  if (
-    BootloaderConfig.tieredLoadingFromTier !== null &&
-    BootloaderConfig.tieredLoadingFromTier <= 2
-  ) {
-    bootloaderEvents.registerCallback(
-      () => BootloaderDocumentInserter.batchDOMInsert(loadRDFDS),
-      [bootloaderEvents.tierOne(componentName)]
-    );
-  } else {
-    loadRDFDS(insertPoint);
-  }
-
-  const rdModules = rds?.m || [];
-
-  const loadRDS = (insertPoint) => {
-    loadResourceBatch(
-      rds?.r || [],
-      {
-        onBlocking: () => RequireDeferredReference.unblock(rdModules, "css"),
-        onAll: () =>
-          bootloaderEvents.registerCallback(() => {
-            bootloaderEvents.notify(
-              bootloaderEvents.tierThreeStart(componentName)
-            );
-            require(rdModules.map(
-              RequireDeferredReference.getRDModuleName_DO_NOT_USE
-            ), () =>
-              bootloaderEvents.notify(
-                bootloaderEvents.tierThree(componentName)
-              ));
-          }, [bootloaderEvents.tierTwo(componentName)]),
-        onLog: () =>
-          bootloaderEvents.notify(bootloaderEvents.tierThreeLog(componentName)),
-      },
-      insertPoint,
-      componentName,
-      metadata?.tierThree
-    );
-  };
-
-  if (
-    BootloaderConfig.tieredLoadingFromTier !== null &&
-    BootloaderConfig.tieredLoadingFromTier <= 3
-  ) {
-    bootloaderEvents.registerCallback(
-      () => BootloaderDocumentInserter.batchDOMInsert(loadRDS),
-      [bootloaderEvents.tierTwo(componentName)]
-    );
-  } else {
-    loadRDS(insertPoint);
-  }
-}
-
-function setupResourceFromDOM(element) {
-  const resourceHash = element.getAttribute("data-bootloader-hash");
-  if (resourceHash === null) return;
-
-  const validResourceHash = ResourceHasher.getValidResourceHash(resourceHash);
-
-  if (element.id) {
-    if (loadedResourceIds.has(element.id)) return;
-    loadedResourceIds.add(element.id);
-  }
-
-  const resource =
-    element.tagName === "SCRIPT"
-      ? { src: element.src, type: "js" }
-      : { src: element.href, type: "css" };
-
-  if (element.crossOrigin === null) {
-    resource.nc = 1;
-  }
-
-  if (
-    resource.type === "js" &&
-    element.dataset.tsrc !== null &&
-    element.dataset.tsrc.trim() !== ""
-  ) {
-    resource.tsrc = element.dataset.tsrc;
-    promiseDone(
-      MakeHasteTranslations.genFetchAndProcessTranslations(
-        validResourceHash,
-        resource.tsrc
-      )
-    );
-  }
-
-  if (resource.type === "css" && element.getAttribute("data-nonblocking")) {
-    resource.nonblocking = 1;
-  }
-
-  const integrityValue = element.getAttribute("data-c");
-  if (integrityValue === "1") {
-    resource.c = 1;
-  } else if (integrityValue === "2") {
-    resource.c = 2;
-  }
-
-  const csrIndexes = element.getAttribute("data-p");
-  if (csrIndexes !== null) {
-    resource.p = csrIndexes;
-    const indexes = CSRIndexUtil.parseCSRIndexes(csrIndexes);
-    const maxIndex = Math.max(...indexes);
-    if (maxIndex > BootloaderConfig.btCutoffIndex) {
-      BootloaderEvents.notifyResourceInLongTailBTManifest(
-        getResourcesInBTManifest(
-          indexes,
-          resource.src,
-          new Set(),
-          BootloaderConfig.btCutoffIndex
-        ),
-        "pickupPageResource"
-      );
+  ErrorPubSub.unshiftListener((errorData) => {
+    const loadingUrls = [];
+    for (const [resourceHash] of requestedResourcesMap) {
+      if (loadedResourcesMap.has(resourceHash)) continue;
+      const resourceInfo = getResourceInfo(resourceHash);
+      if (resourceInfo.type === "csr" || resourceInfo.type === "async")
+        continue;
+      loadingUrls.push(resourceInfo.src);
     }
-  }
+    errorData.loadingUrls = loadingUrls;
+  });
 
-  const btManifest = element.getAttribute("data-btmanifest");
-  if (btManifest !== null) {
-    resource.m = btManifest;
-  }
-
-  if (
-    resourceDescriptors.has(validResourceHash) &&
-    !BootloaderConfig.silentDups
-  ) {
-    FBLogger("bootloader").warn(
-      "Duplicate resource [%s]: %s",
-      validResourceHash,
-      resource.src
-    );
-  }
-
-  registerResource(validResourceHash, resource, true);
-  resourceLoadStartTimes.set(validResourceHash, performanceAbsoluteNow());
-
-  const onLoad = () => Bootloader.done(validResourceHash);
-
-  const isAsync =
-    resource.type === "js"
-      ? !element.getAttribute("async")
-      : element.parentNode?.tagName === "HEAD";
-
-  if (isAsync || (window._btldr && window._btldr[validResourceHash])) {
-    onLoad();
-  } else if (resource.type === "js") {
-    setupScriptLoadHandler(element, validResourceHash, resource, onLoad);
-  } else {
-    CSSLoader.setupEventListeners(
-      validResourceHash,
-      resource.src,
-      BootloaderDocumentInserter.getDOMContainerNode(),
-      onLoad,
-      createCSSLoadTimeoutHandler(validResourceHash, resource, onLoad),
-      null
-    );
-  }
-}
-
-function setupInitialResources() {
-  if (isEventListenerSetup) return;
-  isEventListenerSetup = true;
-
-  if (!ExecutionEnvironment.canUseDOM || ExecutionEnvironment.isInWorker)
-    return;
-
-  Array.from(document.getElementsByTagName("link")).forEach(
-    setupResourceFromDOM
-  );
-  Array.from(document.getElementsByTagName("script")).forEach(
-    setupResourceFromDOM
-  );
-}
-
-function processLoadModuleQueue() {
-  isProcessingLoadModuleQueue = true;
-  const queueToProcess = pendingLoadModules;
-  pendingLoadModules = [];
-
-  queueToProcess.forEach(
-    ([moduleNames, callback, errorHandler, continuation]) => {
-      continuation(() => {
-        Bootloader.loadModules(moduleNames, callback, errorHandler);
-      });
-    }
-  );
-}
-
-function isRequireableComponent(componentName) {
-  return ifRequireable(
-    componentName,
-    () => true,
-    () => false
-  );
-}
-
-const Bootloader = {
-  loadModules(
-    moduleNames,
-    callback = () => {},
-    errorHandler = "loadModules: unknown caller"
-  ) {
-    let timeoutHandle;
-    let isCanceled = false;
-
-    const wrappedCallback = (...args) => {
-      clearTimeout(timeoutHandle);
-      if (!isCanceled) callback(...args);
-    };
-
-    const removeHandler = {
-      remove: () => {
-        isCanceled = true;
-      },
-    };
-
-    if (
-      BootloaderConfig.fastPathForAlreadyRequired &&
-      moduleNames.every(isModuleRequireable)
-    ) {
-      require(moduleNames, wrappedCallback);
-      return removeHandler;
-    }
-
-    if (!this.isResourceSetReady(moduleNames)) {
-      const continuation = TimeSlice.getGuardedContinuation(
-        "Deferred: Bootloader.loadModules"
-      );
-      this.pendingLoadModules.push([
-        moduleNames,
-        wrappedCallback,
-        errorHandler,
-        continuation,
-      ]);
-      const bootloadEventId = bootloaderEvents.bootload(moduleNames);
-      this.requested.set(
-        bootloadEventId,
-        this.requested.get(bootloadEventId) ?? performanceAbsoluteNow()
-      );
-      return removeHandler;
-    }
-
-    const [bootloadEventId, metadata] = this.startBootload(
-      errorHandler,
-      moduleNames
-    );
-
-    BootloaderEvents.registerCallback(
-      require.bind(null, moduleNames, (...args) => {
-        if (metadata) metadata.callbackStart = performanceAbsoluteNow();
-        wrappedCallback(...args);
-        if (metadata) metadata.callbackEnd = performanceAbsoluteNow();
-        BootloaderEvents.notify(bootloadEventId);
-      }),
-      moduleNames.map((moduleName) => BootloaderEvents.tierOne(moduleName))
-    );
-
-    BootloaderDocumentInserter.batchDOMInsert((insertPoint) => {
-      for (const moduleName of moduleNames) {
-        loadComponent(moduleName, bootloadEventId, insertPoint, metadata);
-      }
-    });
-
-    if (metadata) {
-      const eventIds = new Set([
-        bootloadEventId,
-        ...moduleNames.flatMap((moduleName) => [
-          BootloaderEvents.beDone(moduleName),
-          BootloaderEvents.tierThree(moduleName),
-          BootloaderEvents.tierOneLog(moduleName),
-          BootloaderEvents.tierTwoLog(moduleName),
-          BootloaderEvents.tierThreeLog(moduleName),
-        ]),
-      ]);
-
-      BootloaderEvents.registerCallback(
-        () => BootloaderEvents.notifyBootload(metadata),
-        Array.from(eventIds)
-      );
-
-      ifRequireable("TimeSliceInteraction", (TimeSliceInteraction) => {
-        TimeSliceInteraction.informGlobally("Bootloader.loadResources")
-          .addSetAnnotation(
-            "requested_hashes",
-            Array.from(
-              BootloaderEvents.flattenResourceMapSet(metadata.tierOne).keys()
-            )
-          )
-          .addSetAnnotation(
-            "rdfd_requested_hashes",
-            Array.from(
-              BootloaderEvents.flattenResourceMapSet(metadata.tierTwo).keys()
-            )
-          )
-          .addSetAnnotation(
-            "rd_requested_hashes",
-            Array.from(
-              BootloaderEvents.flattenResourceMapSet(metadata.tierThree).keys()
-            )
-          )
-          .addStringAnnotation("bootloader_reference", errorHandler)
-          .addSetAnnotation("requested_components", moduleNames);
-      });
-
-      timeoutHandle = setTimeoutAcrossTransitions(
-        () => BootloaderEvents.notifyBootloaderCallbackTimeout(metadata),
-        BootloaderConfig.timeout
-      );
-    }
-
-    return removeHandler;
-  },
-  loadResources(resources, options = {}) {
-    setupInitialResources();
-    BootloaderDocumentInserter.batchDOMInsert((insertPoint) => {
-      return loadResourceBatch(
-        resources.map((resource) =>
-          ResourceHasher.getValidResourceHash(resource)
-        ),
-        options,
-        insertPoint,
-        "loadResources"
-      );
-    });
-  },
-  requestJSResource_UNSAFE_NEEDS_REVIEW_BY_SECURITY_AND_XFN(src) {
-    const resourceHash = ResourceHasher.createExternalJSHash();
-    registerResource(
-      resourceHash,
-      { type: "js", src, noCrossOrigin: true },
-      false
-    );
-    Bootloader.loadResources([resourceHash]);
-  },
-  done(resourceHash) {
-    resourceLoadEndTimes.set(resourceHash, performanceAbsoluteNow());
-    BootloaderEvents.notify(BootloaderEvents.resourceDoneLoading(resourceHash));
-  },
-  beDone(componentName, requestId, requestStart) {
-    const componentData = bootloadedComponents.get(componentName);
-    if (componentData?.logData) {
-      for (const logData of componentData.logData) {
-        logData.beRequests.set(requestId, requestStart);
-      }
-    }
-    BootloaderEvents.notify(BootloaderEvents.beDone(componentName));
-  },
-  handlePayload(payload, referenceProvider) {
-    for (const resourceTag of payload.rsrcTags ?? []) {
-      setupInitialResources(document.getElementById(resourceTag));
-    }
-
-    const clientRevision = payload.consistency?.rev ?? null;
-    Bootloader.setResourceMap(
-      payload.rsrcMap ?? {},
-      payload.sotUpgrades,
-      clientRevision,
-      referenceProvider
-    );
-
-    const csrUpgrades =
-      payload.csrUpgrade !== null
-        ? CSRIndexUtil.parseCSRIndexes(payload.csrUpgrade)
-        : [];
-    const unknownUpgradeIndex = csrUpgrades.find(
-      (index) => !resourceIndexToHashMap.has(index)
-    );
-
-    if (
-      csrUpgrades.length &&
-      clientRevision !== null &&
-      clientRevision !== SiteData.client_revision
-    ) {
-      FBLogger("bootloader", "csr-mismatch").warn(
-        "CSR upgrades included on mismatched rev %s (client rev: %s, cohort: %s).",
-        clientRevision,
-        SiteData.client_revision,
-        SiteData.pkg_cohort
-      );
-    } else if (unknownUpgradeIndex !== null && isEventListenerSetup) {
-      FBLogger("bootloader", "missing-csr-upgrade").warn(
-        "CSR upgrades included unknown rsrcIndex %d (client rev: %s, cohort: %s).",
-        unknownUpgradeIndex,
-        SiteData.client_revision,
-        SiteData.pkg_cohort
-      );
-    } else {
-      csrUpgrades.forEach(CSRBitMap.add);
-    }
-
-    if (payload.compMap) {
-      Bootloader.enableBootload(payload.compMap, referenceProvider);
-    }
-  },
-  enableBootload(componentMap, referenceProvider) {
-    // eslint-disable-next-line guard-for-in
-    for (const componentName in componentMap) {
-      if (referenceProvider) {
-        referenceProvider.comp++;
-      }
-      if (!componentDescriptors.has(componentName)) {
-        componentDescriptors.set(componentName, componentMap[componentName]);
-        if (componentsToMarkAsImmediate.has(componentName)) {
-          componentsToMarkAsImmediate.delete(componentName);
-          markComponentAsImmediate(componentName);
+  const canLoadModules = (modules) => {
+    if (deferBootloads || !isDeferred) return false;
+    for (const module of modules) {
+      const componentInfo = componentMap.get(module);
+      if (!componentInfo) return false;
+      const dependencies = [
+        componentInfo.r,
+        componentInfo.rdfds?.r || [],
+        componentInfo.rds?.r || [],
+      ];
+      for (const depGroup of dependencies) {
+        for (const dependency of depGroup) {
+          if (!resourceMap.has(dependency)) return false;
         }
-      } else if (referenceProvider) {
-        referenceProvider.dup_comp++;
       }
     }
-    setupInitialResources();
-    if (!isDeferBootloads) {
-      processLoadModuleQueue();
+    return true;
+  };
+
+  const getComponentInfo = (component) => {
+    const componentInfo = componentMap.get(component);
+    if (!componentInfo) {
+      throw fb_error.TAAL.blameToPreviousFile(
+        err("Bootloader: %s is not in the component map", component)
+      );
     }
-  },
-  undeferBootloads(isTimeout = false) {
-    if (window.location.search.indexOf("&__deferBootloads=") !== -1) {
+    return componentInfo;
+  };
+
+  const handleComponentLoadComplete = (component) => {
+    const componentInfo = getComponentInfo(component);
+    if (componentInfo.be) {
+      delete componentInfo.be;
+      Bootloader.done(ResourceHasher.getAsyncHash(component));
+    }
+  };
+
+  const getResourceInfo = (resourceHash) => {
+    const resourceInfo = resourceMap.get(resourceHash);
+    if (!resourceInfo) {
+      throw fb_error.TAAL.blameToPreviousFile(
+        err("No resource entry for hash: %s", resourceHash)
+      );
+    }
+    return resourceInfo;
+  };
+
+  const registerAsyncResource = (component, isBlocking) => {
+    const asyncHash = ResourceHasher.getAsyncHash(component);
+    if (!resourceMap.has(asyncHash)) {
+      resourceMap.set(asyncHash, {
+        type: "async",
+        module: component,
+        blocking: !!isBlocking,
+      });
+    } else {
+      const resourceInfo = getResourceInfo(asyncHash);
+      if (resourceInfo.type !== "async") {
+        invariant(0, 21557);
+      }
+      if (resourceInfo.blocking && !isBlocking) {
+        resourceInfo.blocking = false;
+      }
+    }
+    return asyncHash;
+  };
+
+  const isNotAlreadyLoaded = (component) => !isModuleLoaded(component);
+
+  const isModuleLoaded = (component) => {
+    if (!isNotAlreadyLoaded(component)) return false;
+    const componentInfo = getComponentInfo(component);
+    return !!componentInfo.be;
+  };
+
+  const loadScript = (component, resourceInfo, callback) => {
+    const startTime = performanceAbsoluteNow();
+    const scriptUrl = resourceInfo.src;
+    const timingUID = ResourceTimingsStore.getUID("js", scriptUrl);
+    ResourceTimingsStore.annotate("js", timingUID)
+      .addStringAnnotation("name", component)
+      .addStringAnnotation("source", scriptUrl);
+    ResourceTimingsStore.measureRequestSent("js", timingUID);
+    nullthrows(self.bl_worker_import_wrapper)(scriptUrl)
+      .then(() => {
+        const retryCount =
+          bootloaderRetryTracker.getNumRetriesForSource(scriptUrl);
+        if (retryCount > 0) {
+          FBLogger("bootloader").info(
+            "JS retry success [%s] at %s | time: %s | retries: %s",
+            component,
+            scriptUrl,
+            performanceAbsoluteNow() - startTime,
+            retryCount
+          );
+        }
+        ResourceTimingsStore.measureResponseReceived("js", timingUID);
+        callback();
+      })
+      .catch((error) => {
+        ResourceTimingsStore.measureResponseReceived("js", timingUID);
+        const errorTime = performanceAbsoluteNow();
+        bootloaderRetryTracker.maybeScheduleRetry(
+          scriptUrl,
+          () => loadScript(component, resourceInfo, callback),
+          () => {
+            loadErrorMap.set(component, errorTime);
+            FBLogger("bootloader")
+              .catching(error)
+              .warn(
+                "JS loading error [%s] at %s | time: %s | retries: %s | concurrency: %s",
+                component,
+                scriptUrl,
+                errorTime - startTime,
+                bootloaderRetryTracker.getNumRetriesForSource(scriptUrl),
+                requestedResourcesMap.size - loadedResourcesMap.size
+              );
+            NetworkStatus.reportError();
+            callback();
+          }
+        );
+      });
+  };
+
+  const insertScriptElement = (
+    component,
+    resourceInfo,
+    callback,
+    parentElement
+    // eslint-disable-next-line max-params
+  ) => {
+    if (ExecutionEnvironment.isInWorker) {
+      loadScript(component, resourceInfo, callback);
       return;
     }
-    if (isTimeout && isDeferBootloads) {
-      BootloaderEvents.notifyDeferTimeout({
-        componentMapSize: componentDescriptors.size,
-        pending: pendingLoadModules.map(([components, , ref]) => ({
-          components,
-          ref,
-        })),
-        time: performanceNow(),
+    const scriptElement = document.createElement("script");
+    scriptElement.src = resourceInfo.d
+      ? TrustedTypesBootloaderDataURIScriptURLPolicy.createScriptURL(
+          resourceInfo.src
+        )
+      : TrustedTypesMetaURIScriptURLPolicy.createScriptURL(resourceInfo.src);
+    scriptElement.async = true;
+    if (!resourceInfo.nc) scriptElement.crossOrigin = "anonymous";
+    if (resourceInfo.m !== null)
+      scriptElement.dataset.btmanifest = resourceInfo.m;
+    if (resourceInfo.tsrc !== null)
+      scriptElement.dataset.tsrc = resourceInfo.tsrc;
+    scriptElement.dataset.bootloaderHashClient = component;
+    attachScriptEvents(scriptElement, component, resourceInfo, callback);
+    parentElement.appendChild(scriptElement);
+  };
+
+  const attachScriptEvents = (
+    scriptElement,
+    component,
+    resourceInfo,
+    callback
+    // eslint-disable-next-line max-params
+  ) => {
+    const scriptUrl = scriptElement.src;
+    const startTime = performanceAbsoluteNow();
+    const timingUID = ResourceTimingsStore.getUID("js", scriptUrl);
+    const guardedCallback = TimeSlice.getGuardedContinuation(
+      "Bootloader script.onresponse"
+    );
+    ResourceTimingsStore.annotate("js", timingUID)
+      .addStringAnnotation("name", component)
+      .addStringAnnotation("source", scriptUrl);
+    ifRequireable("TimeSliceInteraction", (interaction) => {
+      interaction
+        .informGlobally("bootloader._loadJS")
+        .addStringAnnotation("source", scriptUrl)
+        .addStringAnnotation("name", component);
+    });
+    ResourceTimingsStore.measureRequestSent("js", timingUID);
+    scriptElement.onload = guardedCallback(() => {
+      const retryCount =
+        bootloaderRetryTracker.getNumRetriesForSource(scriptUrl);
+      if (retryCount > 0) {
+        FBLogger("bootloader").info(
+          "JS retry success [%s] at %s | time: %s | retries: %s",
+          component,
+          scriptUrl,
+          performanceAbsoluteNow() - startTime,
+          retryCount
+        );
+      }
+      ResourceTimingsStore.measureResponseReceived("js", timingUID);
+      callback();
+    });
+    scriptElement.onerror = guardedCallback(() => {
+      ResourceTimingsStore.measureResponseReceived("js", timingUID);
+      const errorTime = performanceAbsoluteNow();
+      bootloaderRetryTracker.maybeScheduleRetry(
+        scriptUrl,
+        () => {
+          const parentElement = scriptElement.parentNode;
+          if (parentElement) {
+            parentElement.removeChild(scriptElement);
+            insertScriptElement(
+              component,
+              resourceInfo,
+              callback,
+              parentElement
+            );
+          }
+        },
+        () => {
+          loadErrorMap.set(component, errorTime);
+          FBLogger("bootloader").warn(
+            "JS loading error [%s] at %s | time: %s | retries: %s | concurrency: %s",
+            component,
+            scriptUrl,
+            errorTime - startTime,
+            bootloaderRetryTracker.getNumRetriesForSource(scriptUrl),
+            requestedResourcesMap.size - loadedResourcesMap.size
+          );
+          NetworkStatus.reportError();
+          callback();
+        }
+      );
+    });
+  };
+
+  const cssTimeoutHandler = (component, resourceInfo, callback) => () => {
+    FBLogger("bootloader").warn(
+      "CSS timeout [%s] at %s | concurrency: %s",
+      component,
+      resourceInfo.src,
+      requestedResourcesMap.size - loadedResourcesMap.size
+    );
+    loadErrorMap.set(component, performanceAbsoluteNow());
+    NetworkStatus.reportError();
+    callback();
+  };
+
+  const filterLongTailManifest = (
+    csrIndexes,
+    resourceUrl,
+    processedIndexes,
+    cutoffIndex
+    // eslint-disable-next-line max-params
+  ) => {
+    if (
+      !resourceUrl.includes("/rsrc.php") ||
+      resourceUrl.includes("/intern/rsrc.php")
+    )
+      return [];
+    const resourceName = (resourceUrl.match(/(.*\/)([^.]+)(\.)/) || [])[2];
+    if (!resourceName) return [];
+    return (
+      resourceName
+        .match(/.{1,11}/g)
+        ?.filter(
+          (part, index) =>
+            !processedIndexes.has(index) && csrIndexes[index] > cutoffIndex
+        ) || []
+    );
+  };
+
+  const updateUrlWithSkippedIndexes = (url, skippedIndexes) => {
+    const cleanUrl = url.replace(/\/y[a-zA-Z0-9_-]\//, "/");
+    if (
+      cleanUrl.includes("/intern/rsrc.php") ||
+      cleanUrl.includes("/intern/rsrc-translations.php")
+    ) {
+      return cleanUrl.replace(
+        /(!)(.+)(\.(?:css|js)(?:$|\?))/,
+        // eslint-disable-next-line max-params
+        (match, prefix, resourceName, suffix) =>
+          `${prefix}${resourceName
+            .split(",")
+            .filter((_, index) => !skippedIndexes.has(index))
+            .join(",")}${suffix}`
+      );
+    } else if (
+      cleanUrl.includes("/rsrc.php") ||
+      cleanUrl.includes("/rsrc-translations.php")
+    ) {
+      return cleanUrl.replace(
+        /(.*\/)([^.]+)(\.)/,
+        // eslint-disable-next-line max-params
+        (match, basePath, resourceName, suffix) =>
+          `${basePath}${resourceName
+            .match(/.{1,11}/g)
+            .filter((_, index) => !skippedIndexes.has(index))
+            .join("")}${suffix}`
+      );
+    } else {
+      return url;
+    }
+  };
+
+  // eslint-disable-next-line complexity, max-params
+  const loadResource = (component, resourceInfo, parentElement, phase) => {
+    if (requestedResourcesMap.has(component)) return;
+    requestedResourcesMap.set(component, performanceAbsoluteNow());
+    let longTailManifests = [];
+    if (
+      (resourceInfo.type === "js" || resourceInfo.type === "css") &&
+      resourceInfo.p !== null &&
+      resourceInfo.d !== 1 &&
+      BootloaderConfig.hypStep4
+    ) {
+      const csrIndexes = CSRIndexUtil.parseCSRIndexes(resourceInfo.p);
+      const skippedIndexes = new Set();
+      let maxIndex = 0;
+      csrIndexes.forEach((csrIndex, index) => {
+        if (
+          csrIndex !== CSRIndexUtil.UNKNOWN_RESOURCE_INDEX &&
+          csrIndexMap.get(csrIndex) !== component
+        ) {
+          skippedIndexes.add(index);
+        } else if (csrIndex > maxIndex) {
+          maxIndex = csrIndex;
+        }
+      });
+      if (maxIndex > BootloaderConfig.btCutoffIndex) {
+        const longTailManifest = filterLongTailManifest(
+          csrIndexes,
+          resourceInfo.src,
+          skippedIndexes,
+          BootloaderConfig.btCutoffIndex
+        );
+        if (BootloaderConfig.deferLongTailManifest) {
+          longTailManifests.push(longTailManifest);
+        } else {
+          BootloaderEvents.notifyResourceInLongTailBTManifest(
+            longTailManifest,
+            phase
+          );
+        }
+      }
+      if (skippedIndexes.size === csrIndexes.length) return;
+      if (skippedIndexes.size > 0) {
+        resourceInfo.src = updateUrlWithSkippedIndexes(
+          resourceInfo.src,
+          skippedIndexes
+        );
+        if (
+          resourceInfo.type === "js" &&
+          resourceInfo.tsrc !== null &&
+          resourceInfo.tsrc.trim() !== ""
+        ) {
+          resourceInfo.tsrc = updateUrlWithSkippedIndexes(
+            nullthrows(resourceInfo.tsrc),
+            skippedIndexes
+          );
+        }
+      }
+    }
+    if (
+      resourceInfo.type === "js" &&
+      resourceInfo.tsrc !== null &&
+      resourceInfo.tsrc.trim() !== ""
+    ) {
+      promiseDone(
+        MakeHasteTranslations.genFetchAndProcessTranslations(
+          component,
+          nullthrows(resourceInfo.tsrc)
+        )
+      );
+    }
+    BootloaderPreloader.preloadResource(resourceInfo, parentElement);
+    switch (resourceInfo.type) {
+      case "js":
+        insertScriptElement(
+          component,
+          resourceInfo,
+          () => {
+            Bootloader.done(component);
+            for (const longTailManifest of longTailManifests) {
+              BootloaderEvents.notifyResourceInLongTailBTManifest(
+                longTailManifest,
+                phase
+              );
+            }
+          },
+          parentElement
+        );
+        break;
+      case "css":
+        // eslint-disable-next-line no-case-declarations
+        const onComplete = () => Bootloader.done(component);
+        if (ExecutionEnvironment.isInWorker) {
+          onComplete();
+          break;
+        }
+        CSSLoader.loadStyleSheet(
+          component,
+          resourceInfo.src,
+          nullthrows(parentElement),
+          !resourceInfo.nc,
+          onComplete,
+          cssTimeoutHandler(component, resourceInfo, onComplete)
+        );
+        break;
+      case "async":
+        BootloaderEndpoint.load(
+          resourceInfo.module,
+          resourceInfo.blocking,
+          component
+        );
+        break;
+      default:
+        invariant(false, `Unknown resource type: ${resourceInfo.type}`);
+    }
+  };
+
+  const loadResources = (
+    components,
+    options,
+    parentElement,
+    phase,
+    resourceMapSet
+    // eslint-disable-next-line max-params
+  ) => {
+    const resourcesToLoad = new Map();
+    const resourcesToLoadMapSet =
+      resourceMapSet ?? BootloaderEvents.newResourceMapSet();
+    const pendingResources = [];
+    const blockingResources = [];
+    const allResources = [];
+    for (const [component, resourceInfo] of resolveCSRIndexes(components)) {
+      let resourceTier;
+      switch (resourceInfo.type) {
+        case "css":
+          resourceTier = resourceInfo.nonblocking ? "nonblocking" : "blocking";
+          break;
+        case "js":
+          resourceTier = "default";
+          break;
+        case "async":
+          resourceTier = resourceInfo.blocking ? "blocking" : "nonblocking";
+          break;
+        default:
+          invariant(false, `Unknown resource type: ${resourceInfo.type}`);
+      }
+      resourcesToLoadMapSet[resourceTier].set(component, resourceInfo);
+      const resourceDoneEvent = bootloaderEventsManager.rsrcDone(component);
+      allResources.push(resourceDoneEvent);
+      if (resourceTier !== "nonblocking") {
+        blockingResources.push(resourceDoneEvent);
+        if (resourceTier === "blocking")
+          pendingResources.push(resourceDoneEvent);
+      }
+      if (!requestedResourcesMap.has(component)) {
+        resourcesToLoad.set(component, resourceInfo);
+      }
+    }
+    let executeBlocking;
+    let executeAll;
+    if (!cr_696703) {
+      executeBlocking = executeAll = (fn) => fn();
+    } else {
+      executeAll = cr_696703.scheduleLoggingPriCallback;
+      executeBlocking =
+        cr_696703.getUserBlockingRunAtCurrentPriCallbackScheduler_DO_NOT_USE();
+    }
+    const { onBlocking, onAll, onLog } = options;
+    if (onBlocking) {
+      bootloaderEventsManager.registerCallback(
+        () => executeBlocking(onBlocking),
+        pendingResources
+      );
+    }
+    if (onAll) {
+      bootloaderEventsManager.registerCallback(
+        () => executeBlocking(onAll),
+        blockingResources
+      );
+    }
+    if (onLog) {
+      bootloaderEventsManager.registerCallback(
+        () => executeAll(() => onLog(resourcesToLoadMapSet)),
+        allResources
+      );
+    }
+    for (const [component, resourceInfo] of resourcesToLoad) {
+      loadResource(component, resourceInfo, parentElement, phase);
+    }
+  };
+
+  const setResource = (resourceHash, resourceInfo, isPreload) => {
+    resourceMap.set(resourceHash, resourceInfo);
+    if (resourceInfo.type === "async" || resourceInfo.type === "csr") return;
+    const csrIndexes = resourceInfo.p
+      ? CSRIndexUtil.parseCSRIndexes(resourceInfo.p)
+      : [];
+    for (const csrIndex of csrIndexes) {
+      if (csrIndex === CSRIndexUtil.UNKNOWN_RESOURCE_INDEX) continue;
+      if (!csrIndexMap.has(csrIndex) || isPreload) {
+        csrIndexMap.set(csrIndex, resourceHash);
+      }
+      if (BootloaderConfig.phdOn ? resourceInfo.c === 2 : resourceInfo.c) {
+        CSRBitMap.add(csrIndex);
+      }
+    }
+  };
+
+  const getBootloadEventAndData = (caller, components) => {
+    const bootloadEvent = bootloaderEventsManager.bootload(components);
+    if (bootloadQueueSet.has(bootloadEvent)) return [bootloadEvent, null];
+    bootloadQueueSet.add(bootloadEvent);
+    const fetchStartTime = performanceAbsoluteNow();
+    const bootloadData = {
+      ref: caller,
+      components,
+      timesliceContext: TimeSlice.getContext(),
+      startTime: startTimeMap.get(bootloadEvent) ?? fetchStartTime,
+      fetchStartTime,
+      callbackStart: 0,
+      callbackEnd: 0,
+      tierOne: BootloaderEvents.newResourceMapSet(),
+      tierTwo: BootloaderEvents.newResourceMapSet(),
+      tierThree: BootloaderEvents.newResourceMapSet(),
+      beRequests: new Map(),
+    };
+    BootloaderEvents.notifyBootloadStart(bootloadData);
+    return [bootloadEvent, bootloadData];
+  };
+
+  const isModuleRequired = (moduleName) =>
+    ifRequired(
+      null,
+      moduleName,
+      () => true,
+      () => false
+    );
+
+  const isModuleLoadable = (moduleName) =>
+    ifRequireable(
+      null,
+      moduleName,
+      () => true,
+      () => false
+    );
+
+  const processBootload = (
+    component,
+    bootloadEvent,
+    parentElement,
+    resourceMapSet
+    // eslint-disable-next-line max-params
+  ) => {
+    if (!bootloadedComponentsMap.has(component)) {
+      bootloadedComponentsMap.set(component, {
+        firstBootloadStart: performanceAbsoluteNow(),
+        logData: new Set(),
       });
     }
-    isDeferBootloads = false;
-    if (componentDescriptors.size) {
-      processLoadModuleQueue();
+    if (resourceMapSet)
+      nullthrows(bootloadedComponentsMap.get(component)).logData.add(
+        resourceMapSet
+      );
+    const componentInfo = getComponentInfo(component);
+    const {
+      r: requiredModules,
+      rdfds: deferredCSSModules,
+      rds: deferredJSModules,
+    } = componentInfo;
+    const beRequestId = isNotAlreadyLoaded(component)
+      ? registerAsyncResource(component, componentInfo.be)
+      : null;
+    if (beRequestId === null)
+      bootloaderEventsManager.notify(bootloaderEventsManager.beDone(component));
+    loadResources(
+      beRequestId !== null
+        ? [beRequestId].concat(requiredModules)
+        : requiredModules,
+      {
+        onAll: () =>
+          bootloaderEventsManager.notify(
+            bootloaderEventsManager.tierOne(component)
+          ),
+        onLog: () =>
+          bootloaderEventsManager.notify(
+            bootloaderEventsManager.tierOneLog(component)
+          ),
+      },
+      parentElement,
+      component,
+      resourceMapSet?.tierOne
+    );
+    const deferredCSSModulesMap = deferredCSSModules?.m || [];
+    const processDeferredCSSModules = (parentElement) => {
+      loadResources(
+        deferredCSSModules?.r || [],
+        {
+          onBlocking: () =>
+            RequireDeferredReference.unblock(deferredCSSModulesMap, "css"),
+          onAll: () => {
+            bootloaderEventsManager.registerCallback(() => {
+              bootloaderEventsManager.notify(
+                bootloaderEventsManager.tierTwoStart(component)
+              );
+              executeModules(
+                deferredCSSModulesMap.map(
+                  RequireDeferredReference.getRDModuleName_DO_NOT_USE
+                ),
+                () =>
+                  bootloaderEventsManager.notify(
+                    bootloaderEventsManager.tierTwo(component)
+                  )
+              );
+            }, [bootloaderEventsManager.tierOne(component), bootloadEvent]);
+          },
+          onLog: () =>
+            bootloaderEventsManager.notify(
+              bootloaderEventsManager.tierTwoLog(component)
+            ),
+        },
+        parentElement,
+        component,
+        resourceMapSet?.tierTwo
+      );
+    };
+    if (
+      BootloaderConfig.tieredLoadingFromTier !== null &&
+      BootloaderConfig.tieredLoadingFromTier <= 2
+    ) {
+      bootloaderEventsManager.registerCallback(
+        () =>
+          BootloaderDocumentInserter.batchDOMInsert(processDeferredCSSModules),
+        [bootloaderEventsManager.tierOne(component)]
+      );
+    } else {
+      processDeferredCSSModules(parentElement);
     }
-  },
-  markComponentsAsImmediate(components) {
-    for (let i = 0; i < components.length; i++) {
-      const component = components[i];
-      if (componentDescriptors.has(component)) {
-        markComponentAsImmediate(component);
+    const deferredJSModulesMap = deferredJSModules?.m || [];
+    const processDeferredJSModules = (parentElement) => {
+      loadResources(
+        deferredJSModules?.r || [],
+        {
+          onBlocking: () =>
+            RequireDeferredReference.unblock(deferredJSModulesMap, "css"),
+          onAll: () => {
+            bootloaderEventsManager.registerCallback(() => {
+              bootloaderEventsManager.notify(
+                bootloaderEventsManager.tierThreeStart(component)
+              );
+              executeModules(
+                deferredJSModulesMap.map(
+                  RequireDeferredReference.getRDModuleName_DO_NOT_USE
+                ),
+                () =>
+                  bootloaderEventsManager.notify(
+                    bootloaderEventsManager.tierThree(component)
+                  )
+              );
+            }, [bootloaderEventsManager.tierTwo(component)]);
+          },
+          onLog: () =>
+            bootloaderEventsManager.notify(
+              bootloaderEventsManager.tierThreeLog(component)
+            ),
+        },
+        parentElement,
+        component,
+        resourceMapSet?.tierThree
+      );
+    };
+    if (
+      BootloaderConfig.tieredLoadingFromTier !== null &&
+      BootloaderConfig.tieredLoadingFromTier <= 3
+    ) {
+      bootloaderEventsManager.registerCallback(
+        () =>
+          BootloaderDocumentInserter.batchDOMInsert(processDeferredJSModules),
+        [bootloaderEventsManager.tierTwo(component)]
+      );
+    } else {
+      processDeferredJSModules(parentElement);
+    }
+  };
+
+  const resolveCSRIndexes = (components) => {
+    const resourceEntries = new Map();
+    for (const component of components) {
+      const resourceInfo = resourceMap.get(component);
+      if (!resourceInfo) {
+        FBLogger("bootloader").mustfix(
+          "Unable to resolve resource %s.",
+          component
+        );
+        continue;
+      }
+      let csrIndexes;
+      if (resourceInfo.type === "csr") {
+        csrIndexes = CSRIndexUtil.parseCSRIndexes(resourceInfo.src);
+      } else if (resourceInfo.p) {
+        csrIndexes = CSRIndexUtil.parseCSRIndexes(resourceInfo.p);
+        if (csrIndexes.includes(CSRIndexUtil.UNKNOWN_RESOURCE_INDEX)) {
+          resourceEntries.set(component, resourceInfo);
+        }
+        csrIndexes = csrIndexes.filter(
+          (csrIndex) => csrIndex !== CSRIndexUtil.UNKNOWN_RESOURCE_INDEX
+        );
       } else {
-        componentsToMarkAsImmediate.add(component);
+        resourceEntries.set(component, resourceInfo);
+        continue;
+      }
+      for (const csrIndex of csrIndexes) {
+        const resourceHash = csrIndexMap.get(csrIndex);
+        if (resourceHash === null) {
+          const componentData = JSON.stringify(
+            components.map((component) => {
+              const resourceInfo = getResourceInfo(component);
+              const cleanSrc =
+                resourceInfo.type === "js" || resourceInfo.type === "css"
+                  ? resourceInfo.d
+                    ? ""
+                    : resourceInfo.src.split("?")[0]
+                  : resourceInfo.src;
+              return JSON.stringify({
+                hash: component,
+                rev: revisionMap.get(component),
+                ...resourceInfo,
+                src: cleanSrc,
+                tsrc: null,
+              });
+            })
+          );
+          throw FBLogger("bootloader", "missing-index-map").mustfixThrow(
+            `No hash for rsrcIndex ${csrIndex} (rev: ${SiteData.client_revision}, cohort: ${SiteData.pkg_cohort}). ${componentData}`
+          );
+        }
+        const resourceHashInfo = getResourceInfo(resourceHash);
+        invariant(resourceHashInfo.type === "csr", 20056, resourceHash);
+        resourceEntries.set(resourceHash, resourceHashInfo);
       }
     }
-  },
-  // eslint-disable-next-line max-params
-  setResourceMap(resourceMap, sotUpgrades, clientRevision, referenceProvider) {
-    let hasNewJSResource = false;
-    // eslint-disable-next-line guard-for-in
-    for (const resourceHash in resourceMap) {
-      if (referenceProvider) {
-        referenceProvider.rsrc++;
+    return resourceEntries.entries();
+  };
+
+  // eslint-disable-next-line complexity
+  const processResourceElement = (element) => {
+    const resourceHash = element.getAttribute("data-bootloader-hash");
+    if (!resourceHash) return;
+    const validResourceHash = ResourceHasher.getValidResourceHash(resourceHash);
+    if (element.id) {
+      if (processedIdsSet.has(element.id)) return;
+      processedIdsSet.add(element.id);
+    }
+    const resourceData =
+      element.tagName === "SCRIPT"
+        ? { src: element.src, type: "js" }
+        : { src: element.href, type: "css" };
+    if (element.crossOrigin === null) resourceData.nc = 1;
+    if (
+      resourceData.type === "js" &&
+      element.dataset.tsrc !== null &&
+      element.dataset.tsrc.trim() !== ""
+    ) {
+      resourceData.tsrc = element.dataset.tsrc;
+      promiseDone(
+        MakeHasteTranslations.genFetchAndProcessTranslations(
+          validResourceHash,
+          resourceData.tsrc
+        )
+      );
+    }
+    if (
+      resourceData.type === "css" &&
+      element.getAttribute("data-nonblocking")
+    ) {
+      resourceData.nonblocking = 1;
+    }
+    const resourcePriority = element.getAttribute("data-c");
+    if (resourcePriority === "1") resourceData.c = 1;
+    else if (resourcePriority === "2") resourceData.c = 2;
+    const csrIndexes = element.getAttribute("data-p");
+    if (csrIndexes !== null) {
+      resourceData.p = csrIndexes;
+      const parsedIndexes = CSRIndexUtil.parseCSRIndexes(csrIndexes);
+      const maxIndex = Math.max(...parsedIndexes);
+      if (maxIndex > BootloaderConfig.btCutoffIndex) {
+        BootloaderEvents.notifyResourceInLongTailBTManifest(
+          filterLongTailManifest(
+            parsedIndexes,
+            resourceData.src,
+            new Set(),
+            BootloaderConfig.btCutoffIndex
+          ),
+          "pickupPageResource"
+        );
       }
-      const validResourceHash =
-        ResourceHasher.getValidResourceHash(resourceHash);
-      if (clientRevision !== null) {
-        resourceHashToRevisionMap.set(validResourceHash, clientRevision);
+    }
+    const btManifest = element.getAttribute("data-btmanifest");
+    if (btManifest !== null) resourceData.m = btManifest;
+    if (resourceMap.has(validResourceHash) && !BootloaderConfig.silentDups) {
+      FBLogger("bootloader").warn(
+        "Duplicate resource [%s]: %s",
+        validResourceHash,
+        resourceData.src
+      );
+    }
+    setResource(validResourceHash, resourceData, true);
+    requestedResourcesMap.set(validResourceHash, performanceAbsoluteNow());
+    const doneCallback = () => Bootloader.done(validResourceHash);
+    const isSyncJS =
+      resourceData.type === "js"
+        ? !element.getAttribute("async")
+        : element.parentNode?.tagName === "HEAD";
+    if (isSyncJS || (window._btldr && window._btldr[validResourceHash])) {
+      doneCallback();
+    } else if (resourceData.type === "js") {
+      attachScriptEvents(
+        element,
+        validResourceHash,
+        resourceData,
+        doneCallback
+      );
+    } else {
+      CSSLoader.setupEventListeners(
+        validResourceHash,
+        resourceData.src,
+        BootloaderDocumentInserter.getDOMContainerNode(),
+        doneCallback,
+        cssTimeoutHandler(validResourceHash, resourceData, doneCallback),
+        null
+      );
+    }
+  };
+
+  const processDocumentResources = () => {
+    if (areResourcesMarkedImmediate) return;
+    areResourcesMarkedImmediate = true;
+    if (!ExecutionEnvironment.canUseDOM || ExecutionEnvironment.isInWorker)
+      return;
+    Array.from(document.getElementsByTagName("link")).forEach(
+      processResourceElement
+    );
+    Array.from(document.getElementsByTagName("script")).forEach(
+      processResourceElement
+    );
+  };
+
+  const markDeferredComponents = () => {
+    isDeferred = true;
+    const deferredModules = loadModuleQueue;
+    loadModuleQueue = [];
+    deferredModules.forEach(
+      ([components, callback, caller, deferredCallback]) => {
+        deferredCallback(() => {
+          Bootloader.loadModules(components, callback, caller);
+        });
       }
-      const resource = resourceMap[resourceHash];
-      const existingResource = resourceDescriptors.get(validResourceHash);
-      if (!existingResource) {
-        if (resource.type === "js") {
-          hasNewJSResource = true;
+    );
+  };
+
+  const Bootloader = {
+    loadModules: (
+      modules,
+      callback = noop,
+      caller = "loadModules: unknown caller"
+    ) => {
+      const allModules = modules;
+      let timeoutId;
+      let isRemoved = false;
+      const safeCallback = (...args) => {
+        clearTimeout(timeoutId);
+        if (!isRemoved) callback(...args);
+      };
+      const deferredModule = {
+        remove: () => {
+          isRemoved = true;
+        },
+      };
+      if (
+        BootloaderConfig.fastPathForAlreadyRequired &&
+        allModules.every(isModuleLoadable)
+      ) {
+        executeModules(allModules, (...args) => safeCallback(...args));
+        return deferredModule;
+      }
+      if (!canLoadModules(allModules)) {
+        const deferredExecution = TimeSlice.getGuardedContinuation(
+          "Deferred: Bootloader.loadModules"
+        );
+        loadModuleQueue.push([
+          allModules,
+          safeCallback,
+          caller,
+          deferredExecution,
+        ]);
+        const bootloadEvent = bootloaderEventsManager.bootload(allModules);
+        startTimeMap.set(
+          bootloadEvent,
+          startTimeMap.get(bootloadEvent) ?? performanceAbsoluteNow()
+        );
+        return deferredModule;
+      }
+      const [bootloadEvent, bootloadData] = getBootloadEventAndData(
+        caller,
+        allModules
+      );
+      bootloaderEventsManager.registerCallback(
+        executeModules.bind(null, allModules, (...args) => {
+          if (bootloadData) {
+            bootloadData.callbackStart = performanceAbsoluteNow();
+            safeCallback(...args);
+            bootloadData.callbackEnd = performanceAbsoluteNow();
+          }
+          bootloaderEventsManager.notify(bootloadEvent);
+        }),
+        allModules.map((module) => bootloaderEventsManager.tierOne(module))
+      );
+      BootloaderDocumentInserter.batchDOMInsert((parentElement) => {
+        for (const module of allModules) {
+          processBootload(module, bootloadEvent, parentElement, bootloadData);
         }
-        registerResource(validResourceHash, resource, false);
+      });
+      if (bootloadData) {
+        const allEventsSet = new Set([bootloadEvent]);
+        for (const module of allModules) {
+          allEventsSet.add(bootloaderEventsManager.beDone(module));
+          allEventsSet.add(bootloaderEventsManager.tierThree(module));
+          allEventsSet.add(bootloaderEventsManager.tierOneLog(module));
+          allEventsSet.add(bootloaderEventsManager.tierTwoLog(module));
+          allEventsSet.add(bootloaderEventsManager.tierThreeLog(module));
+        }
+        bootloaderEventsManager.registerCallback(
+          () => BootloaderEvents.notifyBootload(bootloadData),
+          Array.from(allEventsSet)
+        );
+        ifRequireable("TimeSliceInteraction", (interaction) => {
+          interaction
+            .informGlobally("Bootloader.loadResources")
+            .addSetAnnotation(
+              "requested_hashes",
+              Array.from(
+                BootloaderEvents.flattenResourceMapSet(
+                  bootloadData.tierOne
+                ).keys()
+              )
+            )
+            .addSetAnnotation(
+              "rdfd_requested_hashes",
+              Array.from(
+                BootloaderEvents.flattenResourceMapSet(
+                  bootloadData.tierTwo
+                ).keys()
+              )
+            )
+            .addSetAnnotation(
+              "rd_requested_hashes",
+              Array.from(
+                BootloaderEvents.flattenResourceMapSet(
+                  bootloadData.tierThree
+                ).keys()
+              )
+            )
+            .addStringAnnotation("bootloader_reference", caller)
+            .addSetAnnotation("requested_components", allModules);
+        });
+        timeoutId = setTimeoutAcrossTransitions(() => {
+          BootloaderEvents.notifyBootloaderCallbackTimeout(bootloadData);
+        }, BootloaderConfig.timeout);
+      }
+      return deferredModule;
+    },
+
+    loadResources: (resourceNames, options) => {
+      processDocumentResources();
+      BootloaderDocumentInserter.batchDOMInsert((parentElement) => {
+        let loadOptions;
+        // eslint-disable-next-line no-return-assign
+        return loadResources(
+          resourceNames.map((resourceName) =>
+            ResourceHasher.getValidResourceHash(resourceName)
+          ),
+          (loadOptions = options) !== null ? loadOptions : Object.freeze({}),
+          parentElement,
+          "loadResources"
+        );
+      });
+    },
+
+    requestJSResource_UNSAFE_NEEDS_REVIEW_BY_SECURITY_AND_XFN: (url) => {
+      const jsHash = ResourceHasher.createExternalJSHash();
+      setResource(jsHash, { type: "js", src: url, nc: 1 }, false);
+      Bootloader.loadResources([jsHash]);
+    },
+
+    done: (resourceHash) => {
+      loadedResourcesMap.set(resourceHash, performanceAbsoluteNow());
+      bootloaderEventsManager.notify(
+        bootloaderEventsManager.rsrcDone(resourceHash)
+      );
+    },
+
+    beDone: (component, resourceName, resourceHash) => {
+      for (const logData of bootloadedComponentsMap.get(component)?.logData ??
+        []) {
+        logData.beRequests.set(resourceName, resourceHash);
+      }
+      bootloaderEventsManager.notify(bootloaderEventsManager.beDone(component));
+    },
+
+    handlePayload: (payload, bootloadData) => {
+      for (const resourceTag of payload.rsrcTags ?? []) {
+        processResourceElement(document.getElementById(resourceTag));
+      }
+      const clientRevision = payload.consistency?.rev ?? null;
+      Bootloader.setResourceMap(
+        payload.rsrcMap ?? {},
+        payload.sotUpgrades,
+        clientRevision,
+        bootloadData
+      );
+      const csrUpgradeIndexes =
+        payload.csrUpgrade !== null
+          ? CSRIndexUtil.parseCSRIndexes(payload.csrUpgrade)
+          : [];
+      const missingCSRIndex = csrUpgradeIndexes.find(
+        (csrIndex) => !csrIndexMap.has(csrIndex)
+      );
+      if (
+        csrUpgradeIndexes.length &&
+        clientRevision !== null &&
+        clientRevision !== SiteData.client_revision
+      ) {
+        FBLogger("bootloader", "csr-mismatch").warn(
+          `CSR upgrades included on mismatched rev
+          ${clientRevision} (client rev: ${SiteData.client_revision}, cohort: ${SiteData.pkg_cohort}).`
+        );
+      } else if (missingCSRIndex !== null && areResourcesMarkedImmediate) {
+        FBLogger("bootloader", "missing-csr-upgrade").warn(
+          `CSR upgrades included unknown rsrcIndex ${missingCSRIndex} (client rev: ${SiteData.client_revision}, cohort: ${SiteData.pkg_cohort}).`
+        );
       } else {
-        if (referenceProvider) {
-          referenceProvider.dup_rsrc++;
+        csrUpgradeIndexes.forEach(CSRBitMap.add);
+      }
+      if (payload.compMap)
+        Bootloader.enableBootload(payload.compMap, bootloadData);
+    },
+
+    enableBootload: (componentMap, bootloadData) => {
+      // eslint-disable-next-line guard-for-in
+      for (const component in componentMap) {
+        if (bootloadData) bootloadData.comp++;
+        if (!componentMap.hasOwnProperty(component)) continue;
+        if (!componentMap.has(component)) {
+          componentMap.set(component, componentMap[component]);
+          if (immediateComponents.has(component)) {
+            immediateComponents.delete(component);
+            handleComponentLoadComplete(component);
+          }
+        } else if (bootloadData) {
+          bootloadData.dup_comp++;
         }
-        if (
-          (existingResource.type === "js" && resource.type === "js") ||
-          (existingResource.type === "css" && resource.type === "css")
-        ) {
-          if (resource.d && !existingResource.d) {
-            if (resource.type === "js") {
-              hasNewJSResource = true;
+      }
+      processDocumentResources();
+      if (!deferBootloads) markDeferredComponents();
+    },
+
+    undeferBootloads: (isTimeout = false) => {
+      if (window.location.search.includes("&__deferBootloads=")) return;
+      if (isTimeout && deferBootloads) {
+        BootloaderEvents.notifyDeferTimeout({
+          componentMapSize: componentMap.size,
+          pending: loadModuleQueue.map(([components, , caller]) => ({
+            components,
+            ref: caller,
+          })),
+          time: perfNowFunc || performanceNow(),
+        });
+      }
+      deferBootloads = false;
+      if (componentMap.size) markDeferredComponents();
+    },
+
+    markComponentsAsImmediate: (components) => {
+      for (const component of components) {
+        if (componentMap.has(component)) {
+          handleComponentLoadComplete(component);
+        } else {
+          immediateComponents.add(component);
+        }
+      }
+    },
+
+    // eslint-disable-next-line max-params
+    setResourceMap: (resourceMap, upgrades, revision, bootloadData) => {
+      let isClientConsistencyRequired = false;
+      for (const resourceHash in resourceMap) {
+        if (!resourceMap.hasOwnProperty(resourceHash)) continue;
+        if (bootloadData) bootloadData.rsrc++;
+        const validResourceHash =
+          ResourceHasher.getValidResourceHash(resourceHash);
+        if (revision !== null) revisionMap.set(validResourceHash, revision);
+        const resourceInfo = resourceMap[validResourceHash];
+        const existingResourceInfo = resourceMap.get(validResourceHash);
+        if (!existingResourceInfo) {
+          if (resourceInfo.type === "js") isClientConsistencyRequired = true;
+          setResource(validResourceHash, resourceInfo, false);
+        } else if (bootloadData) {
+          bootloadData.dup_rsrc++;
+          if (
+            (existingResourceInfo.type === "js" &&
+              resourceInfo.type === "js") ||
+            (existingResourceInfo.type === "css" && resourceInfo.type === "css")
+          ) {
+            if (resourceInfo.d && !existingResourceInfo.d) {
+              if (resourceInfo.type === "js")
+                isClientConsistencyRequired = true;
+              existingResourceInfo.src = resourceInfo.src;
+              existingResourceInfo.d = 1;
             }
-            existingResource.src = resource.src;
-            existingResource.d = 1;
           }
         }
       }
-    }
-    if (hasNewJSResource && clientRevision !== null) {
-      ClientConsistency.addAdditionalRevision(clientRevision);
-    }
-    if (sotUpgrades) {
-      for (const upgrade of sotUpgrades) {
-        const resource = resourceDescriptors.get(upgrade);
-        if (resource) {
-          registerResource(upgrade, resource, true);
+      if (isClientConsistencyRequired && revision !== null)
+        ClientConsistency.addAdditionalRevision(revision);
+      if (upgrades) {
+        for (const resourceHash of upgrades) {
+          const existingResourceInfo = resourceMap.get(resourceHash);
+          if (existingResourceInfo)
+            setResource(resourceHash, existingResourceInfo, true);
         }
       }
-    }
-  },
-  getURLToHashMap() {
-    const urlToHashMap = new Map();
-    for (const [resourceHash, resource] of resourceDescriptors) {
-      if (resource.type === "async" || resource.type === "csr") {
-        continue;
+    },
+
+    getURLToHashMap: () => {
+      const urlToHashMap = new Map();
+      for (const [resourceHash, resourceInfo] of resourceMap) {
+        if (resourceInfo.type === "async" || resourceInfo.type === "csr")
+          continue;
+        urlToHashMap.set(resourceInfo.src, resourceHash);
       }
-      urlToHashMap.set(resource.src, resourceHash);
-    }
-    return urlToHashMap;
-  },
-  loadPredictedResourceMap(predictedMap, referenceProvider, clientRevision) {
-    Bootloader.setResourceMap(predictedMap, null, clientRevision);
-    Bootloader.loadResources(Object.keys(predictedMap), referenceProvider);
-  },
-  getCSSResources(componentNames) {
-    const cssResources = [];
-    const componentResources = getComponentResources(componentNames);
+      return urlToHashMap;
+    },
 
-    for (const [resourceHash, resource] of componentResources) {
-      if (resource.type === "css") {
-        cssResources.push(resourceHash);
+    loadPredictedResourceMap: (predictedResourceMap, options, revision) => {
+      Bootloader.setResourceMap(predictedResourceMap, null, revision);
+      Bootloader.loadResources(Object.keys(predictedResourceMap), options);
+    },
+
+    getCSSResources: (components) => {
+      const cssResources = [];
+      for (const [resourceHash, resourceInfo] of resolveCSRIndexes(
+        components
+      )) {
+        if (resourceInfo.type === "css") cssResources.push(resourceHash);
       }
-    }
-    return cssResources;
-  },
-  getBootloadPendingComponents() {
-    const pendingComponents = new Map();
+      return cssResources;
+    },
 
-    for (const [componentName] of this.bootloaded) {
-      if (!this.isModuleRequired(componentName)) {
-        pendingComponents.set(
-          componentName,
-          this.getComponentDebugState(componentName)
-        );
-      }
-    }
-
-    return pendingComponents;
-  },
-  getComponentDebugState(componentName) {
-    const hasEventOccurred = (event) => !!bootloaderEvents.getEventTime(event);
-
-    return {
-      phases: {
-        tierOne: hasEventOccurred(bootloaderEvents.tierOne(componentName)),
-        tierTwo: hasEventOccurred(bootloaderEvents.tierTwo(componentName)),
-        tierThree: hasEventOccurred(bootloaderEvents.tierThree(componentName)),
-        beDone: hasEventOccurred(bootloaderEvents.beDone(componentName)),
-      },
-      unresolvedDeps: __debug.debugUnresolvedDependencies([componentName]),
-      nonJSDeps: __debug.modulesMap[componentName]?.nonJSDeps,
-      hasError: __debug.modulesMap[componentName]?.hasError,
-    };
-  },
-  getBootloadedComponents() {
-    const bootloadedComponents = new Map();
-
-    for (const [componentName, componentData] of this.bootloaded) {
-      bootloadedComponents.set(componentName, componentData.firstBootloadStart);
-    }
-
-    return bootloadedComponents;
-  },
-  notifyManuallyLoadedResourcesInWorker(resourceMap, fetchPromises) {
-    const processResource = (resourceHash) => {
-      const validResourceHash =
-        ResourceHasher.getValidResourceHash(resourceHash);
-      const resource = resourceMap[validResourceHash];
-      if (resource.type === "js" || resource.type === "css") {
-        if (
-          resourceDescriptors.has(validResourceHash) &&
-          !BootloaderConfig.silentDups
-        ) {
-          FBLogger("bootloader").warn(
-            "Duplicate manual resource [%s]: %s",
-            validResourceHash,
-            resource.src
+    getBootloadPendingComponents: () => {
+      const pendingComponents = new Map();
+      for (const [component] of bootloadedComponentsMap) {
+        if (!isModuleRequired(component)) {
+          pendingComponents.set(
+            component,
+            Bootloader.getComponentDebugState(component)
           );
         }
-        registerResource(validResourceHash, resource, true);
-        if (
-          resource.type === "js" &&
-          resource.tsrc !== null &&
-          resource.tsrc.trim() !== ""
-        ) {
-          promiseDone(
-            MakeHasteTranslations.genFetchAndProcessTranslations(
+      }
+      return pendingComponents;
+    },
+
+    getComponentDebugState: (component) => {
+      const isEventTimeAvailable = (event) =>
+        !!bootloaderEventsManager.getEventTime(event);
+      return {
+        phases: {
+          tierOne: isEventTimeAvailable(
+            bootloaderEventsManager.tierOne(component)
+          ),
+          tierTwo: isEventTimeAvailable(
+            bootloaderEventsManager.tierTwo(component)
+          ),
+          tierThree: isEventTimeAvailable(
+            bootloaderEventsManager.tierThree(component)
+          ),
+          beDone: isEventTimeAvailable(
+            bootloaderEventsManager.beDone(component)
+          ),
+        },
+        unresolvedDeps: __debug.debugUnresolvedDependencies([component]),
+        nonJSDeps: __debug.modulesMap[component]?.nonJSDeps,
+        hasError: __debug.modulesMap[component]?.hasError,
+      };
+    },
+
+    getBootloadedComponents: () => {
+      const bootloadedComponents = new Map();
+      for (const [component, bootloadData] of bootloadedComponentsMap) {
+        bootloadedComponents.set(component, bootloadData.firstBootloadStart);
+      }
+      return bootloadedComponents;
+    },
+
+    notifyManuallyLoadedResourcesInWorker: (resources, loadCallbacks) => {
+      for (const resourceHash in resources) {
+        if (!resources.hasOwnProperty(resourceHash)) continue;
+        const validResourceHash =
+          ResourceHasher.getValidResourceHash(resourceHash);
+        const resourceInfo = resources[validResourceHash];
+        if (resourceInfo.type === "js" || resourceInfo.type === "css") {
+          if (
+            resourceMap.has(validResourceHash) &&
+            !BootloaderConfig.silentDups
+          ) {
+            FBLogger("bootloader").warn(
+              "Duplicate manual resource [%s]: %s",
               validResourceHash,
-              nullthrows(resource.tsrc)
-            )
+              resourceInfo.src
+            );
+          }
+          setResource(validResourceHash, resourceInfo, true);
+          if (
+            resourceInfo.type === "js" &&
+            resourceInfo.tsrc !== null &&
+            resourceInfo.tsrc.trim() !== ""
+          ) {
+            promiseDone(
+              MakeHasteTranslations.genFetchAndProcessTranslations(
+                validResourceHash,
+                nullthrows(resourceInfo.tsrc)
+              )
+            );
+          }
+          requestedResourcesMap.set(
+            validResourceHash,
+            performanceAbsoluteNow()
           );
-        }
-        resourceLoadStartTimes.set(validResourceHash, performanceAbsoluteNow());
-        const onLoad = () => Bootloader.done(validResourceHash);
-        const fetchPromise = fetchPromises[validResourceHash];
-        if (resource.type === "js" && fetchPromise) {
-          promiseDone(fetchPromise, onLoad, () => {
-            loadJSResource(validResourceHash, resource, onLoad);
-          });
-        } else {
-          onLoad();
+          const doneCallback = () => Bootloader.done(validResourceHash);
+          const isJSResourceLoaded = loadCallbacks[validResourceHash];
+          if (resourceInfo.type === "js" && isJSResourceLoaded) {
+            promiseDone(isJSResourceLoaded, doneCallback, () =>
+              loadScript(validResourceHash, resourceInfo, doneCallback)
+            );
+          } else {
+            doneCallback();
+          }
         }
       }
-    };
-    // eslint-disable-next-line guard-for-in
-    for (const resourceHash in resourceMap) {
-      processResource(resourceHash);
-    }
-  },
-  getResourceState(resourceHash) {
-    return {
-      loadStart: resourceLoadStartTimes.get(resourceHash),
-      loadEnd: resourceLoadEndTimes.get(resourceHash),
-      loadError: resourceLoadErrors.get(resourceHash),
-    };
-  },
-  getComponentTiming(componentName) {
-    return {
+    },
+
+    getResourceState: (resourceHash) => ({
+      loadStart: requestedResourcesMap.get(resourceHash),
+      loadEnd: loadedResourcesMap.get(resourceHash),
+      loadError: loadErrorMap.get(resourceHash),
+    }),
+
+    getComponentTiming: (component) => ({
       tierTwoStart:
-        BootloaderEvents.getEventTime(
-          BootloaderEvents.tierTwoStart(componentName)
+        bootloaderEventsManager.getEventTime(
+          bootloaderEventsManager.tierTwoStart(component)
         ) ?? 0,
       tierTwoEnd:
-        BootloaderEvents.getEventTime(
-          BootloaderEvents.tierTwo(componentName)
+        bootloaderEventsManager.getEventTime(
+          bootloaderEventsManager.tierTwo(component)
         ) ?? 0,
       tierThreeStart:
-        BootloaderEvents.getEventTime(
-          BootloaderEvents.tierThreeStart(componentName)
+        bootloaderEventsManager.getEventTime(
+          bootloaderEventsManager.tierThreeStart(component)
         ) ?? 0,
       tierThreeEnd:
-        BootloaderEvents.getEventTime(
-          BootloaderEvents.tierThree(componentName)
+        bootloaderEventsManager.getEventTime(
+          bootloaderEventsManager.tierThree(component)
         ) ?? 0,
-    };
-  },
-  getLoadedResourceCount() {
-    return resourceLoadEndTimes.size;
-  },
-  getErrorCount() {
-    return resourceLoadErrors.size;
-  },
-  forceFlush() {
-    BootloaderEndpoint.forceFlush();
-  },
+    }),
 
-  __debug: {
-    componentMap: componentDescriptors,
-    requested: resourceLoadStartTimes,
-    resources: resourceDescriptors,
-    riMap: resourceIndexToHashMap,
-    retries: BootloaderRetryTracker.getAllRetryAttempts_FOR_DEBUG_ONLY(),
-    errors: resourceLoadErrors,
-    loaded: resourceLoadEndTimes,
-    bootloaded: bootloadedComponents,
-    queuedToMarkAsImmediate: componentsToMarkAsImmediate,
-    _resolveCSRs: getComponentResources,
-    revMap: resourceHashToRevisionMap,
-    _getQueuedLoadModules: () => pendingLoadModules,
-    _dequeueLoadModules: (idx) => {
-      const dequeued = pendingLoadModules.splice(idx, 1);
-      if (!dequeued.length) return;
-      const [moduleNames, callback, errorHandler, continuation] = dequeued[0];
-      const prevIsDeferBootloads = isDeferBootloads;
-      const prevIsProcessingLoadModuleQueue = isProcessingLoadModuleQueue;
-      isDeferBootloads = false;
-      isProcessingLoadModuleQueue = true;
-      continuation(() => {
-        Bootloader.loadModules(Bootloader, [
-          moduleNames,
-          callback,
-          errorHandler,
-        ]);
-      });
-      isDeferBootloads = prevIsDeferBootloads;
-      isProcessingLoadModuleQueue = prevIsProcessingLoadModuleQueue;
+    getLoadedResourceCount: () => loadedResourcesMap.size,
+
+    getErrorCount: () => loadErrorMap.size,
+
+    forceFlush: () => BootloaderEndpoint.forceFlush(),
+
+    __debug: {
+      componentMap,
+      requested: requestedResourcesMap,
+      resources: resourceMap,
+      riMap: csrIndexMap,
+      retries: bootloaderRetryTracker.getAllRetryAttempts_FOR_DEBUG_ONLY(),
+      errors: loadErrorMap,
+      loaded: loadedResourcesMap,
+      bootloaded: bootloadedComponentsMap,
+      queuedToMarkAsImmediate: immediateComponents,
+      _resolveCSRs: resolveCSRIndexes,
+      revMap: revisionMap,
+      _getQueuedLoadModules: () => loadModuleQueue,
+      _dequeueLoadModules: (index) => {
+        const [modules, callback, caller, deferredCallback] =
+          loadModuleQueue.splice(index, 1)[0];
+        const previousDeferBootloads = deferBootloads;
+        const previousIsDeferred = isDeferred;
+        deferBootloads = false;
+        isDeferred = true;
+        deferredCallback(() =>
+          Bootloader.loadModules(modules, callback, caller)
+        );
+        deferBootloads = previousDeferBootloads;
+        isDeferred = previousIsDeferred;
+      },
     },
-  },
-};
+  };
 
-JSResourceReferenceImpl.setBootloader(Bootloader);
+  JSResourceReferenceImpl.setBootloader(Bootloader);
+  return Bootloader;
+})();
 
 export default Bootloader;

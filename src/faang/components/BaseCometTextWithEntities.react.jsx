@@ -80,15 +80,15 @@ const DEFAULT_TRUNCATION_THRESHOLD = 20;
 
 const styles = {
   paragraph: {
-    marginTop: "xdj266r",
-    marginEnd: "x11i5rnm",
-    marginBottom: "xat24cr",
-    marginStart: "x1mh8g0r",
+    marginTop: 0,
+    marginEnd: 0,
+    marginBottom: 0,
+    marginStart: 0,
     wordWrap: "x1vvkbs",
-    $$css: true,
+    ,
   },
-  paragraphSpaced: { marginTop: "xtlvy1s", $$css: true },
-  preserveWhiteSpace: { whiteSpace: "x126k92a", $$css: true },
+  paragraphSpaced: { marginTop: "xtlvy1s",  },
+  preserveWhiteSpace: { whiteSpace: "x126k92a",  },
 };
 
 const textAlignStyles = {

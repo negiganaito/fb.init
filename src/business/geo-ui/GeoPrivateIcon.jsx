@@ -19,9 +19,9 @@ import { makeGeoComponent } from "./GeoPrivateMakeComponent";
 
 const styles = {
   root: {
-    display: "x3nfvp2",
+    display: 0,
     ":not([stylex-hack]) svg_fill": "x120ccyz",
-    $$css: true,
+    ,
   },
 };
 

@@ -4,11 +4,13 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import React, { Children, PureComponent } from "react";
-import { ErrorPubSub } from "ErrorPubSub";
-import { ErrorSerializer } from "ErrorSerializer";
-import { getErrorSafe } from "getErrorSafe";
-import { getReactElementDisplayName } from "getReactElementDisplayName";
+import { Children, PureComponent } from "react";
+
+import ErrorPubSub from "../../helpers/ErrorPubSub";
+import getErrorSafe from "../../helpers/getErrorSafe";
+import getReactElementDisplayName from "../../helpers/getReactElementDisplayName";
+
+import ErrorSerializer from "./ErrorSerializer";
 
 class ErrorBoundary extends PureComponent {
   static getDerivedStateFromError(error) {
@@ -78,9 +80,9 @@ class ErrorBoundary extends PureComponent {
   }
 }
 
-ErrorBoundary.defaultProps = {
-  forceResetErrorCount: 0,
-};
+// ErrorBoundary.defaultProps = {
+//   forceResetErrorCount: 0,
+// };
 
 function getModuleName(children) {
   const child =

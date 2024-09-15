@@ -182,8 +182,8 @@ const GeoBasePressable = (props) => {
 GeoBasePressable.displayName = "GeoBasePressable";
 
 const rootStyles = {
-  position: "x1n2onr6",
-  display: "x3nfvp2",
+  position: "relative",
+  display: 0,
   flexDirection: "x1q0g3np",
   verticalAlign: "xxymvpz",
   borderTopStyle: "x1ejq31n",
@@ -196,14 +196,14 @@ const rootStyles = {
   WebkitFontSmoothing: "xvmahel",
   textDecoration: "x1hl2dhg",
   ":hover_textDecoration": "x1lku1pv",
-  $$css: true,
+  ,
 };
 
 const growStyles = {
   display: "x78zum5",
   flexGrow: "x1iyjqo2",
   flexShrink: "xs83m0k",
-  $$css: true,
+  ,
 };
 
 function getPressableStyles({
@@ -245,13 +245,13 @@ function getDirectionStyles(direction) {
   if (direction === null) return null;
   switch (direction) {
     case "column":
-      return { flexDirection: "xdt5ytf", $$css: true };
+      return { flexDirection: "xdt5ytf",  };
     case "row":
-      return { flexDirection: "x1q0g3np", $$css: true };
+      return { flexDirection: "x1q0g3np",  };
     case "row-reverse":
-      return { flexDirection: "x15zctf7", $$css: true };
+      return { flexDirection: "x15zctf7",  };
     case "column-reverse":
-      return { flexDirection: "x3ieub6", $$css: true };
+      return { flexDirection: "x3ieub6",  };
     default:
       return null;
   }
@@ -265,7 +265,7 @@ const overlayRootStyles = {
   end: "x1esfoun",
   top: "x1pdr0v7",
   bottom: "xqmqy1e",
-  $$css: true,
+  ,
 };
 
 function getOverlayStyles({ isActive, color, context }) {

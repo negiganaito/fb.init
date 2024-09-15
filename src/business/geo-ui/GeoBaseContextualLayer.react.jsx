@@ -69,7 +69,7 @@ import useGeoPrivateLegacyLayerCompatibility from "../hooks/useGeoPrivateLegacyL
 
 import { makeGeoComponent } from "./GeoPrivateMakeComponent";
 
-const styles = { root: { zIndex: "xbqvh2t", $$css: true } };
+const styles = { root: { zIndex: "xbqvh2t",  } };
 
 const GeoBaseContextualLayer = ({
   xstyle,

@@ -4,17 +4,19 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import { I64 } from "I64";
-import { fromTableAscending } from "ReQL";
-import { useArray } from "ReQLSuspense";
-import { useReStore } from "useReStore";
+
+import { ReQL } from "../faang/components/ReQL";
+import { useArray } from "../faang/components/ReQLSuspense";
+import { compare } from "../helpers/I64";
+
+import useReStore from "./useReStore";
 
 function useMWPGetAttachments({ messageId, threadKey }) {
   const store = useReStore();
 
   const attachments = useArray(
     () =>
-      fromTableAscending(store.tables.attachments).getKeyRange(
+      ReQL.fromTableAscending(store.tables.attachments).getKeyRange(
         threadKey,
         messageId
       ),
@@ -23,7 +25,7 @@ function useMWPGetAttachments({ messageId, threadKey }) {
   );
 
   return attachments.sort((a, b) =>
-    I64.compare(a.attachmentIndex, b.attachmentIndex)
+    compare(a.attachmentIndex, b.attachmentIndex)
   );
 }
 

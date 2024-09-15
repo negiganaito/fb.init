@@ -552,7 +552,7 @@ __d(
                       !e && c("BizKitStyles").globalNavCollapsedWidthStyle
                     ),
                     children: l.jsx("div", {
-                      className: "x1rg5ohu x5yr21d x1n2onr6 x1vjfegm",
+                      className: "x1rg5ohu x5yr21d relative x1vjfegm",
                       onMouseEnter: u,
                       onMouseLeave: E,
                       children: l.jsx(c("BizKitSidebarNavigation.react"), {
@@ -687,7 +687,7 @@ const styles = {
   globalNavContainer: {
     height: "x5yr21d",
     float: "xrbpyxo",
-    $$css: true,
+    ,
   },
 };
 
@@ -1125,7 +1125,7 @@ const BizWebLeftNavShared: React.FC<BizWebLeftNavSharedProps> = ({
               }`}
             >
               <div
-                className="x1rg5ohu x5yr21d x1n2onr6 x1vjfegm"
+                className="x1rg5ohu x5yr21d relative x1vjfegm"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >

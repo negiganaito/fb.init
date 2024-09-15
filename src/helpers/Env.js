@@ -23,6 +23,11 @@ const Env = {
   barcelona_server_override: "",
   ig_mqtt_wss_endpoint: "",
   ig_mqtt_polling_endpoint: "",
+  routing_namespace: "fb_comet",
+  ghlss: "c1pLRK",
+  use_fbt_virtual_modules: true,
+  gk_clear_js_factory_after_used: true,
+  brsid: "7398731302898342186",
 };
 
 if (window.Env) {

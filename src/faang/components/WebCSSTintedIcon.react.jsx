@@ -70,7 +70,7 @@ import {
 const styles = {
   cssMask: {
     backgroundColor: "xtwfq29",
-    $$css: true,
+    ,
   },
 };
 

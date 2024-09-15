@@ -71,24 +71,24 @@ import { MWShowMessagePromptPopoverContextProvider } from "../../context/MWShowM
 import { equal } from "../../helpers/I64";
 import { usePickInt64 } from "../../hooks/Int64Hooks";
 import useMWMessageRowTheme from "../../hooks/useMWMessageRowTheme";
-import useMWPEditMessageDeemphasizer from "../../hooks/useMWPEditMessageDeemphasizer";
-import useMWPGetAttachments from "../../hooks/useMWPGetAttachments";
+// import useMWPEditMessageDeemphasizer from "../../hooks/useMWPEditMessageDeemphasizer";
+// import useMWPGetAttachments from "../../hooks/useMWPGetAttachments";
 import useNextNonAdminMessage from "../../hooks/useNextNonAdminMessage";
 
-import BaseView from "./BaseView.react";
-import { LSIntEnum } from "./LSIntEnum";
+// import BaseView from "./BaseView.react";
+// import { LSIntEnum } from "./LSIntEnum";
 import {
   isArmadilloSecure,
   isCMSubthread,
   isDiscoverablePublicBroadcastChannel,
   isGroup,
 } from "./LSMessagingThreadTypeUtil";
-import MNLSXMALayoutType from "./MNLSXMALayoutType";
+// import MNLSXMALayoutType from "./MNLSXMALayoutType";
 import isAnyCMThread from "./MWCMIsAnyCMThread";
 import { isBroadcastThread } from "./MWCMThreadTypes.react";
 import { useMWMessageDisplayContext } from "./MWMessageDisplayContext.react";
 import { MWMessageEditContextProvider } from "./MWMessageEditContext.react";
-import { MWMessageListAttachmentContainer } from "./MWMessageListAttachmentContainer.react";
+// import { MWMessageListAttachmentContainer } from "./MWMessageListAttachmentContainer.react";
 import { MWMessageRowAdminMessage } from "./MWMessageRowAdminMessage.react";
 import MWMessageRowBody from "./MWMessageRowBody.react";
 import MWMessageRowFooter from "./MWMessageRowFooter.react";
@@ -96,27 +96,26 @@ import MWMessageRowHeader from "./MWMessageRowHeader.react";
 import MWMessageRowMissingMessagesIndicator from "./MWMessageRowMissingMessagesIndicator.react";
 import MWMessageRowUnreadMessagesIndicator from "./MWMessageRowUnreadMessagesIndicator.react";
 import { useActor } from "./MWPActor.react";
-import { MWPMessageListColumnShrinkwrap } from "./MWPMessageListColumn.react";
+// import { MWPMessageListColumnShrinkwrap } from "./MWPMessageListColumn.react";
 import { MWPMessageListRowWithKeyboardInteractions } from "./MWPMessageListRowWithKeyboardInteractions.react";
 import { isStartOfGroup } from "./MWPMessageParsingUtils";
 import { MWPMessageRowCalculateStatus } from "./MWPMessageRowCalculateStatus";
-import MWV2MessageRowSimple from "./MWV2MessageRowSimple.react";
+// import MWV2MessageRowSimple from "./MWV2MessageRowSimple.react";
 import MWV2MessageStartOfGroupContent from "./MWV2MessageStartOfGroupContent.react";
 
-const styles = {
-  adminMessageAttachment: {
-    boxSizing: "x9f619",
-    maxWidth: "x4ndzw7",
-    minWidth: "xwj5yc2",
-    paddingBottom: "xdvlbce",
-    paddingStart: "x5ib6vp",
-    paddingLeft: null,
-    paddingRight: null,
-    paddingEnd: "xc73u3c",
-    paddingTop: "x1nn3v0j",
-    $$css: true,
-  },
-};
+// const styles = {
+//   adminMessageAttachment: {
+//     boxSizing: "x9f619",
+//     maxWidth: "x4ndzw7",
+//     minWidth: "xwj5yc2",
+//     paddingBottom: "xdvlbce",
+//     paddingStart: "x5ib6vp",
+//     paddingLeft: null,
+//     paddingRight: null,
+//     paddingEnd: "xc73u3c",
+//     paddingTop: "x1nn3v0j",
+//   },
+// };
 
 const MWPMessageRowCalculateStatusMemo = memo(MWPMessageRowCalculateStatus);
 
@@ -213,23 +212,23 @@ const MWMessageRow = memo(
     const [isDialogOpened, setIsDialogOpened] = useState(false);
     const theme = useMWMessageRowTheme();
 
-    const attachments = useMWPGetAttachments(message);
-    const isXMAStandardLayout =
-      attachments.length > 0 &&
-      attachments[0].xmaLayoutType !== null &&
-      equal(
-        attachments[0].xmaLayoutType,
-        LSIntEnum.ofNumber(MNLSXMALayoutType.STANDARD_DXMA)
-      );
-    const isXMASharedStackLayout =
-      attachments.length > 0 &&
-      attachments[0].xmaLayoutType !== null &&
-      equal(
-        attachments[0].xmaLayoutType,
-        LSIntEnum.ofNumber(MNLSXMALayoutType.SHARED_STACK)
-      );
+    // const attachments = useMWPGetAttachments(message);
+    // const isXMAStandardLayout =
+    //   attachments.length > 0 &&
+    //   attachments[0].xmaLayoutType !== null &&
+    //   equal(
+    //     attachments[0].xmaLayoutType,
+    //     LSIntEnum.ofNumber(MNLSXMALayoutType.STANDARD_DXMA)
+    //   );
+    // const isXMASharedStackLayout =
+    //   attachments.length > 0 &&
+    //   attachments[0].xmaLayoutType !== null &&
+    //   equal(
+    //     attachments[0].xmaLayoutType,
+    //     LSIntEnum.ofNumber(MNLSXMALayoutType.SHARED_STACK)
+    //   );
 
-    const deemphasizeStyle = useMWPEditMessageDeemphasizer();
+    // const deemphasizeStyle = useMWPEditMessageDeemphasizer();
 
     let messageContent;
     if (message.isAdminMessage) {
@@ -251,22 +250,22 @@ const MWMessageRow = memo(
           stopHoveringRef={stopHoveringRef}
         />
       );
-    } else if (isXMAStandardLayout || isXMASharedStackLayout) {
-      messageContent = (
-        <MWPMessageListColumnShrinkwrap centered>
-          <MWV2MessageRowSimple>
-            <BaseView xstyle={deemphasizeStyle}>
-              <MWMessageListAttachmentContainer
-                connectBottom={false}
-                connectTop={false}
-                message={message}
-                outgoing={isOutgoing}
-                xstyle={styles.adminMessageAttachment}
-              />
-            </BaseView>
-          </MWV2MessageRowSimple>
-        </MWPMessageListColumnShrinkwrap>
-      );
+      // } else if (isXMAStandardLayout || isXMASharedStackLayout) {
+      //   messageContent = (
+      //     <MWPMessageListColumnShrinkwrap centered>
+      //       <MWV2MessageRowSimple>
+      //         <BaseView xstyle={deemphasizeStyle}>
+      //           <MWMessageListAttachmentContainer
+      //             connectBottom={false}
+      //             connectTop={false}
+      //             message={message}
+      //             outgoing={isOutgoing}
+      //             xstyle={styles.adminMessageAttachment}
+      //           />
+      //         </BaseView>
+      //       </MWV2MessageRowSimple>
+      //     </MWPMessageListColumnShrinkwrap>
+      //   );
     } else {
       messageContent = (
         <MWShowMessagePromptPopoverContextProvider>

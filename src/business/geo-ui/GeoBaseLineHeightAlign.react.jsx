@@ -16,7 +16,7 @@ const styles = {
     display: "x78zum5",
     justifyContent: "xl56j7k",
     alignItems: "x6s0dn4",
-    $$css: true,
+    ,
   },
 };
 

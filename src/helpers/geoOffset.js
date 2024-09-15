@@ -65,7 +65,7 @@ const geoOffset = {
     marginEnd: "x1n0m28w",
     marginLeft: null,
     marginRight: null,
-    $$css: true,
+    ,
   },
   cardEndAction: {
     marginTop: "x9otpla",
@@ -73,12 +73,12 @@ const geoOffset = {
     marginEnd: "x1n0m28w",
     marginLeft: null,
     marginRight: null,
-    $$css: true,
+    ,
   },
   cardAction: {
     marginTop: "x9otpla",
     marginBottom: "x1wsgfga",
-    $$css: true,
+    ,
   },
   cardStartAction: {
     marginTop: "x9otpla",
@@ -86,7 +86,7 @@ const geoOffset = {
     marginStart: "xp7jhwk",
     marginLeft: null,
     marginRight: null,
-    $$css: true,
+    ,
   },
   popoverCloseButton: {
     marginTop: "x9otpla",
@@ -94,12 +94,12 @@ const geoOffset = {
     marginEnd: "x1n0m28w",
     marginLeft: null,
     marginRight: null,
-    $$css: true,
+    ,
   },
   monthYearSelectorHeader: {
     marginTop: "x9otpla",
     marginBottom: "x1wsgfga",
-    $$css: true,
+    ,
   },
 };
 

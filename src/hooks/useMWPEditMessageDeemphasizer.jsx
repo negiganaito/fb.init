@@ -63,7 +63,7 @@ import { useContext } from "react";
 import { MAWEditMessageContext } from "../context/MAWEditMessageContext.react";
 
 const styles = {
-  deemphasize: { filter: "x4xejrh", $$css: true },
+  deemphasize: { filter: "contrast(80%)" },
 };
 
 function useMWPEditMessageDeemphasizer(messageId) {

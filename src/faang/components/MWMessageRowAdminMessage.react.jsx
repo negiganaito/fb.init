@@ -5,13 +5,14 @@
  * See the LICENSE file in the root directory for details.
  */
 import React from "react";
-import BaseView from "BaseView.react";
-import MWMessageListAttachmentContainer from "MWMessageListAttachmentContainer.react";
-import { MWPMessageListColumnShrinkwrap } from "MWPMessageListColumn.react";
+// import MWMessageListAttachmentContainer from "MWMessageListAttachmentContainer.react";
 import MWPMessageListRowWithKeyboardInteractions from "MWPMessageListRowWithKeyboardInteractions.react";
 import MWV2ChatAdminMessage from "MWV2ChatAdminMessage.react";
 import MWV2MessageRowSimple from "MWV2MessageRowSimple.react";
 import { useMWMessageRowTheme, useMWPEditMessageDeemphasizer } from "stylex";
+
+import BaseViewReact from "./BaseView.react";
+import { MWPMessageListColumnShrinkwrap } from "./MWPMessageListColumn";
 
 const styles = {
   adminMessageAttachment: {
@@ -24,11 +25,9 @@ const styles = {
     paddingRight: null,
     paddingEnd: "xc73u3c",
     paddingTop: "x1nn3v0j",
-    $$css: true,
   },
   adminMessageContainer: {
     maxWidth: "x193iq5w",
-    $$css: true,
   },
 };
 
@@ -52,7 +51,7 @@ const MWMessageRowAdminMessage = ({
   const theme = useMWMessageRowTheme();
   const content = (
     <MWPMessageListColumnShrinkwrap centered>
-      <BaseView
+      <BaseViewReact
         xstyle={[editMessageDeemphasizer, styles.adminMessageContainer]}
       >
         <MWV2ChatAdminMessage
@@ -60,15 +59,15 @@ const MWMessageRowAdminMessage = ({
           nextMessage={nextMessage}
           prevMessage={prevMessage}
         />
-        <MWMessageListAttachmentContainer
+        {/* <MWMessageListAttachmentContainer
           connectBottom={false}
           connectTop={false}
           mediaRenderQpl={null}
           message={message}
           outgoing={outgoing}
           xstyle={styles.adminMessageAttachment}
-        />
-      </BaseView>
+        /> */}
+      </BaseViewReact>
     </MWPMessageListColumnShrinkwrap>
   );
 

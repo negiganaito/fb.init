@@ -5,13 +5,14 @@
  * See the LICENSE file in the root directory for details.
  */
 import React, { forwardRef, useCallback, useContext } from "react";
-import ErrorBoundary from "ErrorBoundary.react";
-import { ErrorMetadata } from "fb-error";
-import { InteractionTracingMetricsCore } from "interaction-tracing-metrics";
-import useHeroFailTrigger from "useHeroFailTrigger";
 
 import HeroCurrentInteractionForLoggingContext from "../../context/HeroCurrentInteractionForLoggingContext";
+import FBError from "../../helpers/fb-error";
 import useHeroErrorMetadata from "../../hooks/useHeroErrorMetadata";
+import useHeroFailTrigger from "../../hooks/useHeroFailTrigger";
+
+import ErrorBoundary from "./ErrorBoundary";
+import { InteractionTracingMetricsCore } from "./interaction-tracing-metrics";
 
 const useCometErrorBoundary = () => {
   const heroInteractionContext = useContext(
@@ -65,7 +66,7 @@ const CometErrorBoundary = forwardRef((props, ref) => {
       heroErrorMetadata(error);
       if (type) {
         error.type = type;
-        const metadata = error.metadata || new ErrorMetadata();
+        const metadata = error.metadata || new FBError.ErrorMetadata();
         error.metadata = metadata;
         metadata.addEntry(
           "COMET_INFRA",

@@ -61,7 +61,8 @@
 import React, { createContext, useContext, useMemo } from "react";
 import { useActor as useActorHook } from "Actor";
 import { getPageMessagingMailboxId } from "CurrentMessengerUser";
-import { of_string, to_string } from "I64";
+
+import { of_string, to_string } from "../../helpers/I64";
 
 const MWPActorContext = createContext(null);
 

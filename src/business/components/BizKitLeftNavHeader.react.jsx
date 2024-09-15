@@ -243,17 +243,17 @@ const styles = {
     display: "x78zum5",
     flexDirection: "x1q0g3np",
     height: "xwa7hi",
-    $$css: true,
+    ,
   },
   buttonBizHomeRedesign: {
     height: "xc9qbxq",
-    $$css: true,
+    ,
   },
   collapsedSelectorButton: {
     marginLeft: "x122ehjf",
     marginRight: "x1g437uv",
     marginBottom: "x1i3j7dp",
-    $$css: true,
+    ,
   },
 };
 

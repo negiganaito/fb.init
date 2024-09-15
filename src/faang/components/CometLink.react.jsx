@@ -72,37 +72,37 @@ const styles = {
   disabled: {
     color: "x1dntmbh",
     textDecorationLine: "x1ubmc1d xkrqix3",
-    $$css: true,
+    ,
   },
   root: {
     color: "x1heor9g",
     textDecorationLine: "x1sur9pj xkrqix3",
-    $$css: true,
+    ,
   },
 };
 
 const colors = {
-  blueLink: { color: "x1fey0fg", $$css: true },
-  disabled: { color: "x1dntmbh", $$css: true },
-  highlight: { color: "x1qq9wsj", $$css: true },
-  negative: { color: "x1a1m0xk", $$css: true },
-  positive: { color: "x6u5lvz", $$css: true },
-  primary: { color: "xzsf02u", $$css: true },
-  secondary: { color: "xi81zsa", $$css: true },
-  tertiary: { color: "x12scifz", $$css: true },
-  white: { color: "x14ctfv", $$css: true },
+  blueLink: { color: "x1fey0fg",  },
+  disabled: { color: "x1dntmbh",  },
+  highlight: { color: "x1qq9wsj",  },
+  negative: { color: "x1a1m0xk",  },
+  positive: { color: "x6u5lvz",  },
+  primary: { color: "xzsf02u",  },
+  secondary: { color: "xi81zsa",  },
+  tertiary: { color: "x12scifz",  },
+  white: { color: "x14ctfv",  },
 };
 
 const weights = {
-  bold: { fontWeight: "x1xlr1w8", $$css: true },
-  medium: { fontWeight: "xk50ysn", $$css: true },
-  normal: { fontWeight: "xo1l8bm", $$css: true },
-  semibold: { fontWeight: "x1s688f", $$css: true },
+  bold: { fontWeight: "x1xlr1w8",  },
+  medium: { fontWeight: "xk50ysn",  },
+  normal: { fontWeight: "xo1l8bm",  },
+  semibold: { fontWeight: "x1s688f",  },
 };
 
 const displays = {
-  block: { display: "x1lliihq", $$css: true },
-  "inline-block": { display: "x1rg5ohu", $$css: true },
+  block: { display: "x1lliihq",  },
+  "inline-block": { display: "x1rg5ohu",  },
 };
 
 // eslint-disable-next-line complexity

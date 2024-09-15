@@ -8,7 +8,7 @@
 import useGeoPrivateIsNextTheme from "./useGeoPrivateIsNextTheme";
 import useGeoTheme from "./useGeoTheme";
 
-const styles = { root: { alignSelf: "xkh2ocl", $$css: true } };
+const styles = { root: { alignSelf: "xkh2ocl" } };
 
 function mapStatusToSurface(status) {
   switch (status) {

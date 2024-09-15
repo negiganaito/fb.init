@@ -85,6 +85,7 @@ module.exports = {
             ],
           },
         ],
+        "max-params": [ERROR, 8],
       },
     },
   ],

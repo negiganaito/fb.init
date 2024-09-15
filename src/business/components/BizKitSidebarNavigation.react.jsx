@@ -110,15 +110,15 @@ const styles = {
     display: "x78zum5",
     flexDirection: "xdt5ytf",
     height: "x5yr21d",
-    $$css: true,
+    ,
   },
   fullHeight: {
     height: "x5yr21d",
-    $$css: true,
+    ,
   },
   foaBorder: {
     "::before_height": "xq1wtrk",
-    $$css: true,
+    ,
   },
 };
 

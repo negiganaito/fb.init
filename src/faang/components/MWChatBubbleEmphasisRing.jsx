@@ -5,9 +5,10 @@
  * See the LICENSE file in the root directory for details.
  */
 import React from "react";
-import BaseThemeProvider from "BaseThemeProvider.react";
+import stylex from "@stylexjs/stylex";
 import gkx from "gkx";
-import stylex from "stylex";
+
+import BaseThemeProvider from "./BaseThemeProvider";
 
 // const emphasisStyles = {
 //   borderRadius: 22,
@@ -27,7 +28,7 @@ const styles = {
     animationIterationCount: "x1v7wizp",
     animationName: "x1yrix95",
     animationTimingFunction: "x4hg4is",
-    $$css: true,
+    ,
   },
   emphasis_ring: {
     backgroundColor: "xjbqb8w",
@@ -45,7 +46,7 @@ const styles = {
     borderStartWidth: "x7g060r",
     display: "x78zum5",
     maxWidth: "x1hvl878",
-    position: "x1n2onr6",
+    position: "relative",
     "::after_borderTopStartRadius": "xquudas",
     "::after_borderTopEndRadius": "x6p43zf",
     "::after_borderBottomEndRadius": "x1wnhr99",
@@ -58,7 +59,7 @@ const styles = {
     "::after_borderEndWidth": "xcmxnv6",
     "::after_borderBottomWidth": "x13afdcp",
     "::after_borderStartWidth": "x10va8jt",
-    "::after_content": "x1s928wv",
+    "::after_content": "",
     "::after_display": "xhkezso",
     "::after_pointerEvents": "x2q1x1w",
     "::after_position": "x1j6awrg",
@@ -101,7 +102,7 @@ const styles = {
     "::before_opacity": "x1u3qutx",
     "::before_start": "xbs7dl3",
     "::before_top": "x51xajf",
-    $$css: true,
+    ,
   },
   emphasis_ring_before_xma: {
     borderBottomStyle: "x1sy0etr",
@@ -111,27 +112,27 @@ const styles = {
     "::before_borderBottom": "xozyfcf",
     "::before_borderBottomEndRadius": "x1nxuetn",
     "::before_borderBottomStartRadius": "x1doa7m0",
-    $$css: true,
+    ,
   },
   emphasis_ring_connect_bottom_incoming: {
     "::after_borderBottomStartRadius": "x1573djm",
     "::before_borderBottomStartRadius": "x106tphz",
-    $$css: true,
+    ,
   },
   emphasis_ring_connect_bottom_outgoing: {
     "::after_borderBottomEndRadius": "x1nb2ndt",
     "::before_borderBottomEndRadius": "x7ft4bm",
-    $$css: true,
+    ,
   },
   emphasis_ring_connect_top_incoming: {
     "::after_borderTopStartRadius": "x14nzmgs",
     "::before_borderTopStartRadius": "x58eeit",
-    $$css: true,
+    ,
   },
   emphasis_ring_connect_top_outgoing: {
     "::after_borderTopEndRadius": "xe41ffp",
     "::before_borderTopEndRadius": "x1cbhpwz",
-    $$css: true,
+    ,
   },
   emphasis_ring_xma: {
     borderTopStyle: "x1ejq31n",
@@ -142,7 +143,7 @@ const styles = {
     "::before_borderTop": "xp2bjph",
     "::before_borderTopEndRadius": "xajc7s",
     "::before_borderTopStartRadius": "x1eo7yr1",
-    $$css: true,
+    ,
   },
 };
 

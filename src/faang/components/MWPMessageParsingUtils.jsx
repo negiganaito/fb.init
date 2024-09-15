@@ -5,14 +5,16 @@
  * See the LICENSE file in the root directory for details.
  */
 import { gkx } from "gkx";
-import { I64 } from "I64";
-import { isStringNullOrEmpty } from "isStringNullOrEmpty";
-import { LSBitFlag } from "LSBitFlag";
-import { LSIntEnum } from "LSIntEnum";
-import { LSMessageReplySourceTypeV2 } from "LSMessageReplySourceTypeV2";
+
+import { equal, to_float } from "../../helpers/I64";
+import isStringNullOrEmpty from "../../helpers/isStringNullOrEmpty";
+
+import { has } from "./LSBitFlag";
+import { ofNumber } from "./LSIntEnum";
+import LSMessageReplySourceTypeV2 from "./LSMessageReplySourceTypeV2";
 
 const MAX_TEXT_LENGTH = 280;
-const MAX_TIME_DIFF = 300000; // 5 minutes in milliseconds
+const MAX_TIME_DIFF = 300000;
 
 function hasText(message) {
   return !isStringNullOrEmpty(message.text);
@@ -22,10 +24,7 @@ function isReplyToSomething(message) {
   const replySourceType = message.replySourceTypeV2;
   return (
     replySourceType !== null &&
-    !I64.equal(
-      replySourceType,
-      LSIntEnum.ofNumber(LSMessageReplySourceTypeV2.FORWARD)
-    )
+    !equal(replySourceType, ofNumber(LSMessageReplySourceTypeV2.FORWARD))
   );
 }
 
@@ -33,10 +32,7 @@ function isForwarded(message) {
   const replySourceType = message.replySourceTypeV2;
   return (
     replySourceType !== null &&
-    I64.equal(
-      replySourceType,
-      LSIntEnum.ofNumber(LSMessageReplySourceTypeV2.FORWARD)
-    )
+    equal(replySourceType, ofNumber(LSMessageReplySourceTypeV2.FORWARD))
   );
 }
 
@@ -52,7 +48,7 @@ function shouldBeStandalone(message) {
   return (
     message.isAdminMessage ||
     contentTypes.some((type) =>
-      LSBitFlag.has(LSIntEnum.ofNumber(type), message.displayedContentTypes)
+      has(ofNumber(type), message.displayedContentTypes)
     ) ||
     isLongText(message)
   );
@@ -63,11 +59,10 @@ function isInDifferentGroup(message, previousMessage) {
 
   const timeDifference =
     Math.abs(
-      I64.to_float(message.timestampMs) -
-        I64.to_float(previousMessage.timestampMs)
+      to_float(message.timestampMs) - to_float(previousMessage.timestampMs)
     ) > MAX_TIME_DIFF;
   const isReply = isForwarded(message);
-  const sameSender = I64.equal(message.senderId, previousMessage.senderId);
+  const sameSender = equal(message.senderId, previousMessage.senderId);
 
   if (
     previousMessage.isUnsent ||

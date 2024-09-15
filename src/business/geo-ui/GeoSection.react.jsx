@@ -81,9 +81,9 @@ const styles = {
   },
   noBorder: {
     borderTopWidth: "x972fbf",
-    borderEndWidth: "xcfux6l",
-    borderBottomWidth: "x1qhh985",
-    borderStartWidth: "xm0m39n",
+    borderEndWidth: 0,
+    borderBottomWidth: 0,
+    borderStartWidth: 0,
   },
 };
 

@@ -13,7 +13,7 @@
 import { nullthrows } from "fbjs/lib/nullthrows";
 
 // import {  caml_int64, int64 } from "./bs_caml";
-import { i64_max, i64_min } from "./bs_caml";
+import { i64_gt, i64_max, i64_min } from "./bs_caml";
 import { caml_int64_of_string } from "./bs_caml_format";
 import {
   add64,
@@ -21,6 +21,7 @@ import {
   asr_,
   compare,
   div,
+  is_zero,
   lsl_,
   lsr_,
   max_int,
@@ -35,59 +36,62 @@ import {
   or_,
   sub64,
   succ,
+  to_float,
   to_string,
   toInt32,
   xor,
 } from "./bs_caml_int64";
 import { abs, equal, lognot, minusOne, of_string_opt } from "./bs_int64";
 
-const wrap =
+const wrapI64Function =
   (fn) =>
   (...args) => {
     const result = fn(...args);
-    result._tag = "i64";
-    return result;
-  };
-
-const wrapNullable =
-  (fn) =>
-  (...args) => {
-    const result = fn(...args);
-    if (result !== null) {
+    if (!result._tag) {
       result._tag = "i64";
     }
     return result;
   };
 
-const _mk = wrap(mk);
-const _succ = wrap(succ);
-const minInt = wrap(() => min_int)();
-const maxInt = wrap(() => max_int)();
-const one = wrap(() => one)();
-const zero = wrap(() => zero)();
-const negOne = wrap(() => neg_one)();
-const ofInt32 = wrap(of_int32);
-const to_int32 = wrap(toInt32);
-const _add = wrap(add64);
-const _neg = wrap(neg);
-const _equal = wrap(equal);
-const sub = wrap(sub64);
-const _lsl_ = wrap(lsl_);
-const _lsr_ = wrap(lsr_);
-const _asr_ = wrap(asr_);
-const _mul = wrap(mul);
-const _xor = wrap(xor);
-const _or_ = wrap(or_);
-const _and_ = wrap(and_);
-const ofFloat = wrap(of_float);
-const _div = wrap(div);
-const _mod_ = wrap(mod_);
-const _compare = wrap(compare);
+const wrapNullableI64Function =
+  (fn) =>
+  (...args) => {
+    const result = fn(...args);
+    if (result !== null && !result._tag) {
+      result._tag = "i64";
+    }
+    return result;
+  };
 
-const _minusOne = wrap(() => minusOne)();
-const _abs = wrap(abs);
-const _lognot = wrap(lognot);
-const ofStringOpt = wrapNullable(of_string_opt);
+const _mk = wrapI64Function(mk);
+const _succ = wrapI64Function(succ);
+const minInt = wrapI64Function(() => min_int)();
+const maxInt = wrapI64Function(() => max_int)();
+const one = wrapI64Function(() => one)();
+const zero = wrapI64Function(() => zero)();
+const negOne = wrapI64Function(() => neg_one)();
+const ofInt32 = wrapI64Function(of_int32);
+const to_int32 = wrapI64Function(toInt32);
+const _add = wrapI64Function(add64);
+const _neg = wrapI64Function(neg);
+const _equal = wrapI64Function(equal);
+const sub = wrapI64Function(sub64);
+const _lsl_ = wrapI64Function(lsl_);
+const _lsr_ = wrapI64Function(lsr_);
+const _asr_ = wrapI64Function(asr_);
+const _mul = wrapI64Function(mul);
+const _xor = wrapI64Function(xor);
+const _or_ = wrapI64Function(or_);
+const _and_ = wrapI64Function(and_);
+const ofFloat = wrapI64Function(of_float);
+const _div = wrapI64Function(div);
+const _mod_ = wrapI64Function(mod_);
+const _compare = wrapI64Function(compare);
+
+const _minusOne = wrapI64Function(() => minusOne)();
+const _abs = wrapI64Function(abs);
+const _lognot = wrapI64Function(lognot);
+const ofStringOpt = wrapNullableI64Function(of_string_opt);
 
 let toString;
 let ofString;
@@ -99,7 +103,7 @@ if (typeof BigInt === "function") {
   toString = (a) =>
     // eslint-disable-next-line no-undef
     BigInt.asIntN(64, (BigInt(a[0]) << I) + BigInt(a[1])).toString();
-  ofString = wrap((str) => {
+  ofString = wrapI64Function((str) => {
     // eslint-disable-next-line no-undef
     const num = BigInt.asIntN(64, BigInt(str));
     const result = [Number(num >> I), Number(num & J)];
@@ -108,11 +112,11 @@ if (typeof BigInt === "function") {
   });
 } else {
   toString = to_string;
-  ofString = wrap(caml_int64_of_string);
+  ofString = wrapI64Function(caml_int64_of_string);
 }
 
-const max = wrap(i64_max);
-const min = wrap(i64_min);
+const max = wrapI64Function(i64_max);
+const min = wrapI64Function(i64_min);
 
 function cast(a) {
   if (Array.isArray(a) && a.length === 2) {
@@ -144,6 +148,8 @@ export {
   _compare as compare,
   _div as div,
   _equal as equal,
+  i64_gt as gt,
+  is_zero,
   isI64,
   _lognot as lognot,
   _lsl_ as lsl_,
@@ -158,16 +164,17 @@ export {
   _mul as mul,
   _neg as neg,
   negOne,
-  ofFloat,
+  ofFloat as of_float,
+  ofString as of_string,
   ofInt32,
-  ofString,
   ofStringOpt,
   one,
   _or_ as or_,
   sub,
   _succ as succ,
+  to_float,
   to_int32,
-  toString,
+  toString as to_string,
   _xor as xor,
   zero,
 };

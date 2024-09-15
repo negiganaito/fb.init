@@ -1,26 +1,73 @@
-__d("useCurrentDisplayMode", ["BaseThemeDisplayModeContext", "react"], (function(a, b, c, d, e, f, g) {
-    "use strict";
-    var h, i = (h || d("react")).useContext, j = "light";
-    function a() {
-        var a;
-        return (a = i(c("BaseThemeDisplayModeContext"))) != null ? a : j
-    }
-    g["default"] = a
-}
-), 98);
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+import { useContext } from "react";
 
+import BaseThemeDisplayModeContext from "../context/BaseThemeDisplayModeContext";
 
-import { useContext } from 'react';
-import { BaseThemeDisplayModeContext } from 'BaseThemeDisplayModeContext';
-
-const DEFAULT_MODE = 'light';
+const DEFAULT_MODE = "light";
 
 function useCurrentDisplayMode() {
-
   const context = useContext(BaseThemeDisplayModeContext);
 
   return context ?? DEFAULT_MODE;
-
 }
 
 export default useCurrentDisplayMode;

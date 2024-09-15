@@ -1,11 +1,5 @@
-/**
- * @fileoverview
- * Copyright (c) Xuan Tien and affiliated entities.
- * All rights reserved. This source code is licensed under the MIT license.
- * See the LICENSE file in the root directory for details.
- */
 /* eslint-disable complexity */
-import { unrecoverableViolation } from "unrecoverableViolation";
+import unrecoverableViolation from "./unrecoverableViolation";
 
 const COMPARISONS = {
   gt: [false, 0],
@@ -156,68 +150,78 @@ class BPlusTree {
   delete(key) {
     const minKeys = Math.floor(this.order / 2);
     const path = [];
-    let [node, index] = this.findLeaf(key, path);
-    const keyIndex = this.binarySearch(node.keys, key, COMPARISONS.gte);
-
-    if (keyIndex === -1 || this.comparator(node.keys[keyIndex], key) !== 0)
+    const [leaf, index] = this.findLeaf(key, path);
+    const keyIndex = this.findKeyIndex(leaf.keys, key, COMPARISONS.gte);
+    if (keyIndex === -1 || this.compare(leaf.keys[keyIndex], key) !== 0)
       return false;
-
-    node.keys.splice(keyIndex, 1);
-    node.children.splice(keyIndex, 1);
-
-    while (node.keys.length < minKeys && path.length) {
-      const [parent, parentIndex] = path.pop();
+    leaf.keys.splice(keyIndex, 1);
+    leaf.children.splice(keyIndex, 1);
+    let currentNode = leaf;
+    let currentIndex = index;
+    while (currentNode.keys.length < minKeys && path.length) {
+      const parent = path.pop();
+      const parentNode = parent[0];
+      // const parentIndex = parent[1];
       const siblings = [
-        [parent.children[parentIndex - 1], node, parentIndex - 1],
-        [node, parent.children[parentIndex + 1], parentIndex],
+        [parentNode.children[currentIndex - 1], currentNode, currentIndex - 1],
+        [currentNode, parentNode.children[currentIndex + 1], currentIndex],
       ].filter(([left, right]) => left && right);
-
-      for (const [left, right, index] of siblings) {
+      for (const [left, right, parentIndex] of siblings) {
         if (left.keys.length + right.keys.length >= minKeys * 2) {
-          if (node.isLeaf) {
-            const allChildren = [...left.children, ...right.children];
-            const allKeys = [...left.keys, ...right.keys];
-            left.children = right.children = allChildren.splice(0, minKeys);
-            left.keys = right.keys = allKeys.splice(0, minKeys);
-            parent.keys[index] = allKeys[0];
+          if (currentNode.isLeaf) {
+            const mergedKeys = left.keys.concat(right.keys);
+            const mergedChildren = left.children.concat(right.children);
+            left.keys = mergedKeys.splice(0, minKeys);
+            right.keys = mergedKeys;
+            left.children = mergedChildren.splice(0, minKeys);
+            right.children = mergedChildren;
+            parentNode.keys[parentIndex] = right.keys[0];
           } else {
-            const allChildren = [...left.children, ...right.children];
-            const allKeys = [...left.keys, parent.keys[index], ...right.keys];
-            left.children = right.children = allChildren.splice(0, minKeys + 1);
-            parent.keys[index] = allKeys.splice(minKeys, 1)[0];
-            left.keys = right.keys = allKeys.splice(0, minKeys);
+            const mergedKeys = left.keys.concat(
+              [parentNode.keys[parentIndex]],
+              right.keys
+            );
+            const mergedChildren = left.children.concat(right.children);
+            left.keys = mergedKeys.splice(0, minKeys);
+            right.keys = mergedKeys;
+            left.children = mergedChildren.splice(0, minKeys + 1);
+            right.children = mergedChildren;
+            parentNode.keys[parentIndex] = mergedKeys.shift();
           }
           return true;
         }
       }
-
       // eslint-disable-next-line no-unreachable-loop
-      for (const [left, right, index] of siblings) {
-        left.children = [...left.children, ...right.children];
-        if (node.isLeaf) {
-          left.keys = [...left.keys, ...right.keys];
+      for (const [left, right, parentIndex] of siblings) {
+        left.keys = left.keys.concat(right.keys);
+        if (currentNode.isLeaf) {
+          left.children = left.children.concat(right.children);
           right.keys.length = 0;
-          right.next ? (right.next.prev = left) : (this.rightmostLeaf = left);
+          if (right.next) {
+            right.next.prev = left;
+          } else {
+            this.leafHead = left;
+          }
           left.next = right.next;
         } else {
-          left.keys = [...left.keys, parent.keys[index], ...right.keys];
+          left.keys = left.keys.concat(
+            parentNode.keys[parentIndex],
+            right.keys
+          );
+          left.children = left.children.concat(right.children);
         }
-        parent.keys.splice(index, 1);
-        parent.children.splice(index + 1, 1);
+        parentNode.keys.splice(parentIndex, 1);
+        parentNode.children.splice(parentIndex + 1, 1);
         break;
       }
-
-      node = parent;
-      index = parentIndex;
     }
-
-    if (!this.leftmostLeaf.keys.length && this.leftmostLeaf.children.length) {
-      const oldRoot = this.leftmostLeaf;
-      if (oldRoot.isLeaf)
+    if (!this.leafTail.keys.length && this.leafTail.children.length) {
+      const newRoot = this.leafTail;
+      if (newRoot.isLeaf) {
         throw unrecoverableViolation("cannot be leaf", "maw_db");
-      this.leftmostLeaf = oldRoot.children[0];
+      }
+      this.leafTail = newRoot.children[0];
     }
-
     return true;
   }
 

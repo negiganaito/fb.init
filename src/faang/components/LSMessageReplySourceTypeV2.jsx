@@ -1,0 +1,31 @@
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+const LSMessageReplySourceTypeV2 = Object.freeze({
+  NONE: 0,
+  MESSAGE: 1,
+  STORY: 2,
+  FORWARD: 3,
+  FB_STORY_SHARE: 4,
+  IG_STORY_SHARE: 5,
+  STORY_BASE64_ENCODED: 6,
+  LIGHTWEIGHT_STATUS: 7,
+  CLOSE_FRIENDS: 8,
+  XMA: 9,
+  IG_NOTE: 10,
+  CLOSE_FRIENDS_NOTE_REPLY: 11,
+  LIGHTWEIGHT_STATUS_REACTION: 12,
+  FB_FEED_POST: 13,
+  HIGHLIGHTS_TAB_POST_REPLY: 14,
+  HIGHLIGHTS_TAB_LOCAL_EVENT_REPLY: 15,
+  SHARED_ALBUM: 16,
+  AVATAR_DETAIL: 17,
+  NOTE_REPLY_ARMADILLO: 18,
+  HIGHLIGHTS_TAB_CARDS_FOR_MOM: 19,
+  HIGHLIGHTS_TAB_CARDS_FOR_BIRTHDAY: 20,
+});
+
+export default LSMessageReplySourceTypeV2;

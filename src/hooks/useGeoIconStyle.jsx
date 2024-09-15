@@ -7,7 +7,7 @@
 
 import useGeoTheme from "./useGeoTheme";
 
-const inheritStyle = { inherit: { color: "x1heor9g", $$css: true } };
+const inheritStyle = { inherit: { color: "x1heor9g" } };
 
 function useGeoIconStyle({ color, isDisabled }) {
   const { selectIconColor } = useGeoTheme();

@@ -31,17 +31,17 @@ const styles = {
     end: "xds687c",
     bottom: "x1ey2m1c",
     zIndex: "x1q2oy4v",
-    $$css: true,
+    ,
   },
   itemBase: {
     opacity: "x1hc1fzr",
     transform: "x1c071of",
-    $$css: true,
+    ,
   },
   itemEnterOrLeave: {
     opacity: "xg01cxk",
     transform: "x1t4o6fh",
-    $$css: true,
+    ,
   },
 };
 

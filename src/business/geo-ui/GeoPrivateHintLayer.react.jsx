@@ -134,7 +134,7 @@ const DefaultTrigger = () => {
 DefaultTrigger.displayName = `DefaultTrigger [from ${__filename}]`;
 
 const styles = {
-  trigger: { display: "x1rg5ohu", pointerEvents: "x67bb7w", $$css: true },
+  trigger: { display: "x1rg5ohu", pointerEvents: "x67bb7w" },
 };
 
 const GeoPrivateHintLayerComponent = makeGeoComponent(

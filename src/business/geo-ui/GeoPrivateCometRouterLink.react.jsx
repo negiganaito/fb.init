@@ -106,7 +106,7 @@ interface GeoPrivateCometRouterLinkProps {
   xstyle?: any;
 }
 
-const inlineStyle = { display: "xt0psk2", $$css: true };
+const inlineStyle = { display: "xt0psk2",  };
 
 const GeoPrivateCometRouterLink: React.FC<GeoPrivateCometRouterLinkProps> = ({
   "aria-describedby": ariaDescribedby,

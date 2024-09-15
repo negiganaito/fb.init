@@ -70,7 +70,7 @@ const styles = {
     marginLeft: "x1iog12x",
     marginStart: null,
     marginEnd: null,
-    $$css: true,
+    ,
   },
 };
 

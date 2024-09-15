@@ -6,7 +6,6 @@
  */
 import React, { memo } from "react";
 import CometErrorBoundary from "CometErrorBoundary.react";
-import MWChatBubbleEmphasisRing from "MWChatBubbleEmphasisRing.react";
 import { useMWLSThreadDisplayContext } from "MWLSThreadDisplayContext";
 import {
   MWMessageListAttachmentAudio,
@@ -21,7 +20,9 @@ import MWV2ChatFileV2 from "MWV2ChatFileV2.react";
 import MWV2ChatImagesGrid from "MWV2ChatImagesGrid.react";
 import MWV2UnsupportedAttachment from "MWV2UnsupportedAttachment.react";
 import MWXMAAttachment from "MWXMAAttachment.react";
-import MWXMessageBubble from "MWXMessageBubble.react";
+
+import MWChatBubbleEmphasisRing from "./MWChatBubbleEmphasisRing";
+import MWXMessageBubble from "./MWXMessageBubble";
 
 function MWMessageListAttachmentContainer({
   connectBottom,

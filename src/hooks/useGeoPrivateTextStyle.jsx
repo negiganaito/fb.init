@@ -9,7 +9,7 @@ import { getTextTruncateStyle } from "../business/geo-ui/GeoTextUtils";
 import useGeoTheme from "./useGeoTheme";
 
 const styles = {
-  inherit: { color: "x1heor9g", $$css: true },
+  inherit: { color: "x1heor9g",  },
 };
 
 const overflowStyles = {
@@ -17,31 +17,31 @@ const overflowStyles = {
     overflowWrap: "x1mzt3pk",
     wordWrap: "x1vvkbs",
     wordBreak: "x13faqbe",
-    $$css: true,
+    ,
   },
-  normalOverflowWrap: { overflowWrap: "x1h4wwuj", $$css: true },
+  normalOverflowWrap: { overflowWrap: "x1h4wwuj",  },
 };
 
 const weightStyles = {
-  normal: { fontWeight: "x1fcty0u", $$css: true },
-  bold: { fontWeight: "x117nqv4", $$css: true },
-  inherit: { fontWeight: "x1pd3egz", $$css: true },
+  normal: { fontWeight: "x1fcty0u",  },
+  bold: { fontWeight: "x117nqv4",  },
+  inherit: { fontWeight: "x1pd3egz",  },
 };
 
 const alignStyles = {
-  center: { textAlign: "x2b8uid", $$css: true },
-  end: { textAlign: "xp4054r", $$css: true },
-  start: { textAlign: "x1yc453h", $$css: true },
+  center: { textAlign: "x2b8uid",  },
+  end: { textAlign: "xp4054r",  },
+  start: { textAlign: "x1yc453h",  },
 };
 
 const whiteSpaceStyles = {
-  inherit: { whiteSpace: "xq9mrsl", $$css: true },
-  initial: { whiteSpace: "xti2ec1", $$css: true },
-  normal: { whiteSpace: "xeaf4i8", $$css: true },
-  nowrap: { whiteSpace: "xuxw1ft", $$css: true },
-  pre: { whiteSpace: "x1sdyfia", $$css: true },
-  preLine: { whiteSpace: "x1fj9vlw", $$css: true },
-  preWrap: { whiteSpace: "x126k92a", $$css: true },
+  inherit: { whiteSpace: "xq9mrsl",  },
+  initial: { whiteSpace: "xti2ec1",  },
+  normal: { whiteSpace: "xeaf4i8",  },
+  nowrap: { whiteSpace: "xuxw1ft",  },
+  pre: { whiteSpace: "x1sdyfia",  },
+  preLine: { whiteSpace: "x1fj9vlw",  },
+  preWrap: { whiteSpace: "x126k92a",  },
 };
 
 function useGeoPrivateTextStyle({

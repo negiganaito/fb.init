@@ -5,8 +5,9 @@
  * See the LICENSE file in the root directory for details.
  */
 import { useMemo } from "react";
-import { gkx } from "gkx";
-import { useMWLSThreadDisplayContext } from "MWLSThreadDisplayContext";
+
+import { useMWLSThreadDisplayContext } from "../context/MWLSThreadDisplayContext";
+import gkx from "../helpers/gkx";
 
 function useMWMessageRowTheme() {
   const threadDisplayContext = useMWLSThreadDisplayContext();

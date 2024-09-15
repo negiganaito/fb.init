@@ -16,12 +16,12 @@ const styles = {
     boxSizing: "x9f619",
     maxWidth: "xw5ewwj",
     width: "xh8yej3",
-    $$css: true,
+    ,
   },
   precedes_xma_web: {
     maxWidth: "x16it46q",
     width: "xh8yej3",
-    $$css: true,
+    ,
   },
   bubble: {
     color: "x14ctfv",
@@ -35,19 +35,19 @@ const styles = {
     paddingLeft: null,
     paddingRight: null,
     paddingEnd: "x1szedp3",
-    position: "x1n2onr6",
+    position: "relative",
     zIndex: "x1vjfegm",
-    $$css: true,
+    ,
   },
   bubbleWeb: {
     overflowWrap: "x1mzt3pk",
     wordBreak: "x13faqbe",
-    $$css: true,
+    ,
   },
   clip: {
     overflowX: "x6ikm8r",
     overflowY: "x10wlt62",
-    $$css: true,
+    ,
   },
 };
 
@@ -66,11 +66,11 @@ const incomingStyles = {
     borderEndWidth: "x2t687o",
     borderBottomWidth: "x3p3xfz",
     borderStartWidth: "x5od304",
-    $$css: true,
+    ,
   },
   opaque: {
     outline: "x1ucz5p",
-    $$css: true,
+    ,
   },
 };
 
@@ -89,13 +89,13 @@ const outgoingStyles = {
     borderEndWidth: "xf766zg",
     borderBottomWidth: "x1ybe9c6",
     borderStartWidth: "x1ts5dru",
-    $$css: true,
+    ,
   },
   opaque: {
     backgroundAttachment: "x1nr1p0w",
     backgroundImage: "xl54vp5",
     outline: "x1ucz5p",
-    $$css: true,
+    ,
   },
 };
 
@@ -114,11 +114,11 @@ const defaultStyles = {
     borderEndWidth: "x2t687o",
     borderBottomWidth: "x3p3xfz",
     borderStartWidth: "x5od304",
-    $$css: true,
+    ,
   },
   opaque: {
     outline: "x1ucz5p",
-    $$css: true,
+    ,
   },
 };
 

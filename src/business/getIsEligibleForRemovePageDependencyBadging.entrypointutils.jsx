@@ -1,16 +1,63 @@
-// __d(
-//   "getIsEligibleForRemovePageDependencyBadging.entrypointutils",
-//   [],
-//   function (a, b, c, d, e, f) {
-//     "use strict";
-//     function a() {
-//       return !0;
-//     }
-//     f.getIsEligibleForRemovePageDependencyBadging = a;
-//   },
-//   66
-// );
-
-export function getIsEligibleForRemovePageDependencyBadging(): boolean {
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
+export function getIsEligibleForRemovePageDependencyBadging() {
   return true;
 }

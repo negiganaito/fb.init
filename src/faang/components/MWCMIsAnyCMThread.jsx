@@ -58,20 +58,19 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import { I64 } from "I64";
-import { LSIntEnum } from "LSIntEnum";
+
+import { equal } from "../../helpers/I64";
+
+import { ofNumber } from "./LSIntEnum";
 
 function MWCMIsAnyCMThread(a) {
-  const i64Instance = I64;
-  const lsIntEnumInstance = LSIntEnum;
-
   return (
-    i64Instance.equal(a, lsIntEnumInstance.ofNumber(18)) ||
-    i64Instance.equal(a, lsIntEnumInstance.ofNumber(19)) ||
-    i64Instance.equal(a, lsIntEnumInstance.ofNumber(23)) ||
-    i64Instance.equal(a, lsIntEnumInstance.ofNumber(24)) ||
-    i64Instance.equal(a, lsIntEnumInstance.ofNumber(21)) ||
-    i64Instance.equal(a, lsIntEnumInstance.ofNumber(22))
+    equal(a, ofNumber(18)) ||
+    equal(a, ofNumber(19)) ||
+    equal(a, ofNumber(23)) ||
+    equal(a, ofNumber(24)) ||
+    equal(a, ofNumber(21)) ||
+    equal(a, ofNumber(22))
   );
 }
 

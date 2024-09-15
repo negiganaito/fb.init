@@ -17,7 +17,7 @@ const styles = {
     fontSize: "x1qlqyl8",
     fontWeight: "x1pd3egz",
     outline: "x1a2a7pz",
-    $$css: true,
+    ,
   },
 };
 

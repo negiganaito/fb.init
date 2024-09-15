@@ -5,7 +5,7 @@
  * See the LICENSE file in the root directory for details.
  */
 import React, { createContext, useContext, useMemo, useRef } from "react";
-import { emptyFunction } from "emptyFunction";
+import emptyFunction from "fbjs/lib/emptyFunction";
 
 const MWShowMessagePromptPopoverContext = createContext([
   { current: emptyFunction },

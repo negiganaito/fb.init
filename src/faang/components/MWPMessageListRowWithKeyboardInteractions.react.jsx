@@ -50,15 +50,15 @@ const styles = {
   cell: {
     display: "x78zum5",
     flexDirection: "xdt5ytf",
-    position: "x1n2onr6",
-    $$css: true,
+    position: "relative",
+    ,
   },
-  cellFocusVisible: { zIndex: "x1vjfegm", $$css: true },
+  cellFocusVisible: { zIndex: "x1vjfegm",  },
   cellModal: {
     outline: "x1k66dxp",
     outlineOffset: "x1g40iwv",
     "@media (-webkit-min-device-pixel-ratio: 0)_outline": "x1bkw7pg",
-    $$css: true,
+    ,
   },
   enterModalButton: {
     backgroundColor: "x1h0vfkc",
@@ -78,10 +78,10 @@ const styles = {
     top: "x1qiirwl",
     transform: "x105ttfm",
     zIndex: "x1vjfegm",
-    $$css: true,
+    ,
   },
-  enterModalButtonVisible: { opacity: "x1hc1fzr", $$css: true },
-  row: { position: "x1n2onr6", $$css: true },
+  enterModalButtonVisible: { opacity: "x1hc1fzr",  },
+  row: { position: "relative",  },
   visuallyHidden: {
     clip: "xzpqnlu",
     clipPath: "x1hyvwdk",
@@ -90,7 +90,7 @@ const styles = {
     overflowY: "x10wlt62",
     position: "x10l6tqk",
     width: "x1i1rx1s",
-    $$css: true,
+    ,
   },
 };
 

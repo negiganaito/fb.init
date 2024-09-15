@@ -11,15 +11,15 @@ const fontFamilies = {
     MozOsxFontSmoothing: "xlh3980",
     WebkitFontSmoothing: "xvmahel",
     fontFamily: "x1n0sxbx",
-    $$css: true,
+    ,
   },
   default: {
     fontFamily: "x10flsy6",
-    $$css: true,
+    ,
   },
   segoe: {
     fontFamily: "x1xmvt09",
-    $$css: true,
+    ,
   },
 };
 

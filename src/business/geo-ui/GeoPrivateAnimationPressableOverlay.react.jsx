@@ -90,7 +90,7 @@ const rootStyles = {
   start: "x17qophe",
   top: "x13vifvy",
   zIndex: "x8knxv4",
-  $$css: true,
+  ,
 };
 
 function getStyles({ color, isFocused, isActive }) {

@@ -4,19 +4,10 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import React, { Fragment } from "react";
-import CometErrorBoundary from "CometErrorBoundary.react";
-import CometPlaceholder from "CometPlaceholder.react";
-import deferredLoadComponent from "deferredLoadComponent";
-import I64 from "I64";
-import isMWEditedMessage from "isMWEditedMessage";
-import JSResourceForInteraction from "JSResourceForInteraction";
-import LSMessagingThreadTypeUtil from "LSMessagingThreadTypeUtil";
+import React from "react";
 import MWClickedMessageContext from "MWClickedMessageContext.react";
-import MWExtraPinnedMessagePadding from "MWExtraPinnedMessagePadding.react";
 import MWGroupBlockingProtectionUtils from "MWGroupBlockingProtectionUtils";
 import MWMessageListLoggingContext from "MWMessageListLoggingContext";
-import MWMessagePromptPopoverTrigger from "MWMessagePromptPopoverTrigger.react";
 import MWMessageReplyRow from "MWMessageReplyRow.react";
 import MWMessageRowActions from "MWMessageRowActions.react";
 import MWMessageRowMessageComponent from "MWMessageRowMessageComponent.react";
@@ -27,14 +18,25 @@ import MWPinnedMessageDropdownButton from "MWPinnedMessageDropdownButton.react";
 import MWPinnedMessageOverlay from "MWPinnedMessageOverlay.react";
 import MWPinnedMessageRowFooterNUXWrapperRequireNUX from "MWPinnedMessageRowFooterNUXWrapperRequireNUX.react";
 import MWPMessageIsReply from "MWPMessageIsReply";
-import MWPMessageListColumn from "MWPMessageListColumn.react";
-import MWPMessageParsingUtils from "MWPMessageParsingUtils";
 import MWPMessageReactions from "MWPMessageReactions.react";
 import MWSearchPluginUtils from "MWSearchPluginUtils";
 import MWV2ChatErrorBubble from "MWV2ChatErrorBubble.react";
 import MWV2MessageProfilePhoto from "MWV2MessageProfilePhoto.react";
 import { requireDeferredForDisplay } from "requireDeferredForDisplay";
 import stylex, { useIsMultiReactEnabled, useMWPGetAttachments } from "stylex";
+
+import { to_int32 } from "../../helpers/I64";
+
+import CometErrorBoundary from "./CometErrorBoundary";
+import CometPlaceholder from "./CometPlaceholder.react";
+import deferredLoadComponent from "./deferredLoadComponent";
+import isMWEditedMessage from "./isMWEditedMessage";
+import JSResourceForInteraction from "./JSResourceForInteraction";
+import { isArmadilloSecure } from "./LSMessagingThreadTypeUtil";
+import MWExtraPinnedMessagePadding from "./MWExtraPinnedMessagePadding";
+import MWMessagePromptPopoverTrigger from "./MWMessagePromptPopoverTrigger";
+import { MWPMessageListColumnVerticalRhythm } from "./MWPMessageListColumn.react";
+import { isEndOfGroup } from "./MWPMessageParsingUtils";
 
 const MWMessageReactionsContainerV2 = deferredLoadComponent(
   requireDeferredForDisplay("MWMessageReactionsContainerV2.react").__setRef(
@@ -51,11 +53,11 @@ const styles = {
   multiReactContainer: {
     display: "x78zum5",
     flexDirection: "x1q0g3np",
-    $$css: true,
+    ,
   },
   multiReactContainerOutgoing: {
     alignSelf: "xpvyfi4",
-    $$css: true,
+    ,
   },
 };
 
@@ -94,16 +96,15 @@ const MWMessageRowBody = ({
   const shouldHideReply =
     MWGroupBlockingProtectionUtils.useMWShouldHideReply(message);
   const isLastMessage = nextMessage === null;
-  const isEndOfGroup =
-    isPinnedMessageList ||
-    MWPMessageParsingUtils.isEndOfGroup(message, nextMessage);
+  const _isEndOfGroup =
+    isPinnedMessageList || isEndOfGroup(message, nextMessage);
   const isOutgoing = !incoming;
   const isGroupBlocking = incoming && isGroupThread;
   const shouldHideReactions =
     reactions.length > 0 || (reactionsV2.length > 0 && !isMultiReactEnabled);
   const showMultiReactions =
     isMultiReactEnabled &&
-    reactionsV2.some((reaction) => I64.to_int32(reaction.count) > 0);
+    reactionsV2.some((reaction) => to_int32(reaction.count) > 0);
   const attachments = useMWPGetAttachments(message);
   const hasAttachments = attachments.length > 0;
   const isSearchPlugin =
@@ -116,7 +117,7 @@ const MWMessageRowBody = ({
   const renderProfilePhoto = () => (
     <MWV2MessageProfilePhoto
       ariaHidden={isGroupThread ? !isModal : true}
-      display={isEndOfGroup ? "visible" : "hidden"}
+      display={_isEndOfGroup ? "visible" : "hidden"}
       isGroupThread={isGroupThread}
       message={message}
     />
@@ -139,7 +140,7 @@ const MWMessageRowBody = ({
       <MWPinnedMessageDropdownButton
         hidden={!hovered && !focused}
         isSecureMessage={isSecureMessage}
-        isSecureThread={LSMessagingThreadTypeUtil.isArmadilloSecure(threadType)}
+        isSecureThread={isArmadilloSecure(threadType)}
         message={message}
       />
     ) : null;
@@ -193,7 +194,7 @@ const MWMessageRowBody = ({
   return (
     <>
       {isFirstMessageInGroup && !isGroupBlocking && (
-        <MWPMessageListColumn.MWPMessageListColumnVerticalRhythm height={2} />
+        <MWPMessageListColumnVerticalRhythm height={2} />
       )}
       {isReply && !shouldHideReply && (
         <MWMessageReplyRow
@@ -304,10 +305,10 @@ const MWMessageRowBody = ({
       <MWMustacheText message={message} outgoing={isOutgoing} />
       <MWExtraPinnedMessagePadding nextMessage={nextMessage} />
       {hasClickState && clickedMessageId === message.messageId && (
-        <MWPMessageListColumn.MWPMessageListColumnVerticalRhythm height={6} />
+        <MWPMessageListColumnVerticalRhythm height={6} />
       )}
       {isEndOfGroup && !isLastMessage && (
-        <MWPMessageListColumn.MWPMessageListColumnVerticalRhythm height={6} />
+        <MWPMessageListColumnVerticalRhythm height={6} />
       )}
     </>
   );

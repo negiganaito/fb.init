@@ -4,8 +4,7 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import FBLogger from "FBLogger";
-
+import FBLogger from "./FBLogger";
 import Random from "./Random";
 import WebSessionDefaultTimeoutMs from "./WebSessionDefaultTimeoutMs";
 import WebStorage from "./WebStorage";
@@ -24,7 +23,7 @@ function parseExpiryTime(expiryTime) {
   if (expiryTime === null) return null;
   const parsedTime = parseInt(expiryTime, 10);
   if (`${parsedTime}` !== expiryTime) {
-    FBLogger("web_session").warn(
+    FBLogger.FBLogger("web_session").warn(
       "Expected the web session expiry time to parse as an integer. Found `%s`.",
       String(expiryTime)
     );
@@ -36,7 +35,7 @@ function parseExpiryTime(expiryTime) {
 function validateSessionId(sessionId) {
   if (sessionId === null) return null;
   if (sessionId.length !== SESSION_ID_LENGTH) {
-    FBLogger("web_session").warn(
+    FBLogger.FBLogger("web_session").warn(
       "Expected the web session id to be a %d character string. It was %d character(s). Received `%s`.",
       SESSION_ID_LENGTH,
       sessionId.length,
@@ -45,7 +44,7 @@ function validateSessionId(sessionId) {
     return null;
   }
   if (!/^[a-z0-9]+$/.test(sessionId)) {
-    FBLogger("web_session").warn(
+    FBLogger.FBLogger("web_session").warn(
       "Expected the web session ID to be a base-%d encoded string. Received `%s`.",
       BASE,
       sessionId
@@ -58,7 +57,7 @@ function validateSessionId(sessionId) {
 function coerceSession(session) {
   if (session === null) return null;
   if (typeof session !== "string" && !(session instanceof String)) {
-    FBLogger("web_session").warn(
+    FBLogger.FBLogger("web_session").warn(
       "A non-string value was passed to `coerceSession`. This should be impossible according to this method's Flow type. The value was `%s`.",
       session
     );
@@ -119,7 +118,7 @@ function extendSession(targetExpiryTime) {
       ? validateExpiryTime(targetExpiryTime)
       : now + WebSessionDefaultTimeoutMs;
   if (expiryTime === null || expiryTime <= now) {
-    FBLogger("web_session").warn(
+    FBLogger.FBLogger("web_session").warn(
       "`WebSession.extend()` was passed an invalid target expiry time `%s`.",
       targetExpiryTime
     );

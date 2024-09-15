@@ -5,7 +5,8 @@
  * See the LICENSE file in the root directory for details.
  */
 import { useCallback, useEffect, useMemo } from "react";
-import I64 from "I64";
+
+import { cast, equal } from "../helpers/I64";
 
 function flattenArray(arr) {
   const result = [];
@@ -49,10 +50,10 @@ export function usePickInt64(obj, keys) {
 function mostlyShallowEqual(a, b) {
   if (a === b) return a !== 0 || b !== 0 || 1 / a === 1 / b;
   else {
-    const aInt64 = I64.cast(a);
+    const aInt64 = cast(a);
     if (aInt64 !== null) {
-      const bInt64 = I64.cast(b);
-      if (bInt64 !== null) return I64.equal(aInt64, bInt64);
+      const bInt64 = cast(b);
+      if (bInt64 !== null) return equal(aInt64, bInt64);
     }
     // eslint-disable-next-line no-self-compare
     return a !== a && b !== b;

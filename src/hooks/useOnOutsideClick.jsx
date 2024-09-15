@@ -1,134 +1,39 @@
-// __d(
-//   "useOnOutsideClick",
-//   [
-//     "HiddenSubtreePassiveContext",
-//     "pointerEventDistance",
-//     "react",
-//     "setTimeout",
-//   ],
-//   function (a, b, c, d, e, f, g) {
-//     "use strict";
-//     var h;
-//     b = h || d("react");
-//     var i = b.useContext,
-//       j = b.useEffect,
-//       k = b.useRef;
-//     function a(a, b) {
-//       var e = k(null),
-//         f = i(c("HiddenSubtreePassiveContext")),
-//         g = k(null);
-//       j(
-//         function () {
-//           var h = e.current;
-//           if (a === null || h == null) return;
-//           var i = b || {},
-//             j = i.isTargetEligible;
-//           i = i.triggerOutsideClickOnDrag;
-//           var k = i === void 0 ? !1 : i;
-//           function l(a) {
-//             return (
-//               a instanceof Node &&
-//               h instanceof Node &&
-//               !(h == null ? void 0 : h.contains(a)) &&
-//               (j == null || j(a))
-//             );
-//           }
-//           function m(a) {
-//             if (a.isPrimary) {
-//               var b = l(a.target);
-//               b && (g.current = a);
-//             }
-//           }
-//           function n(b) {
-//             var c = l(b.target);
-//             if (g.current != null && c && b.isPrimary) {
-//               c = d("pointerEventDistance").isWithinThreshold(g.current, b);
-//               (c || k) && (a == null ? void 0 : a(b));
-//             }
-//             g.current = null;
-//           }
-//           function o(b) {
-//             l(b.target) && (a == null ? void 0 : a(b));
-//           }
-//           var p = "PointerEvent" in window,
-//             q = !1;
-//           function r() {
-//             q ||
-//               (p
-//                 ? (document.addEventListener("pointerup", n),
-//                   document.addEventListener("pointerdown", m))
-//                 : document.addEventListener("click", o)),
-//               (q = !0);
-//           }
-//           function s() {
-//             q &&
-//               (p
-//                 ? (document.removeEventListener("pointerup", n),
-//                   document.removeEventListener("pointerdown", m))
-//                 : document.removeEventListener("click", o)),
-//               (q = !1);
-//           }
-//           i = f.getCurrentState();
-//           i.hiddenOrBackgrounded || r();
-//           var t = f.subscribeToChanges(function (a) {
-//             a.hiddenOrBackgrounded
-//               ? c("setTimeout")(function () {
-//                   s();
-//                 }, 0)
-//               : r();
-//           });
-//           return function () {
-//             t.remove(), s();
-//           };
-//         },
-//         [a, f, b]
-//       );
-//       return e;
-//     }
-//     g["default"] = a;
-//   },
-//   98
-// );
+/**
+ * @fileoverview
+ * Copyright (c) Xuan Tien and affiliated entities.
+ * All rights reserved. This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory for details.
+ */
 
 // useOnOutsideClick.ts
 
-import { useContext, useEffect, useRef, MutableRefObject } from "react";
-import { HiddenSubtreePassiveContext } from "HiddenSubtreePassiveContext";
-import { pointerEventDistance } from "pointerEventDistance";
-import { setTimeout } from "setTimeout";
+import { useContext, useEffect, useRef } from "react";
 
-type IsTargetEligible = (target: EventTarget | null) => boolean;
+import HiddenSubtreePassiveContext from "../context/HiddenSubtreePassiveContext";
+import { isWithinThreshold } from "../helpers/pointerEventDistance";
 
-interface Options {
-  isTargetEligible?: IsTargetEligible;
-  triggerOutsideClickOnDrag?: boolean;
-}
-
-function useOnOutsideClick(
-  onOutsideClick: (event: MouseEvent | PointerEvent) => void | null,
-  options?: Options
-): MutableRefObject<HTMLElement | null> {
-  const ref = useRef<HTMLElement | null>(null);
+function useOnOutsideClick(onOutsideClick, options) {
+  const ref = useRef(null);
   const hiddenSubtreeContext = useContext(HiddenSubtreePassiveContext);
-  const pointerDownEvent = useRef<PointerEvent | null>(null);
+  const pointerDownEvent = useRef(null);
 
   useEffect(() => {
     const element = ref.current;
-    if (onOutsideClick === null || element == null) return;
+    if (onOutsideClick === null || element === null) return;
 
     const { isTargetEligible, triggerOutsideClickOnDrag = false } =
       options || {};
 
-    function isOutsideClick(target: EventTarget | null): boolean {
+    function isOutsideClick(target) {
       return (
         target instanceof Node &&
         element instanceof Node &&
         !element.contains(target) &&
-        (isTargetEligible == null || isTargetEligible(target))
+        (isTargetEligible === null || isTargetEligible(target))
       );
     }
 
-    function handlePointerDown(event: PointerEvent): void {
+    function handlePointerDown(event) {
       if (event.isPrimary) {
         const isOutside = isOutsideClick(event.target);
         if (isOutside) {
@@ -137,21 +42,21 @@ function useOnOutsideClick(
       }
     }
 
-    function handlePointerUp(event: PointerEvent): void {
+    function handlePointerUp(event) {
       const isOutside = isOutsideClick(event.target);
-      if (pointerDownEvent.current != null && isOutside && event.isPrimary) {
-        const isWithinThreshold = pointerEventDistance.isWithinThreshold(
+      if (pointerDownEvent.current !== null && isOutside && event.isPrimary) {
+        const _isWithinThreshold = isWithinThreshold(
           pointerDownEvent.current,
           event
         );
-        if (isWithinThreshold || triggerOutsideClickOnDrag) {
+        if (_isWithinThreshold || triggerOutsideClickOnDrag) {
           onOutsideClick(event);
         }
       }
       pointerDownEvent.current = null;
     }
 
-    function handleClick(event: MouseEvent): void {
+    function handleClick(event) {
       if (isOutsideClick(event.target)) {
         onOutsideClick(event);
       }

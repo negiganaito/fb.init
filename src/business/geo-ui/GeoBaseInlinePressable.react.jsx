@@ -67,7 +67,7 @@ GeoBaseInlinePressable.displayName = `${GeoBaseInlinePressable.name} [from ${__f
 const styles = {
   fullWidth: {
     width: "xh8yej3",
-    $$css: true,
+    ,
   },
 };
 

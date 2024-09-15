@@ -76,7 +76,7 @@ const GeoPrivateFBIconOrImageish = ({ icon, ...rest }) => {
 GeoPrivateFBIconOrImageish.displayName = "GeoPrivateFBIconOrImageish";
 
 const styles = {
-  deprecatedIcon: { display: "x3nfvp2", $$css: true },
+  deprecatedIcon: { display: 0,  },
 };
 
 export default GeoPrivateFBIconOrImageish;

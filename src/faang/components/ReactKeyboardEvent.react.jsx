@@ -60,7 +60,7 @@
  */
 import { useEffect } from "react";
 
-import { ReactUseEvent_React } from "./ReactUseEvent.react"; // Replace with correct path
+import { ReactUseEvent_React } from "./ReactUseEvent.react";
 
 export function useKeyboard(ref, { disabled = false, onKeyDown, onKeyUp }) {
   const keyDownEvent = ReactUseEvent_React("keydown");

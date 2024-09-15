@@ -14,9 +14,9 @@ import mergeRefs from "../../helpers/mergeRefs";
 import { addImage } from "./CometSSRPreloadImageCollection";
 
 const objectFitStyles = {
-  contain: { objectFit: "x19kjcj4", $$css: true },
-  cover: { objectFit: "xl1xv1r", $$css: true },
-  fill: { objectFit: "xz74otr", $$css: true },
+  contain: { objectFit: "x19kjcj4" },
+  cover: { objectFit: "xl1xv1r" },
+  fill: { objectFit: "xz74otr" },
 };
 
 const BaseImage = forwardRef((props, ref) => {

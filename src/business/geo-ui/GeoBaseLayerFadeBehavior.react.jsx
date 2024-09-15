@@ -16,14 +16,14 @@ const styles = {
     transitionProperty: "x19991ni",
     transitionDuration: "xofcydl",
     opacity: "xg01cxk",
-    $$css: true,
+    ,
   },
-  enter: { opacity: "x1hc1fzr", $$css: true },
+  enter: { opacity: "x1hc1fzr",  },
   leave: {
     opacity: "xg01cxk",
     transitionDuration: "x13dflua",
     pointerEvents: "x47corl",
-    $$css: true,
+    ,
   },
 };
 

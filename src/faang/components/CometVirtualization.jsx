@@ -74,7 +74,7 @@ import useMergeRefs from "../../hooks/useMergeRefs";
 const styles = {
   invisible: {
     display: "x1s85apg",
-    $$css: true,
+    ,
   },
 };
 

@@ -31,7 +31,7 @@ const styles = {
   color: {
     color: "x186z157",
     fontWeight: "xk50ysn",
-    $$css: true,
+    ,
   },
   container: {
     paddingTop: "xyamay9",
@@ -40,15 +40,15 @@ const styles = {
     paddingLeft: null,
     paddingRight: null,
     paddingEnd: "xc73u3c",
-    $$css: true,
+    ,
   },
   containerThatPrecedesAdminMessage: {
     paddingBottom: "x1a8lsjc",
-    $$css: true,
+    ,
   },
   containerThatProceedsAdminMessage: {
     paddingTop: "x889kno",
-    $$css: true,
+    ,
   },
   content: {
     marginTop: "xr1yuqi",
@@ -58,7 +58,7 @@ const styles = {
     maxWidth: "x1ekjcvx",
     textAlign: "x2b8uid",
     wordBreak: "x13faqbe",
-    $$css: true,
+    ,
   },
 };
 

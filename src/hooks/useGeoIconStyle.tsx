@@ -23,7 +23,7 @@ interface UseGeoIconStyleProps {
   isDisabled: boolean;
 }
 
-const inheritStyle = { inherit: { color: "x1heor9g", $$css: true } };
+const inheritStyle = { inherit: { color: "x1heor9g" } };
 
 function useGeoIconStyle({ color, isDisabled }: UseGeoIconStyleProps): any {
   const { selectIconColor } = useGeoTheme();

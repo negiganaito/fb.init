@@ -168,7 +168,7 @@ GeoButton.displayName = `${GeoButton.name} [from some-module-id]`;
 
 const styles = {
   buttonWrapper: {
-    display: "x3nfvp2",
+    display: 0,
     maxWidth: "x193iq5w",
     verticalAlign: "xxymvpz",
   },

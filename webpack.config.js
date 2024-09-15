@@ -162,6 +162,7 @@ module.exports = (env, { mode }) => {
       path: path.resolve(__dirname, "build"),
       filename: isProduction ? "js/[name].[chunkhash].js" : "js/[name].js",
       chunkFilename: isProduction ? "js/[name].[chunkhash].js" : "js/[name].js",
+      libraryTarget: "amd",
     },
 
     module: {

@@ -73,12 +73,12 @@ const styles = {
     borderTopEndRadius: "x1otrzb0",
     borderBottomEndRadius: "x1i1ezom",
     borderBottomStartRadius: "x1o6z2jb",
-    $$css: true,
+    ,
   },
   buttonActive: {
     color: "xg32yw2",
     backgroundColor: "xy99zzx",
-    $$css: true,
+    ,
   },
 };
 

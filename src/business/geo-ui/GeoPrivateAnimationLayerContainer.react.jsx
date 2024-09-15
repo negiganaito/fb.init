@@ -123,7 +123,7 @@ GeoPrivateAnimationLayerContainer.displayName =
   "GeoPrivateAnimationLayerContainer";
 
 const styles = {
-  transitionPlaceholder: { $$css: true },
+  transitionPlaceholder: {  },
 };
 
 export default makeGeoComponent(

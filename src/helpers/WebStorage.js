@@ -4,9 +4,9 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
-import FBLogger from "FBLogger";
 
 import CookieConsent from "./CookieConsent";
+import FBLogger from "./FBLogger";
 import { isStorageQuotaExceededError } from "./isQuotaExceededError";
 
 let cookieConsentInstance;
@@ -25,7 +25,7 @@ function getOrInitializeStorage(cache, initializer, storageType) {
 
   if (!cookieConsentInstance) {
     if (!hasLoggedMissingConsentWarning) {
-      FBLogger("web_storage").warn(
+      FBLogger.FBLogger("web_storage").warn(
         "Failed to get %s because of missing cookie consent",
         storageType
       );
@@ -45,7 +45,7 @@ function getStorageForRead(storageType) {
   try {
     return globalContext[storageType];
   } catch (error) {
-    FBLogger("web_storage").warn(
+    FBLogger.FBLogger("web_storage").warn(
       "Failed to get storage for read %s",
       error.message
     );
@@ -70,7 +70,7 @@ function initializeStorage(storageType) {
     }
   } catch (error) {
     if (!isStorageQuotaExceededError(storage, error)) {
-      FBLogger("web_storage")
+      FBLogger.FBLogger("web_storage")
         .catching(error)
         .warn("Failed to get WebStorage of type `%s`", storageType);
       return null;

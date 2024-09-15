@@ -58,6 +58,9 @@
  * All rights reserved. This source code is licensed under the MIT license.
  * See the LICENSE file in the root directory for details.
  */
+
+/* eslint-disable max-depth */
+
 import React, {
   unstable_Scope as Scope,
   useCallback,
@@ -68,9 +71,9 @@ import React, {
   useRef,
 } from "react";
 
+import ActiveFocusRegionUtilsContext from "../../context/ActiveFocusRegionUtilsContext";
 import useUnsafeRef_DEPRECATED from "../../hooks/useUnsafeRef_DEPRECATED";
 
-import ActiveFocusRegionUtilsContext from "./ActiveFocusRegionUtilsContext";
 import {
   focusElement,
   focusFirst,
@@ -101,6 +104,11 @@ function isElementHidden(element) {
   return element.offsetWidth === 0 && element.offsetHeight === 0;
 }
 
+const isValidLastFocused = (focusRegionItem) =>
+  focusRegionItem.lastFocused !== null &&
+  focusRegionItem.lastFocused instanceof Node &&
+  focusRegionItem.lastFocused.isConnected;
+
 const activeFocusRegions = new Map();
 
 function FocusRegion({
@@ -117,16 +125,19 @@ function FocusRegion({
 }) {
   const activeFocusRegionUtils = useContext(ActiveFocusRegionUtilsContext);
   const scopeRef = useRef(null);
-  const triggerRef = useRef(null);
-  const currentActiveFocusRegionRef = useRef(null);
+  const recoveryRef = useRef(null);
+  const idRef = useRef(null);
 
-  const activeFocusRegion =
+  const initialActiveElement =
     activeFocusRegionUtils === null &&
     (autoRestoreFocus === true || onEscapeFocusRegion !== null)
       ? document.activeElement
       : null;
-  const activeFocusRegionRef = useUnsafeRef_DEPRECATED(activeFocusRegion);
-  const activeFocusRegionData = useMemo(
+  const lastActiveElementRef = useUnsafeRef_DEPRECATED(initialActiveElement);
+  const lastActiveElement =
+    lastActiveElementRef.current ?? initialActiveElement;
+
+  const focusRegionItem = useMemo(
     () => ({
       lastFocused: null,
       scope: null,
@@ -138,86 +149,70 @@ function FocusRegion({
 
   const updateActiveFocusRegion = useCallback(() => {
     if (activeFocusRegionUtils !== null) {
-      const currentActiveFocusRegion =
-        activeFocusRegionUtils.getActiveFocusRegion();
-      if (currentActiveFocusRegion !== activeFocusRegionData) {
-        if (
-          activeFocusRegionData.restorationFocusRegionItem !==
-          currentActiveFocusRegion
-        ) {
-          let container;
+      const activeFocusRegion = activeFocusRegionUtils.getActiveFocusRegion();
+      if (activeFocusRegion !== focusRegionItem) {
+        if (focusRegionItem.restorationFocusRegionItem !== activeFocusRegion) {
           if (
-            currentActiveFocusRegion?.lastFocused !== null &&
-            !scopeRef.current?.containsNode(
-              currentActiveFocusRegion.lastFocused
-            )
+            activeFocusRegion?.lastFocused !== null &&
+            !scopeRef.current?.containsNode(activeFocusRegion.lastFocused)
           ) {
-            currentActiveFocusRegion !== null &&
-              currentActiveFocusRegion.triggeredFocusRegionItems.add(
-                activeFocusRegionData
-              );
-            activeFocusRegionData.restorationFocusRegionItem =
-              currentActiveFocusRegion;
-          } else if (
-            activeFocusRegionData.restorationFocusRegionItem === null
-          ) {
-            container = currentActiveFocusRegion?.restorationFocusRegionItem;
-            activeFocusRegionData.restorationFocusRegionItem = container;
-            currentActiveFocusRegion !== null &&
-              container !== null &&
-              container.triggeredFocusRegionItems.delete(
-                currentActiveFocusRegion
-              );
-            container !== null &&
-              container.triggeredFocusRegionItems.add(activeFocusRegionData);
-            activeFocusRegionUtils.setActiveFocusRegion(activeFocusRegionData);
+            activeFocusRegion !== null &&
+              activeFocusRegion.triggeredFocusRegionItems.add(focusRegionItem);
+            focusRegionItem.restorationFocusRegionItem = activeFocusRegion;
+          } else if (focusRegionItem.restorationFocusRegionItem === null) {
+            const restorationItem =
+              activeFocusRegion?.restorationFocusRegionItem;
+
+            focusRegionItem.restorationFocusRegionItem = restorationItem;
+            focusRegionItem.triggeredFocusRegionItems.delete(activeFocusRegion);
+            focusRegionItem.triggeredFocusRegionItems.add(focusRegionItem);
+            activeFocusRegionUtils.setActiveFocusRegion(focusRegionItem);
             return;
           }
         }
 
         if (
-          currentActiveFocusRegion === null ||
-          (currentActiveFocusRegion !== null &&
-            activeFocusRegionData !== null &&
-            currentActiveFocusRegion.lastFocused !==
-              activeFocusRegionData.lastFocused)
+          activeFocusRegion === null ||
+          (activeFocusRegion !== null &&
+            focusRegionItem !== null &&
+            activeFocusRegion.lastFocused !== focusRegionItem.lastFocused)
         ) {
-          activeFocusRegionUtils.setActiveFocusRegion(activeFocusRegionData);
+          activeFocusRegionUtils.setActiveFocusRegion(focusRegionItem);
         }
       }
     }
-  }, [activeFocusRegionUtils, activeFocusRegionData]);
+  }, [activeFocusRegionUtils, focusRegionItem]);
 
-  const scopeRefCallback = useCallback(
+  const handleScopeRef = useCallback(
     (ref) => {
       scopeRef.current = ref;
-      activeFocusRegionData.scope = ref;
+      focusRegionItem.scope = ref;
 
-      const previousActiveFocusRegionId = currentActiveFocusRegionRef.current;
+      const currentId = idRef.current;
       if (forwardRef) {
         forwardRef.current = ref;
       }
       if (
-        previousActiveFocusRegionId !== null &&
-        previousActiveFocusRegionId !== id &&
-        activeFocusRegions.get(previousActiveFocusRegionId) === null
+        currentId !== null &&
+        currentId !== id &&
+        activeFocusRegions.get(currentId) === null
       ) {
-        activeFocusRegions.delete(previousActiveFocusRegionId);
+        activeFocusRegions.delete(currentId);
       }
       if (id !== null) {
         if (ref !== null) {
-          currentActiveFocusRegionRef.current = id;
+          idRef.current = id;
           activeFocusRegions.set(id, ref);
         } else if (activeFocusRegions.get(id) === null) {
           activeFocusRegions.delete(id);
         }
       }
     },
-    [forwardRef, id, activeFocusRegionData]
+    [forwardRef, id, focusRegionItem]
   );
 
   const focusWithinHandlers = ReactFocusEvent.useFocusWithin(
-    scopeRefCallback,
+    handleScopeRef,
     useMemo(() => {
       return {
         onBeforeBlurWithin: function (event) {
@@ -228,33 +223,38 @@ function FocusRegion({
               return;
             }
             const target = event.target;
-            const queryScope = getAllNodesFromOneOrManyQueries(
+            const recoveryNodes = getAllNodesFromOneOrManyQueries(
               recoverFocusQuery,
               scope
             );
 
-            if (queryScope === null) {
+            if (recoveryNodes === null) {
               return;
             }
 
-            const recoveryIndex = queryScope.indexOf(target);
+            const recoveryIndex = recoveryNodes.indexOf(target);
             const tabIndexState = target._tabIndexState;
-            scopeRef.current = {
+            recoveryRef.current = {
               detachedCanTab: tabIndexState !== null && tabIndexState.canTab,
               recoveryIndex,
-              recovery: queryScope,
+              recovery: recoveryNodes,
             };
           }
         },
+        // eslint-disable-next-line complexity
         onAfterBlurWithin: function () {
           const currentScope = scopeRef.current;
-          const recoveryData = triggerRef.current;
-          triggerRef.current = null;
+          const recoveryData = recoveryRef.current;
+          const gkx_4050 = true;
+          if (gkx_4050 && !isValidLastFocused(focusRegionItem)) {
+            focusRegionItem.lastFocused = null;
+          }
+          recoveryRef.current = null;
           const activeElement = document.activeElement;
 
           if (
             currentScope !== null &&
-            autoFocusQuery !== null &&
+            recoverFocusQuery !== null &&
             recoveryData !== null &&
             (activeElement === null ||
               activeElement === document.body ||
@@ -263,23 +263,23 @@ function FocusRegion({
             const preventScroll = true;
             const focusWithoutUserIntent = true;
             const { recovery, recoveryIndex } = recoveryData;
-            const focusableNodes = getAllNodesFromOneOrManyQueries(
+            const currentNodes = getAllNodesFromOneOrManyQueries(
               recoverFocusQuery,
               currentScope
             );
-            if (focusableNodes !== null && recovery !== null) {
-              const focusableSet = new Set(focusableNodes);
-              const recoverSet = new Set(recovery);
+            if (currentNodes !== null && recovery !== null) {
+              const currentNodeSet = new Set(currentNodes);
+              const recoveryNodeSet = new Set(recovery);
               for (let i = recoveryIndex - 1; i >= 0; i--) {
                 const recoverNode = recovery[i];
-                if (focusableSet.has(recoverNode)) {
-                  const nextIndex = focusableNodes.indexOf(recoverNode) + 1;
+                if (currentNodeSet.has(recoverNode)) {
+                  const nextIndex = currentNodes.indexOf(recoverNode) + 1;
 
-                  if (nextIndex < focusableNodes.length) {
-                    const nextNode = focusableNodes[nextIndex];
+                  if (nextIndex < currentNodes.length) {
+                    const nextNode = currentNodes[nextIndex];
 
                     // eslint-disable-next-line max-depth
-                    if (!recoverSet.has(nextNode)) {
+                    if (!recoveryNodeSet.has(nextNode)) {
                       recoveryData.detachedCanTab &&
                         setElementCanTab(nextNode, true);
                       focusElementWithDelay(
@@ -290,34 +290,48 @@ function FocusRegion({
                       return;
                     }
                   }
+
+                  if (recovery.detachedCanTab) {
+                    setElementCanTab(recoverNode, true);
+                  }
+                  focusElementWithDelay(
+                    recoverNode,
+                    preventScroll,
+                    focusWithoutUserIntent
+                  );
+                  return;
                 }
               }
               if (recoverFocusStrategy === RecoverFocusStrategy.Nearest) {
                 for (let i = recoveryIndex + 1; i < recovery.length; i++) {
                   const recoverNode = recovery[i];
-                  if (focusableSet.has(recoverNode)) {
-                    const previousFocusNode =
-                      focusableNodes[focusableNodes.indexOf(recoverNode) - 1];
-                    recoveryData.detachedCanTab &&
-                      setElementCanTab(previousFocusNode, true);
-                    focusElementWithDelay(
-                      previousFocusNode,
-                      preventScroll,
-                      focusWithoutUserIntent
-                    );
-                    return;
+                  if (currentNodeSet.has(recoverNode)) {
+                    const prevIndex = currentNodes.indexOf(recoverNode) - 1;
+                    if (prevIndex >= 0) {
+                      const prevNode = currentNodes[prevIndex];
+
+                      if (recovery.detachedCanTab) {
+                        setElementCanTab(prevNode, true);
+                      }
+                      focusElementWithDelay(
+                        prevNode,
+                        preventScroll,
+                        focusWithoutUserIntent
+                      );
+                      return;
+                    }
                   }
                 }
               }
-              const firstFocusNode = getFirstNodeFromOneOrManyQueries(
+              const firstNode = getFirstNodeFromOneOrManyQueries(
                 recoverFocusQuery,
                 currentScope
               );
-              if (firstFocusNode) {
+              if (firstNode) {
                 recoveryData.detachedCanTab &&
-                  setElementCanTab(firstFocusNode, true);
+                  setElementCanTab(firstNode, true);
                 focusElementWithDelay(
-                  firstFocusNode,
+                  firstNode,
                   preventScroll,
                   focusWithoutUserIntent
                 );
@@ -331,7 +345,7 @@ function FocusRegion({
               event,
               "useFocusWithin"
             );
-          activeFocusRegionData.lastFocused = event.target;
+          focusRegionItem.lastFocused = event.target;
           updateActiveFocusRegion();
         },
       };
@@ -340,12 +354,12 @@ function FocusRegion({
       recoverFocusQuery,
       recoverFocusStrategy,
       stopOnFocusWithinPropagation,
-      activeFocusRegionData,
+      focusRegionItem,
       updateActiveFocusRegion,
     ]
   );
 
-  const autoRestoreFocusCallback = useCallback(() => {
+  const autoFocus = useCallback(() => {
     const scope = scopeRef.current;
     const activeElement = document.activeElement;
     if (
@@ -353,7 +367,7 @@ function FocusRegion({
       scope !== null &&
       (!activeElement || !scope.containsNode(activeElement))
     ) {
-      const lastFocused = activeFocusRegionData.lastFocused;
+      const lastFocused = focusRegionItem.lastFocused;
       if (
         lastFocused !== null &&
         scope.containsNode(lastFocused) &&
@@ -372,52 +386,47 @@ function FocusRegion({
         });
       }
     }
-  }, [autoFocusQuery, activeFocusRegionData]);
+  }, [autoFocusQuery, focusRegionItem]);
 
-  useLayoutEffect(autoRestoreFocusCallback, [autoRestoreFocusCallback]);
-  useEffect(autoRestoreFocusCallback, [autoRestoreFocusCallback]);
+  useLayoutEffect(autoFocus, [autoFocus]);
+  useEffect(autoFocus, [autoFocus]);
 
-  const handleBlur = useCallback(
-    (previousActiveFocusRegion, shouldPreventScroll = false) => {
+  const restoreFocus = useCallback(
+    (item, immediate = false) => {
       const currentScope = scopeRef.current;
       const currentActiveElement = document.activeElement;
-      const previousActiveScope = activeFocusRegionRef.current;
-      activeFocusRegionRef.current = null;
+      const lastActiveElement = lastActiveElementRef.current;
+      lastActiveElementRef.current = null;
 
-      const triggeredFocusRegionItems =
-        previousActiveFocusRegion?.triggeredFocusRegionItems;
-      const restorationFocusRegionItem =
-        previousActiveFocusRegion?.restorationFocusRegionItem;
+      const triggeredItems = item?.triggeredFocusRegionItems;
+      const restorationItem = item?.restorationFocusRegionItem;
 
-      triggeredFocusRegionItems?.forEach((item) => {
-        item.restorationFocusRegionItem = restorationFocusRegionItem;
-      });
-
-      if (
-        previousActiveFocusRegion !== null &&
-        restorationFocusRegionItem !== null
-      ) {
-        restorationFocusRegionItem.triggeredFocusRegionItems.delete(
-          previousActiveFocusRegion
-        );
-        triggeredFocusRegionItems?.forEach((item) => {
-          restorationFocusRegionItem.triggeredFocusRegionItems.add(item);
+      if (triggeredItems?.size) {
+        triggeredItems?.forEach((item) => {
+          item.restorationFocusRegionItem = restorationItem;
         });
       }
 
-      activeFocusRegionData.lastFocused = null;
+      if (item !== null && restorationItem !== null) {
+        restorationItem.triggeredFocusRegionItems.delete(item);
+        if (triggeredItems?.size) {
+          triggeredItems.forEach((triggeredItem) =>
+            restorationItem.triggeredFocusRegionItems.add(triggeredItem)
+          );
+        }
+      }
+
+      focusRegionItem.lastFocused = null;
 
       const currentActiveFocusRegion =
         activeFocusRegionUtils?.getActiveFocusRegion();
       const lastFocused =
         currentActiveFocusRegion !== null
           ? currentActiveFocusRegion.restorationFocusRegionItem
-          : { lastFocused: previousActiveScope.current };
+          : { lastFocused: lastActiveElement };
 
-      if (currentActiveFocusRegion === previousActiveFocusRegion) {
-        activeFocusRegionUtils?.setActiveFocusRegion(
-          restorationFocusRegionItem
-        );
+      if (currentActiveFocusRegion === item) {
+        activeFocusRegionUtils?.setActiveFocusRegion(restorationItem);
       }
 
       const isFocusWithinScope =
@@ -429,13 +438,13 @@ function FocusRegion({
         (autoRestoreFocus === true || onEscapeFocusRegion !== null) &&
         isFocusWithinScope
       ) {
-        const focusAfterBlur = (shouldPreventScroll = false) => {
+        const performFocusRestore = (isImmediate = false) => {
           if (lastFocused?.lastFocused !== null) {
             const preventScroll = true;
             const focusWithoutUserIntent = true;
             const currentActiveElement = document.activeElement;
             if (
-              shouldPreventScroll ||
+              isImmediate ||
               currentActiveElement === null ||
               currentActiveElement === document.body
             ) {
@@ -447,11 +456,11 @@ function FocusRegion({
           }
         };
 
-        if (shouldPreventScroll) {
-          focusAfterBlur(shouldPreventScroll);
+        if (immediate) {
+          performFocusRestore(immediate);
         } else {
           window.requestAnimationFrame(() => {
-            focusAfterBlur();
+            performFocusRestore();
           });
         }
       }
@@ -460,9 +469,9 @@ function FocusRegion({
   );
 
   const handleEscapeFocusRegion = useCallback(() => {
-    handleBlur(activeFocusRegionRef, true);
+    restoreFocus(lastActiveElementRef, true);
     onEscapeFocusRegion && onEscapeFocusRegion();
-  }, [handleBlur, onEscapeFocusRegion, activeFocusRegionRef]);
+  }, [restoreFocus, onEscapeFocusRegion, lastActiveElementRef]);
 
   const handleKeyDown = useCallback(
     (event) => {
@@ -502,18 +511,16 @@ function FocusRegion({
   }));
 
   useLayoutEffect(() => {
-    activeFocusRegionRef.current = activeFocusRegionRef.current
-      ? activeFocusRegionRef.current
-      : activeFocusRegion;
-    const currentFocusRegion = activeFocusRegionData;
+    lastActiveElementRef.current = lastActiveElement;
+    const currentFocusRegion = focusRegionItem;
 
-    return handleBlur(currentFocusRegion);
+    return restoreFocus(currentFocusRegion);
   }, [
     activeFocusRegionUtils,
     autoRestoreFocus,
-    handleBlur,
-    activeFocusRegionData,
-    activeFocusRegion,
+    restoreFocus,
+    focusRegionItem,
+    initialActiveElement,
   ]);
 
   return (

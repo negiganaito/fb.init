@@ -357,22 +357,22 @@ const styles = {
   addOnContainer: {
     alignSelf: "xqcrz7y",
     flexShrink: "x2lah0s",
-    $$css: true,
+    ,
   },
-  alignSelfCenter: { alignSelf: "xamitd3", $$css: true },
-  media: { flexShrink: "x2lah0s", $$css: true },
-  descriptionCompensation: { marginTop: "xr9ek0c", $$css: true },
-  fit: { flexGrow: "x1c4vz4f", $$css: true },
-  accessibleEl: { flexGrow: "x1iyjqo2", $$css: true },
-  headingWrapper: { display: "x78zum5", minWidth: "xeuugli", $$css: true },
-  heading: { flexGrow: "x1iyjqo2", $$css: true },
+  alignSelfCenter: { alignSelf: "xamitd3",  },
+  media: { flexShrink: "x2lah0s",  },
+  descriptionCompensation: { marginTop: "xr9ek0c",  },
+  fit: { flexGrow: "x1c4vz4f",  },
+  accessibleEl: { flexGrow: "x1iyjqo2",  },
+  headingWrapper: { display: "x78zum5", minWidth: "xeuugli",  },
+  heading: { flexGrow: "x1iyjqo2",  },
   trailingContent: {
     flexGrow: "x1iyjqo2",
     flexShrink: "x2lah0s",
-    $$css: true,
+    ,
   },
-  shrinkForEndContent: { flexBasis: "x1r8uery", $$css: true },
-  truncate: { overflowX: "x6ikm8r", overflowY: "x10wlt62", $$css: true },
+  shrinkForEndContent: { flexBasis: "x1r8uery",  },
+  truncate: { overflowX: "x6ikm8r", overflowY: "x10wlt62",  },
 };
 
 export default GeoPrivateMakeComponent.makeGeoComponent(

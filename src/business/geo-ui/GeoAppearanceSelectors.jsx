@@ -126,7 +126,7 @@ const rootStyle = {
     borderEndStyle: "xu3j5b3",
     borderBottomStyle: "x1q0q8m5",
     borderStartStyle: "x26u7qi",
-    $$css: true,
+    ,
   },
 };
 

@@ -9,7 +9,7 @@ import coerceImageishSprited from "./coerceImageishSprited";
 import memoizeWithArgs from "./memoizeWithArgs";
 import TintableIconSource from "./TintableIconSource";
 
-export const filled = (name, size) => {
+const filled = (name, size) => {
   throw console.log(
     `fbicon.filled(${JSON.stringify(
       name
@@ -18,7 +18,7 @@ export const filled = (name, size) => {
   );
 };
 
-export const outline = (name, size) => {
+const outline = (name, size) => {
   throw console.log(
     `fbicon.outline(${JSON.stringify(
       name
@@ -27,7 +27,7 @@ export const outline = (name, size) => {
   );
 };
 
-const memoizedGetIcon = memoizeWithArgs(
+export const _ = memoizeWithArgs(
   (name, size) => {
     return new TintableIconSource("FB", name, size);
   },
@@ -47,4 +47,8 @@ const memoizedGetIcon = memoizeWithArgs(
   }
 );
 
-export default memoizedGetIcon;
+export const fbicon = {
+  _,
+  outline,
+  filled,
+};

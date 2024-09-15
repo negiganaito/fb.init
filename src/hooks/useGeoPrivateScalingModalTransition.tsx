@@ -69,9 +69,9 @@ const useGeoPrivateScalingModalTransition: UseGeoPrivateScalingModalTransition =
   };
 
 const styles = {
-  base: { transform: "x9mn55f", $$css: true },
-  enter: { transform: "x3oybdh", $$css: true },
-  leave: { transform: "x9mn55f", $$css: true },
+  base: { transform: "x9mn55f" },
+  enter: { transform: "x3oybdh" },
+  leave: { transform: "x9mn55f" },
 };
 
 export default useGeoPrivateScalingModalTransition;
